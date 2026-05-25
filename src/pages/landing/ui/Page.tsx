@@ -6,6 +6,11 @@ import { HeroSection } from "@/widgets/HeroSection/ui/HeroSection";
 // Lazy load below-the-fold components using Next.js dynamic imports
 // We keep ssr: true to preserve SEO indexing for search engine crawlers, 
 // but enable chunk splitting for optimal initial paint performance.
+const AboutUsSection = dynamic(
+  () => import("@/widgets/AboutUsSection/ui/AboutUsSection").then((m) => m.AboutUsSection),
+  { ssr: true }
+);
+
 const PartnersSection = dynamic(
   () => import("@/widgets/PartnersSection/ui/PartnersSection").then((m) => m.PartnersSection),
   { ssr: true }
@@ -53,6 +58,7 @@ export const LandingPage: React.FC = () => {
       <Header />
       <main className="flex-grow">
         <HeroSection />
+        <AboutUsSection />
 
         {/* Lazy loaded segments for better Core Web Vitals (LCP, FID) */}
         <PartnersSection />

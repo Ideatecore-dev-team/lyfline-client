@@ -122,16 +122,16 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* FLOATING ACTION TOOLBAR STICKY BAR PILLED (STICK TO BOTTOM CENTER) */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-950/90 backdrop-blur-md px-2 py-2 rounded-full border border-white/10 flex items-center gap-1.5 shadow-2xl shadow-slate-950/50 scale-90 md:scale-100 hover:border-primary/50 transition-all duration-300">
-        <Link href="#" className="text-xs font-semibold px-4 py-2 hover:bg-white/10 rounded-full text-slate-200 hover:text-white transition-colors">
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-2 py-2 rounded-full border border-white/10 flex items-center gap-6 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
+        <Link href="#appointment" className="text-xs font-bold px-5 py-2.5 bg-primary hover:bg-primary-hover rounded-full text-white flex items-center gap-1.5 transition-all">
+          Book an Appointment <ArrowUpRight className="w-3.5 h-3.5" />
+        </Link>
+        <Link href="#services" className="text-xs font-bold text-slate-300 hover:text-white transition-colors">
           Find a Doctor
         </Link>
-        <Link href="#footer" className="text-xs font-semibold px-4 py-2 hover:bg-white/10 rounded-full text-slate-200 hover:text-white transition-colors">
+        <Link href="#footer" className="text-xs font-bold text-slate-300 hover:text-white transition-colors pr-4">
           Contact Us
         </Link>
-        <Button variant="primary" size="sm" className="gap-1 px-4 py-2 text-xs">
-          Book Appointment <ArrowUpRight className="w-3.5 h-3.5" />
-        </Button>
       </div>
 
     </footer>
