@@ -66,10 +66,10 @@ export const ServicesSection: React.FC = () => {
                   {/* Icon Frame */}
                   <div
                     className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center mb-6 overflow-hidden bg-white/50 border border-slate-100",
+                      "w-12 h-12 rounded-2xl flex items-center justify-center mb-6 overflow-hidden border transition-all duration-300",
                       isHighlighted
-                        ? "bg-white/20 border-white/10"
-                        : ""
+                        ? "bg-white border-transparent shadow-md shadow-black/5"
+                        : "bg-white/50 border-slate-100"
                     )}
                   >
                     <Image
@@ -77,10 +77,7 @@ export const ServicesSection: React.FC = () => {
                       alt={service.title}
                       width={48}
                       height={48}
-                      className={cn(
-                        "w-full h-full object-contain p-2.5",
-                        isHighlighted && "brightness-0 invert"
-                      )}
+                      className="w-full h-full object-contain"
                     />
                   </div>
 

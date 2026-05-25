@@ -42,11 +42,11 @@ export interface Article {
 // ==========================================
 
 export const HOSPITALS: Hospital[] = [
-  { id: "1", name: "Mayapada Hospital", logo: "/Partners/mayapada hospital.png", country: "Indonesia", flag: "/icons/ID-Indonesia icon.png" },
-  { id: "2", name: "MAX Healthcare", logo: "/Partners/Max healtcare.png", country: "India", flag: "/icons/IN-India icon.png" },
-  { id: "3", name: "Ready Plastic Surgery", logo: "/Partners/Ready Plastic Surgery.png", country: "South Korea", flag: "/icons/KR-Korea icon.png" },
-  { id: "4", name: "Pantai Hospitals", logo: "/Partners/Pantai Hospitals.png", country: "Malaysia", flag: "/icons/MY-malaysia icon.png" },
-  { id: "5", name: "Bumrungrad International Hospital", logo: "/Partners/bumrungrad international h.png", country: "Thailand", flag: "/icons/TH-Thailand icon.png" },
+  { id: "1", name: "Mayapada Hospital", logo: "/Partners/mayapada hospital.png", country: "Indonesia", flag: "/Flags/ID-Indonesia icon.png" },
+  { id: "2", name: "MAX Healthcare", logo: "/Partners/Max healtcare.png", country: "India", flag: "/Flags/IN-India icon.png" },
+  { id: "3", name: "Ready Plastic Surgery", logo: "/Partners/Ready Plastic Surgery.png", country: "South Korea", flag: "/Flags/KR-Korea icon.png" },
+  { id: "4", name: "Pantai Hospitals", logo: "/Partners/Pantai Hospitals.png", country: "Malaysia", flag: "/Flags/MY-malaysia icon.png" },
+  { id: "5", name: "Bumrungrad International Hospital", logo: "/Partners/bumrungrad international h.png", country: "Thailand", flag: "/Flags/TH-Thailand icon.png" },
 ];
 
 export const SERVICES: MedicalService[] = [

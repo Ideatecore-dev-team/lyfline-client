@@ -60,7 +60,7 @@ export const Header: React.FC = () => {
             title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
           >
             <Image
-              src={lang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
+              src={lang === "en" ? "/Flags/GB-UKM icon.png" : "/Flags/ID-Indonesia icon.png"}
               alt={lang === "en" ? "English" : "Bahasa Indonesia"}
               width={22}
               height={15}
@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
               className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer"
             >
               <Image
-                src={lang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
+                src={lang === "en" ? "/Flags/GB-UKM icon.png" : "/Flags/ID-Indonesia icon.png"}
                 alt="Language Switcher"
                 width={20}
                 height={14}
