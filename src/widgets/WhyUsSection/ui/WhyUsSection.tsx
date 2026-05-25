@@ -6,7 +6,7 @@ import { ShieldCheck, Sparkles, DollarSign, Activity, FileText } from "lucide-re
 import { STATS, BENEFITS } from "@/entities";
 import { cn } from "@/shared/lib/utils";
 
-const benefitIcons: Record<string, React.ComponentType<any>> = {
+const benefitIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Home: DollarSign, // Map to Dollar for fee transparency
   UserCheck: Activity, // Map to Activity for guided care
   Calendar: Sparkles, // Map to sparkles for packages

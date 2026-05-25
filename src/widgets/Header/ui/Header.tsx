@@ -72,6 +72,7 @@ export const Header: React.FC = () => {
               width={20}
               height={14}
               className="w-5 h-auto object-contain rounded-sm"
+              style={{ height: "auto" }}
             />
             <span className="text-[10px] font-bold text-slate-600 tracking-wider">EN/ID</span>
           </button>
@@ -114,6 +115,7 @@ export const Header: React.FC = () => {
                 width={20}
                 height={14}
                 className="w-5 h-auto object-contain rounded-sm"
+                style={{ height: "auto" }}
               />
               <span className="text-[10px] font-bold text-slate-600 tracking-wider">EN/ID</span>
             </button>
