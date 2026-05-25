@@ -1,92 +1,80 @@
-# Lyfline Client - Landing Page
+# LYFLINE Client - Landing Page
 
-Website landing page for Lyfline built with Next.js (App Router, SSR), TypeScript, Tailwind CSS v4, pnpm, and Framer Motion.
-
----
-
-## Architectural Methodology: Feature Sliced Design (FSD)
-
-This project is structured using the **Feature Sliced Design** architectural pattern. FSD is a modern frontend architectural standard that organizes code by its business value and responsibility.
-
-The application codebase is organized into **Layers** inside the `src/` directory:
-
-```
-src/
-├── app/          # App-wide settings, global styles, providers, and main layout
-├── pages/        # Composition of sections/widgets to construct full pages
-├── widgets/      # Compositional blocks/sections of pages (e.g. Hero, Footer, Services)
-├── features/     # User interactions and business logic (e.g. BookAppointment)
-├── entities/     # Domain business entities and models (e.g. Hospital, Article, Testimonial)
-├── shared/       # Reusable technical components, helpers, and utilities (e.g. Button, cn)
-```
-
-### Layer Details:
-
-1. **`src/app`**:
-   - Contains global routing, styles (`globals.css`), root layout (`layout.tsx`), and metadata/SEO setup.
-2. **`src/pages`**:
-   - Page containers. For this landing page, we compose all required sections in `src/pages/landing` and lazy load below-the-fold modules dynamically to optimize Core Web Vitals while preserving indexing.
-3. **`src/widgets`**:
-   - Independent UI sections. Each major layout block on the landing page is a separate widget (e.g. `Header`, `HeroSection`, `PartnersSection`, `ServicesSection`, etc.).
-4. **`src/features`**:
-   - User actions. E.g. Booking an appointment, showing the interactive preview for video consultation.
-5. **`src/entities`**:
-   - Holds core business models, custom types, and data mocks for services, partners, testimonials, and articles.
-6. **`src/shared`**:
-   - Strictly reusable primitives.
-   - `shared/ui`: Base UI components (Button, Card, Badge, Section).
-   - `shared/lib`: Utility functions (e.g. `cn` helper for tailwind-merge).
+Welcome to the **LYFLINE** landing page client application. This document serves as the single source of truth for both human developers and **AI Coding Agents** to understand the domain, architecture, standards, and rules of this codebase.
 
 ---
 
-## 🎨 Design System & Colors (Figma Spec)
+## 📖 Project & Domain Context (For Developers & AI Agents)
 
-The website styling conforms strictly to the Lyfline Figma Design System using native Tailwind CSS v4 custom color themes:
+**LYFLINE** is a premium, high-trust **International Medical Care Facilitator** based in Jakarta, Indonesia. 
+The core mission of the platform is to make cross-border healthcare seamless, reliable, and completely transparent for patients seeking medical treatments abroad.
 
-- **Brand/Blue (Primary)**: `#3F71B7`
-- **Brand/Blue Dark (Primary Hover)**: `#3365AC`
-- **Brand/Blue Light (Background Tint)**: `#ECF1F8`
-- **Brand/Blue Accent**: `#4D7CBC`
-- **Dark Deep Navy/Purple**: `#2E42A5`
-- **Brand/Red (Primary Accent)**: `#E02828`
-- **Brand/Red Dark (Primary Accent Hover)**: `#D43030`
-- **High Contrast Red (Badges/Status)**: `#F50100`
-- **Neutral Dark**: `#000000`
-- **Neutral Light**: `#ECECEC`
-
-Linear gradient configuration: `linear-gradient(90deg, #3F71B7 0%, #3365AC 100%)`.
+### Core Business Pillars:
+1. **End-to-End Care Coordination**: LYFLINE handles the entire patient journey including initial specialist matching, appointment booking, travel logistics (flights, visas, hotel accommodations), home care visits, and recovery follow-ups.
+2. **Zero Hidden Fees**: All pricing models are transparent. Patients only pay for the services they directly receive.
+3. **Verified Global Network**: LYFLINE is partnered with over 30+ top-tier hospital systems across 7 countries (including Indonesia, India, South Korea, Malaysia, and Thailand).
 
 ---
 
-## 🌐 Features & Optimizations
+## 🏗️ Architectural Pattern: Feature Sliced Design (FSD)
 
-1. **Clean Navigation Header**:
-   - Minimalist responsive design containing: *Home*, *About us*, *Services*, *Partners*, and *Articles*.
-   - Embedded interactive **Language Switcher (EN/ID)** utilizing the custom flags asset `/icons/GB-UKM Icons.png`.
-2. **Custom Service Icons**:
-   - Direct integration of premium custom icon images from the design team (`MAA`, `YPHC`, `ME`, `PDM`, `TAS`, `GC` inside `/icons`) with high-contrast brightness inversion on the primary blue highlighted card.
-3. **Dynamic Lazy Loading**:
-   - Below-the-fold widgets (e.g. `Partners`, `Services`, `Timeline`, `Testimonials`, `Articles`) are loaded dynamically on client side while preserving Next.js SSR to ensure top-tier Google SEO crawling.
-4. **Interactive Telehealth Window**:
-   - High-fidelity coded active teleconsultation preview mockup featuring PIP frame, live timer, and active session controls.
-5. **Floating Sticky Action Toolbar**:
-   - Sticky bottom toolbar pill for quick access to Bookings and Contact forms.
+This project strictly adheres to **Feature Sliced Design (FSD)**. This is a modern, highly scalable frontend architectural standard.
 
----
+### Core FSD Layers (`src/`):
 
-## 🛡️ Git Hook Code Quality Control (Husky)
-
-This project has **Husky** Git hooks configured to enforce code standards:
-
-- **Hook**: `pre-commit`
-- **Actions**: `pnpm run lint` followed by `pnpm run build`
-- **Validation**: Any code containing TypeScript compile issues, syntax bugs, or styling rule violations will automatically fail and print detailed error logs, rejecting the Git commit until corrected.
+*   **`src/app/`**: Global configurations, providers, sitemaps/robots SEO definitions, and the root layout styling.
+*   **`src/pages/`**: Page composition layer. Sections/widgets are imported here to assemble the complete pages (e.g. `src/pages/landing`).
+*   **`src/widgets/`**: Independent, self-contained sections of pages (e.g. `Header`, `HeroSection`, `ServicesSection`, `Footer`).
+*   **`src/features/`**: User interactions and actions with business value (e.g. `LanguageSwitcher`, `BookAppointmentForm`).
+*   **`src/entities/`**: Domain business models, typings, and data mocks (e.g. `Hospital`, `MedicalService`, `Testimonial`, `Article`).
+*   **`src/shared/`**: Reusable technical primitives:
+    *   `shared/ui/`: Atom-level visual components (`Button`, `Card`, `Section`, `Badge`).
+    *   `shared/lib/`: Custom helpers (e.g. `cn` helper for tailwind class merging).
 
 ---
 
-## Getting Started
+## 🚨 Critical Code Standards & constraints (For AI Agents & Humans)
 
-First, run the development server:
+To ensure this codebase remains clean, fast, and maintainable, all developers and AI coding agents must obey the following rules:
+
+### 1. 📏 The 300-Line Componentization Rule
+> [!IMPORTANT]
+> **Any single `.ts`, `.tsx`, `.js`, or `.jsx` file must NOT exceed 300 lines of code.**
+> If any file grows beyond **300 lines**, it is **MANDATORY** to refactor and split it. You must decompose it by:
+> - Extracting smaller presentational sub-components into a nested `ui/` folder or separate sibling components.
+> - Offloading state/interaction logic into dedicated React custom hooks (e.g., `use[Name].ts`).
+> - Moving static mock datasets and interfaces into the `entities/` layer or separate config files.
+
+### 2. 🎨 Color Theme & Design System (Tailwind CSS v4)
+All styling must strictly use the design system color tokens defined inside `src/app/globals.css`:
+- **Brand/Blue (Primary)**: `--color-primary` (`#3F71B7`)
+- **Brand/Blue Dark (Hover)**: `--color-primary-hover` (`#3365AC`)
+- **Brand/Blue Light (Background Tint)**: `--color-primary-light` (`#ECF1F8`)
+- **Brand/Red (Accent)**: `--color-accent` (`#E02828`)
+- **Dark Deep Navy/Purple**: `--color-primary-dark` (`#2E42A5`)
+- **Neutral Dark**: `--color-neutral-dark` (`#000000`)
+- **Neutral Light**: `--color-neutral-light` (`#ECECEC`)
+
+Linear Gradients must map to: `linear-gradient(90deg, #3F71B7 0%, #3365AC 100%)`.
+
+### 3. ⚡ Core Web Vitals & SEO
+- **Dynamic Imports**: Always lazy load below-the-fold widgets (under the hero section) dynamically inside `src/pages/` to prevent blockages on initial page load. Ensure `ssr: true` is configured inside `dynamic()` to keep page markup visible to search engine crawlers.
+- **Next.js `<Image />`**: Always use Next.js's optimized `<Image />` component instead of standard `<img>` tags for standard content images. Specify explicit `sizes` and proper aspect ratios.
+
+---
+
+## 🛠️ Code Validation Hooks (Husky)
+
+This project has **Husky Git hooks** configured to ensure code quality before commits:
+*   **Trigger**: Pre-commit
+*   **Commands Run**: `pnpm run lint && pnpm run build`
+*   **Result**: If any TypeScript typing errors, syntax lint issues, or compilation errors are found, the commit is **automatically rejected**, printing details to the developer's terminal log.
+
+---
+
+## 🚀 Getting Started
+
+To run the development server:
 
 ```bash
 pnpm dev
@@ -94,9 +82,9 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Scripts
+## Available Scripts
 
 - `pnpm dev`: Start the dev server.
-- `pnpm build`: Create the production build.
+- `pnpm build`: Compile the optimized production build.
 - `pnpm start`: Start the production server.
-- `pnpm lint`: Lint the codebase using ESLint.
+- `pnpm lint`: Validate codebase using ESLint.
