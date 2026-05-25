@@ -45,7 +45,7 @@ export const HeroSection: React.FC = () => {
 
             {/* Paragraph Description */}
             <p className="text-base md:text-lg text-slate-100/90 leading-relaxed max-w-xl mb-8">
-              We connects Indonesians with the world's most reputable international hospitals, from consultation to travel, we handle every steps of your medical journey.
+              We connects Indonesians with the world&apos;s most reputable international hospitals, from consultation to travel, we handle every steps of your medical journey.
             </p>
 
             {/* Action Buttons */}

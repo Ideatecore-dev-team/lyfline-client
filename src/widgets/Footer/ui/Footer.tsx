@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Instagram, Facebook, Youtube, ArrowUpRight } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
 
 export const Footer: React.FC = () => {
   return (
