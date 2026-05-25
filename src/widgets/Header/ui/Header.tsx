@@ -57,13 +57,13 @@ export const Header: React.FC = () => {
             </Link>
           ))}
           {/* Stateful Flag Switcher directly inside the nav menu next to Articles */}
-          <button 
+          <button
             onClick={toggleLanguage}
             className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
             title={currentLang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
           >
             <Image
-              src={currentLang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
+              src={currentLang === "en" ? "/icons/GB-UKM.png" : "/icons/ID-Indonesia icon.png"}
               alt={currentLang === "en" ? "English" : "Bahasa Indonesia"}
               width={22}
               height={15}
@@ -118,7 +118,7 @@ export const Header: React.FC = () => {
               <span className="text-[10px] font-bold text-slate-600 tracking-wider">EN/ID</span>
             </button>
           </div>
-          
+
           <Button
             variant="primary"
             className="w-full mt-2 gap-2 justify-center rounded-full font-bold text-xs"
