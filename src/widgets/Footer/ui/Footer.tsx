@@ -4,8 +4,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Instagram, Facebook, Youtube, ArrowUpRight } from "lucide-react";
+import { useLanguage } from "@/shared/lib/LanguageContext";
 
 export const Footer: React.FC = () => {
+  const { lang } = useLanguage();
   return (
     <footer id="footer" className="relative bg-primary text-white pt-20 pb-28 md:pb-12 overflow-hidden border-t border-white/5">
       {/* Decorative patterns */}
@@ -123,13 +125,13 @@ export const Footer: React.FC = () => {
       {/* FLOATING ACTION TOOLBAR STICKY BAR PILLED (STICK TO BOTTOM CENTER) */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-2 py-2 rounded-full border border-white/10 flex items-center gap-6 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
         <Link href="#appointment" className="text-xs font-bold px-5 py-2.5 bg-primary hover:bg-primary-hover rounded-full text-white flex items-center gap-1.5 transition-all">
-          Book an Appointment <ArrowUpRight className="w-3.5 h-3.5" />
+          {lang === "en" ? "Book an Appointment" : "Buat Janji Temu"} <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
         <Link href="#services" className="text-xs font-bold text-slate-300 hover:text-white transition-colors">
-          Find a Doctor
+          {lang === "en" ? "Find a Doctor" : "Cari Dokter"}
         </Link>
         <Link href="#footer" className="text-xs font-bold text-slate-300 hover:text-white transition-colors pr-4">
-          Contact Us
+          {lang === "en" ? "Contact Us" : "Hubungi Kami"}
         </Link>
       </div>
 

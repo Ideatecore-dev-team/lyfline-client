@@ -6,21 +6,18 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
 import { cn } from "@/shared/lib/utils";
+import { useLanguage } from "@/shared/lib/LanguageContext";
 
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState<"en" | "id">("en");
-
-  const toggleLanguage = () => {
-    setCurrentLang((prev) => (prev === "en" ? "id" : "en"));
-  };
+  const { lang, toggleLang, t } = useLanguage();
 
   const navLinks = [
-    { label: "Home", href: "#" },
-    { label: "About Us", href: "#about-us" },
-    { label: "Services", href: "#services" },
-    { label: "Partners", href: "#partners" },
-    { label: "Articles", href: "#blog" },
+    { label: t("nav.home"), href: "#" },
+    { label: t("nav.about"), href: "#about-us" },
+    { label: t("nav.services"), href: "#services" },
+    { label: t("nav.partners"), href: "#partners" },
+    { label: t("nav.articles"), href: "#blog" },
   ];
 
   return (
@@ -48,7 +45,7 @@ export const Header: React.FC = () => {
               href={link.href}
               className={cn(
                 "text-[14px] font-semibold transition-colors",
-                link.label === "Home"
+                link.href === "#"
                   ? "text-primary"
                   : "text-[#000000] hover:text-primary"
               )}
@@ -57,18 +54,18 @@ export const Header: React.FC = () => {
             </Link>
           ))}
           {/* Stateful Flag Switcher directly inside the nav menu next to Articles */}
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
-            title={currentLang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
+          <button 
+            onClick={toggleLang}
+            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer border-0 bg-transparent p-0"
+            title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
           >
             <Image
-              src={currentLang === "en" ? "/icons/GB-UKM.png" : "/icons/ID-Indonesia icon.png"}
-              alt={currentLang === "en" ? "English" : "Bahasa Indonesia"}
+              src={lang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
+              alt={lang === "en" ? "English" : "Bahasa Indonesia"}
               width={22}
               height={15}
-              className="w-5.5 h-auto object-contain rounded-sm shadow-sm border border-slate-100"
-              style={{ height: "auto" }}
+              unoptimized
+              className="w-[22px] h-[15px] object-contain rounded-sm shadow-sm border border-slate-100"
             />
           </button>
         </nav>
@@ -76,7 +73,7 @@ export const Header: React.FC = () => {
         {/* DESKTOP CTA ONLY (NO LANGUAGE PIL) */}
         <div className="hidden lg:flex items-center gap-5">
           <Button variant="primary" size="sm" className="gap-2 px-6 py-3 rounded-full text-xs font-bold shadow-md shadow-primary/10">
-            Appointment
+            {t("nav.appointment")}
           </Button>
         </div>
 
@@ -105,17 +102,22 @@ export const Header: React.FC = () => {
           ))}
           {/* Language Switcher Mobile */}
           <div className="flex items-center justify-between py-2 border-t border-slate-50 mt-2">
-            <span className="text-sm font-medium text-neutral-muted">Select Language</span>
-            <button className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer">
+            <span className="text-sm font-medium text-neutral-muted">{t("nav.select_language")}</span>
+            <button 
+              onClick={toggleLang}
+              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer"
+            >
               <Image
-                src="/icons/GB-UKM icon.png"
+                src={lang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
                 alt="Language Switcher"
                 width={20}
                 height={14}
-                className="w-5 h-auto object-contain rounded-sm"
-                style={{ height: "auto" }}
+                unoptimized
+                className="w-5 h-[14px] object-contain rounded-sm"
               />
-              <span className="text-[10px] font-bold text-slate-600 tracking-wider">EN/ID</span>
+              <span className="text-[10px] font-bold text-slate-600 tracking-wider">
+                {lang === "en" ? "EN" : "ID"}
+              </span>
             </button>
           </div>
 
@@ -124,7 +126,7 @@ export const Header: React.FC = () => {
             className="w-full mt-2 gap-2 justify-center rounded-full font-bold text-xs"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Appointment
+            {t("nav.appointment")}
           </Button>
         </div>
       )}

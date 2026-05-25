@@ -2,6 +2,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { Header } from "@/widgets/Header/ui/Header";
 import { HeroSection } from "@/widgets/HeroSection/ui/HeroSection";
+import { LanguageProvider } from "@/shared/lib/LanguageContext";
 
 // Lazy load below-the-fold components using Next.js dynamic imports
 // We keep ssr: true to preserve SEO indexing for search engine crawlers, 
@@ -53,24 +54,26 @@ const Footer = dynamic(
 
 export const LandingPage: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Critical path widgets (Rendered immediately) */}
-      <Header />
-      <main className="flex-grow">
-        <HeroSection />
-        <AboutUsSection />
+    <LanguageProvider>
+      <div className="flex flex-col min-h-screen">
+        {/* Critical path widgets (Rendered immediately) */}
+        <Header />
+        <main className="flex-grow">
+          <HeroSection />
+          <AboutUsSection />
 
-        {/* Lazy loaded segments for better Core Web Vitals (LCP, FID) */}
-        <PartnersSection />
-        <ServicesSection />
-        <StepsSection />
-        <WhyUsSection />
-        <TestimonialsSection />
-        <ArticlesSection />
-        <CtaSection />
-      </main>
-      <Footer />
-    </div>
+          {/* Lazy loaded segments for better Core Web Vitals (LCP, FID) */}
+          <PartnersSection />
+          <ServicesSection />
+          <StepsSection />
+          <WhyUsSection />
+          <TestimonialsSection />
+          <ArticlesSection />
+          <CtaSection />
+        </main>
+        <Footer />
+      </div>
+    </LanguageProvider>
   );
 };
 export default LandingPage;

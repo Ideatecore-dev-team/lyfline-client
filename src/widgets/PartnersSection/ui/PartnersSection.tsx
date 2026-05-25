@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { HOSPITALS } from "@/entities";
 import { Button } from "@/shared/ui/Button";
+import { useLanguage } from "@/shared/lib/LanguageContext";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,18 +23,28 @@ const itemVariants = {
 };
 
 export const PartnersSection: React.FC = () => {
+  const { lang, t } = useLanguage();
+
   return (
     <section id="partners" className="py-16 bg-white border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6 md:px-8 text-center">
         
         {/* Section Headline */}
-        <p className="text-sm font-semibold text-neutral-muted mb-8 tracking-wide">
-          Partnered with <span className="text-accent font-bold">30+</span> hospitals across <span className="text-accent font-bold">7</span> countries
-        </p>
+        <h2 className="text-base md:text-lg font-medium text-neutral-dark mb-10 tracking-wide">
+          {lang === "en" ? (
+            <>
+              Partnered with <span className="text-[#E02828] font-bold">30+</span> hospitals accross <span className="text-[#E02828] font-bold">7</span> countries
+            </>
+          ) : (
+            <>
+              Bekerjasama dengan <span className="text-[#E02828] font-bold">30+</span> rumah sakit di <span className="text-[#E02828] font-bold">7</span> negara
+            </>
+          )}
+        </h2>
 
         {/* Partners Logogrid */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 items-center justify-center mb-10"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 items-stretch justify-center mb-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -43,21 +54,29 @@ export const PartnersSection: React.FC = () => {
             <motion.div
               key={hospital.id}
               variants={itemVariants}
-              className="flex flex-col items-center justify-center p-6 h-28 rounded-2xl bg-[#FAFCFF] border border-slate-100 hover:shadow-lg hover:shadow-slate-100/50 hover:border-primary/20 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+              className="flex flex-col items-center justify-between p-5 h-36 rounded-2xl bg-white border border-slate-100 hover:shadow-lg hover:shadow-slate-100/50 hover:border-primary/20 transition-all duration-300 group cursor-pointer relative"
             >
-              {/* Flag Badge indicator */}
-              <span className="absolute top-2 right-3 text-sm" title={hospital.country}>
-                {hospital.flag}
-              </span>
+              {/* Country Flag centered at the top */}
+              <div className="flex items-center justify-center">
+                <Image
+                  src={hospital.flag}
+                  alt={hospital.country}
+                  width={20}
+                  height={13}
+                  className="w-5 h-auto object-contain rounded-sm shadow-xs border border-slate-100"
+                  style={{ height: "auto" }}
+                />
+              </div>
 
-              {/* Text logo styled beautifully (since it's a placeholder mockup) */}
-              <div className="flex flex-col items-center">
-                <span className="text-xs font-bold text-slate-400 tracking-widest uppercase mb-1">
-                  HOSPITAL PARTNER
-                </span>
-                <span className="text-sm font-extrabold text-neutral-dark group-hover:text-primary transition-colors text-center">
-                  {hospital.name}
-                </span>
+              {/* Hospital Logo Centered below the flag */}
+              <div className="flex-grow flex items-center justify-center w-full max-h-[60px] mt-2">
+                <Image
+                  src={hospital.logo}
+                  alt={hospital.name}
+                  width={140}
+                  height={50}
+                  className="max-h-[45px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
             </motion.div>
           ))}
@@ -65,8 +84,12 @@ export const PartnersSection: React.FC = () => {
 
         {/* View All CTA */}
         <div className="flex justify-center mt-6">
-          <Button variant="outline" size="sm" className="group gap-2 border-primary/30 text-primary hover:border-primary">
-            View All Partners <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="group gap-2 rounded-full px-7 py-3 text-xs font-bold border-[#3F71B7] text-[#3F71B7] hover:bg-[#3F71B7]/5 hover:border-[#3F71B7]"
+          >
+            {t("partners.btn.view")}
           </Button>
         </div>
 
