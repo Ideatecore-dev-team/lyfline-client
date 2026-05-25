@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Heart, ArrowRight, MessageSquare } from "lucide-react";
+import { ArrowRight, MessageSquare } from "lucide-react";
+import Image from "next/image";
 
 export const HeroSection: React.FC = () => {
   return (
@@ -33,8 +34,14 @@ export const HeroSection: React.FC = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             {/* Red Heart Badge Icon */}
-            <div className="w-10 h-10 rounded-2xl bg-accent flex items-center justify-center text-white mb-6 border border-white/10 shadow-lg shadow-accent/20">
-              <Heart className="w-5 h-5 fill-current" />
+            <div className="mb-6 flex items-center">
+              <Image
+                src="/icons/Hearts icon.png"
+                alt="Heart Icon"
+                width={36}
+                height={36}
+                className="w-9 h-9 object-contain"
+              />
             </div>
 
             {/* Main Headline */}
@@ -80,7 +87,13 @@ export const HeroSection: React.FC = () => {
                 <span className="text-xs font-bold text-slate-200 tracking-wide">
                   Special Promo
                 </span>
-                <Heart className="w-5 h-5 text-white/80 fill-current" />
+                <Image
+                  src="/icons/Hearts icon.png"
+                  alt="Heart"
+                  width={18}
+                  height={18}
+                  className="w-4.5 h-4.5 object-contain brightness-0 invert opacity-80"
+                />
               </div>
 
               {/* Blue Promo Box inside */}

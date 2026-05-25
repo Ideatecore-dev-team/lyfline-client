@@ -9,6 +9,11 @@ import { cn } from "@/shared/lib/utils";
 
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState<"en" | "id">("en");
+
+  const toggleLanguage = () => {
+    setCurrentLang((prev) => (prev === "en" ? "id" : "en"));
+  };
 
   const navLinks = [
     { label: "Home", href: "#" },
@@ -51,14 +56,18 @@ export const Header: React.FC = () => {
               {link.label}
             </Link>
           ))}
-          {/* British Flag directly inside the nav menu next to Articles */}
-          <button className="flex items-center hover:opacity-80 transition-opacity cursor-pointer">
+          {/* Stateful Flag Switcher directly inside the nav menu next to Articles */}
+          <button 
+            onClick={toggleLanguage}
+            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+            title={currentLang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
+          >
             <Image
-              src="/icons/GB-UKM Icons.png"
-              alt="Language Switcher"
+              src={currentLang === "en" ? "/icons/GB-UKM icon.png" : "/icons/ID-Indonesia icon.png"}
+              alt={currentLang === "en" ? "English" : "Bahasa Indonesia"}
               width={22}
               height={15}
-              className="w-5.5 h-auto object-contain rounded-sm shadow-sm"
+              className="w-5.5 h-auto object-contain rounded-sm shadow-sm border border-slate-100"
               style={{ height: "auto" }}
             />
           </button>
@@ -99,7 +108,7 @@ export const Header: React.FC = () => {
             <span className="text-sm font-medium text-neutral-muted">Select Language</span>
             <button className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer">
               <Image
-                src="/icons/GB-UKM Icons.png"
+                src="/icons/GB-UKM icon.png"
                 alt="Language Switcher"
                 width={20}
                 height={14}

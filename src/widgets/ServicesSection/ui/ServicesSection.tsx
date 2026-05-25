@@ -8,12 +8,12 @@ import { Section } from "@/shared/ui/Section";
 import { Card } from "@/shared/ui/Card";
 
 const iconImageMap: Record<string, string> = {
-  Calendar: "/icons/MAA icons.png",
-  Home: "/icons/YPHC icons.png",
-  Truck: "/icons/ME icons.png",
-  UserCheck: "/icons/PDM icons.png",
-  Plane: "/icons/TAS Icons.png",
-  ShieldCheck: "/icons/GC icons.png",
+  Calendar: "/icons/MAA icon.png",
+  Home: "/icons/YPHC icon.png",
+  Truck: "/icons/ME icon.png",
+  UserCheck: "/icons/PDM icon.png",
+  Plane: "/icons/TAS icon.png",
+  ShieldCheck: "/icons/GC icon.png",
 };
 
 const containerVariants: Variants = {
