@@ -39,10 +39,10 @@ export const VisionMission: React.FC = () => {
       <div className="absolute top-0 right-[-10%] w-[35%] h-[35%] rounded-full bg-primary/5 blur-3xl -z-10" />
 
       {/* Noise Texture Overlay */}
-      <NoiseOverlay opacity={0.06} />
-      
+      <NoiseOverlay opacity={0.6} />
+
       <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        
+
         {/* Section Title */}
         <div className="flex flex-col items-center mb-12">
           <div className="flex flex-col items-start">
