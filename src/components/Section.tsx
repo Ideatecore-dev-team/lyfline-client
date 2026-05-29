@@ -30,7 +30,7 @@ export const Section: React.FC<SectionProps> = ({
             })}
           >
             {subtitle && (
-              <span className="text-xs font-bold tracking-widest text-primary uppercase block mb-3">
+              <span className="text-xs font-bold tracking-widest text-primary uppercase block mb-3 font-poppins">
                 {subtitle}
               </span>
             )}

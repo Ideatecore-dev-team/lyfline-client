@@ -78,13 +78,13 @@ export const Footer: React.FC = () => {
             </span>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3 text-sm text-slate-200/80">
-                <Link href="#" className="hover:text-white transition-colors">Home</Link>
-                <Link href="#why-us" className="hover:text-white transition-colors">About Us</Link>
-                <Link href="#services" className="hover:text-white transition-colors">Services</Link>
+                <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                <Link href="/about" className="hover:text-white transition-colors">About Us</Link>
+                <Link href="/services" className="hover:text-white transition-colors">Services</Link>
                 <Link href="#" className="hover:text-white transition-colors">Doctors</Link>
               </div>
               <div className="flex flex-col gap-3 text-sm text-slate-200/80">
-                <Link href="#partners" className="hover:text-white transition-colors">Partners</Link>
+                <Link href="/partners" className="hover:text-white transition-colors">Partners</Link>
                 <Link href="#blog" className="hover:text-white transition-colors">Blog</Link>
                 <Link href="#footer" className="hover:text-white transition-colors">Contact Us</Link>
               </div>

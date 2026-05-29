@@ -16,6 +16,7 @@
   --color-neutral-light: #ECECEC;
   
   --font-sans: var(--font-plus-jakarta-sans), sans-serif;
+  --font-poppins: var(--font-poppins), sans-serif;
   
   --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
 }
@@ -34,6 +35,10 @@
 /* Custom Base Styles */
 html {
   scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  font-family: var(--font-sans);
 }
 
 body {

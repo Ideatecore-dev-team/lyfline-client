@@ -19,7 +19,7 @@ export const HeroSection: React.FC = () => {
         }}
       />
       {/* Soft vignette gradient for maximum legibility of white text on the left */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent z-0" />
+      <div className="absolute inset-0 bg-linear-to-r from-black/45 via-black/15 to-transparent z-0" />
 
       {/* Decorative premium glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-3xl z-0 animate-pulse" />
@@ -39,7 +39,7 @@ export const HeroSection: React.FC = () => {
             {/* Red Heart Badge Icon */}
             <div className="mb-6 flex items-center">
               <Image
-                src="/icons/Hearts icon.png"
+                src="/icons/Hearts icon.svg"
                 alt={t("hero.badge")}
                 width={36}
                 height={36}
@@ -76,7 +76,7 @@ export const HeroSection: React.FC = () => {
                 {lang === "en" ? "Find a Doctor" : "Cari Dokter"} <ArrowRight className="w-4 h-4" />
               </a>
               <a
-                href="#about-us"
+                href="/about"
                 className="px-7 py-4 rounded-full border-2 border-white text-white font-bold text-sm bg-transparent hover:bg-white hover:text-[#0C3D49] transition-all cursor-pointer"
               >
                 {t("hero.btn.learn")}
@@ -100,7 +100,7 @@ export const HeroSection: React.FC = () => {
                   {t("hero.promo.label")}
                 </span>
                 <Image
-                  src="/icons/Hearts icon.png"
+                  src="/icons/Hearts icon.svg"
                   alt="Heart"
                   width={18}
                   height={18}

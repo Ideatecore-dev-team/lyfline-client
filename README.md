@@ -28,10 +28,105 @@ This project strictly follows a **flat, highly clean, and standard Next.js direc
     - `Button.tsx`: Highly styled primary, secondary, and outline interactive triggers.
     - `Card.tsx`: Glassmorphic, outline, flat, or shadow structural cards.
     - `Section.tsx`: Core wrapper containing standardized section margins, backgrounds, subtitles, and headings.
+    - `NoiseOverlay.tsx`: Reusable premium SVG noise texture backdrop.
+    - `StatCard.tsx`: Reusable motion-animated card displaying metrics.
+    - `HospitalPartnerCard.tsx`: Reusable motion-animated global partner logo card.
 *   **`src/sections/`**: Centralized, flat directory containing all main page sections (e.g. `Header.tsx`, `HeroSection.tsx`, `AboutUsSection.tsx`, `Footer.tsx`). There is **zero nesting** (no internal `/ui` subfolders).
 *   **`src/context/`**: React contexts providing global client-side state synchronization (e.g. `LanguageContext.tsx` for real-time translation).
 *   **`src/data/`**: Source of truth mock datasets and typings (e.g. `mockData.ts` holding `HOSPITALS` and `SERVICES` lists).
 *   **`src/lib/`**: Simple technical helpers (e.g. `utils.ts` defining the Tailwind `cn` class merger).
+
+---
+
+## 🧱 Reusable Component Library & Usage Guide
+
+We have extracted several highly custom, reusable UI elements from the About page sections to maintain modularity, standard design tokens, and dry coding principles:
+
+### 1. `NoiseOverlay.tsx`
+A hardware-accelerated, custom SVG `feTurbulence` noise texture that renders a subtle visual grain texture overlay. It is used on components like `AboutServices` and `VisionMission` sections.
+
+**Props API**:
+
+| Prop | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | :--- |
+| `opacity` | `number` | No | `0.06` | Controls the density and visibility of the noise grain texture backdrop. |
+| `className` | `string` | No | `-` | Additional Tailwind CSS classes (e.g. custom z-index or positions). |
+
+**Usage Example**:
+```tsx
+import { NoiseOverlay } from "@/components/NoiseOverlay";
+
+const CustomCard = () => (
+  <div className="relative bg-primary text-white rounded-3xl p-8 overflow-hidden">
+    <NoiseOverlay opacity={0.12} />
+    <h2 className="relative z-10">Premium Content with Noise</h2>
+  </div>
+);
+```
+
+### 2. `StatCard.tsx`
+A fully animated `framer-motion` card used to display statistics or metrics. It handles layout entry animations, customized delay transitions, and hover-triggered elevation lifts.
+
+**Props API**:
+
+| Prop | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | :--- |
+| `value` | `string` | **Yes** | - | The main numeric statistic value to highlight (e.g., `30+`, `95%`). |
+| `label` | `string` | **Yes** | - | The descriptive label text positioned underneath the stat value. |
+| `valueClassName` | `string` | No | `-` | Optional styling overrides for the statistic value text. |
+| `labelClassName` | `string` | No | `-` | Optional styling overrides for the label text. |
+| `delay` | `number` | No | `0` | Animation delay in seconds for staggered framer-motion entries. |
+| `className` | `string` | No | `-` | Card style variations (e.g. backgrounds, custom border styles). |
+
+**Usage Example**:
+```tsx
+import { StatCard } from "@/components/StatCard";
+
+const Grid = () => (
+  <div className="grid grid-cols-2 gap-4">
+    <StatCard
+      value="30+"
+      label="Hospitals Partners"
+      className="bg-accent text-white"
+      delay={0.1}
+    />
+    <StatCard
+      value="7"
+      label="Countries"
+      className="bg-white text-neutral-dark border border-slate-100"
+      valueClassName="text-primary"
+      delay={0.2}
+    />
+  </div>
+);
+```
+
+### 3. `HospitalPartnerCard.tsx`
+A pre-styled, animatable, and fully-typed `framer-motion` card displaying partner logos along with centered national flag indicators. Extends `HTMLMotionProps<"div">` for seamless integration into list containers utilizing staggered animation variants.
+
+**Props API**:
+
+| Prop | Type | Required | Default | Description |
+| :--- | :--- | :---: | :---: | :--- |
+| `name` | `string` | **Yes** | - | Official name of the partner hospital (used for image alt tags). |
+| `logo` | `string` | **Yes** | - | Asset path pointing to the clean hospital logo image. |
+| `country` | `string` | **Yes** | - | Name of the country where the hospital is located. |
+| `flag` | `string` | **Yes** | - | Asset path pointing to the country's national flag icon. |
+| `className` | `string` | No | `-` | Custom wrapper styles or layout modifiers. |
+
+**Usage Example**:
+```tsx
+import { HospitalPartnerCard } from "@/components/HospitalPartnerCard";
+
+const Partners = () => (
+  <HospitalPartnerCard
+    name="Gleneagles Singapore"
+    logo="/logos/gleneagles.png"
+    country="Singapore"
+    flag="/Flags/SG icon.png"
+  />
+);
+```
 
 ---
 

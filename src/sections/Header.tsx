@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/Button";
 import { cn } from "@/lib/utils";
@@ -11,10 +12,11 @@ import { useLanguage } from "@/context/LanguageContext";
 export const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { lang, toggleLang, t } = useLanguage();
+  const pathname = usePathname();
 
   const navLinks = [
     { label: t("nav.home"), href: "/" },
-    { label: t("nav.about"), href: "/#about-us" },
+    { label: t("nav.about"), href: "/about" },
     { label: t("nav.services"), href: "/services" },
     { label: t("nav.partners"), href: "/partners" },
     { label: t("nav.articles"), href: "/articles" },
@@ -26,7 +28,7 @@ export const Header: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
         {/* LOGO */}
-        <Link href="#" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="/logoBlack.png"
             alt="LYFLINE Logo"
@@ -39,20 +41,23 @@ export const Header: React.FC = () => {
 
         {/* DESKTOP NAV WITH INLINE FLAG */}
         <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={cn(
-                "text-[14px] font-semibold transition-colors",
-                link.href === "/"
-                  ? "text-primary"
-                  : "text-[#000000] hover:text-primary"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  "text-[14px] font-semibold transition-colors",
+                  isActive
+                    ? "text-primary"
+                    : "text-[#000000] hover:text-primary"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           {/* Stateful Flag Switcher directly inside the nav menu next to Articles */}
           <button 
             onClick={toggleLang}
@@ -90,16 +95,24 @@ export const Header: React.FC = () => {
       {/* MOBILE NAV DROPDOWN */}
       {isMobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-[72px] bg-white border-b border-slate-100 shadow-xl p-6 flex flex-col gap-4 animate-fade-in-up">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-semibold text-neutral-muted hover:text-primary py-2 border-b border-slate-50 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  "text-base font-semibold py-2 border-b border-slate-50 transition-colors",
+                  isActive
+                    ? "text-primary font-bold"
+                    : "text-neutral-muted hover:text-primary"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           {/* Language Switcher Mobile */}
           <div className="flex items-center justify-between py-2 border-t border-slate-50 mt-2">
             <span className="text-sm font-medium text-neutral-muted">{t("nav.select_language")}</span>

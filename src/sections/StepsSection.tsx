@@ -30,7 +30,7 @@ export const StepsSection: React.FC = () => {
         
         {/* Section Header */}
         <div className="mb-16 md:mb-24 text-left">
-          <span className="text-xs font-bold tracking-widest text-primary-light uppercase block mb-3 opacity-90">
+          <span className="text-xs font-bold tracking-widest text-primary-light uppercase block mb-3 opacity-90 font-poppins">
             HOW WE WORK
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
