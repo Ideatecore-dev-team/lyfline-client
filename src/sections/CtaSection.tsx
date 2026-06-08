@@ -2,7 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ThumbsUp, Star, Smile, MessageSquare } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { NoiseOverlay } from "@/components/NoiseOverlay";
 
 export const CtaSection: React.FC = () => {
   return (
@@ -17,15 +19,30 @@ export const CtaSection: React.FC = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Bottom-right red accent shape */}
-          <div className="absolute bottom-0 right-0 w-28 h-28 bg-accent rounded-tl-[48px] z-0 pointer-events-none translate-x-1 translate-y-1" />
+          {/* Heart Accent Ornament in the bottom-right corner as shown in Figma */}
+          <div className="absolute bottom-0 right-0 w-[110px] h-[110px] pointer-events-none opacity-90 select-none z-0">
+            <Image
+              src="/icons/Hearts icon.svg"
+              alt="Heart Ornament"
+              width={110}
+              height={110}
+              className="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(224,40,40,0.25)]"
+            />
+          </div>
+
+          {/* Decorative background glows */}
+          <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[60%] bg-white/5 blur-2xl rounded-full pointer-events-none" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[50%] bg-white/5 blur-2xl rounded-full pointer-events-none" />
+
+          {/* Noise Texture Overlay */}
+          <NoiseOverlay opacity={0.6} />
 
           {/* Banner grid layout */}
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             {/* LEFT COLUMN: TITLE & BOOK APPOINTMENT BUTTON */}
             <div className="lg:col-span-7 flex flex-col items-start text-left">
-              <h2 className="text-3xl md:text-4xl lg:text-[44px] font-extrabold tracking-tight text-white mb-8 leading-tight max-w-xl">
+              <h2 className="text-3xl md:text-4xl lg:text-[44px] font-medium tracking-tight text-white mb-8 leading-tight max-w-xl font-poppins">
                 Ready to start your <br />
                 international health journey?
               </h2>
@@ -38,58 +55,28 @@ export const CtaSection: React.FC = () => {
               </a>
             </div>
 
-            {/* RIGHT COLUMN: MEDICAL CROSS & FLOATING BADGES */}
+            {/* RIGHT COLUMN: BRAND LOGO */}
             <div className="lg:col-span-5 flex items-center justify-center w-full">
-              <div className="relative w-full max-w-[360px] h-[280px] flex items-center justify-center">
+              <div className="relative w-[220px] h-[220px] select-none pointer-events-none">
                 
-                {/* Centered White Medical Cross */}
-                <div className="relative z-10 opacity-95 drop-shadow-xl text-white">
-                  <svg width="180" height="180" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path 
-                      d="M75 10C75 4.47715 79.4772 0 85 0H135C140.523 0 145 4.47715 145 10V75H210C215.523 75 220 79.4772 220 85V135C220 140.523 215.523 145 210 145H145V210C145 215.523 140.523 220 135 220H85C79.4772 220 75 215.523 75 210V145H10C4.47715 145 0 140.523 0 135V85C0 79.4772 4.47715 75 10 75H75V10Z" 
-                      fill="currentColor"
+                {/* Lyfline Logo Mark Composition */}
+                <div className="relative w-[220px] h-[220px] z-10 drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]">
+                  {/* 1. Faint Blue Heart Shadow (Top Left Background) */}
+                  <div className="absolute top-[-12px] left-[-24px] w-[137px] h-[137px] opacity-20 z-0">
+                    <LogoShape className="w-full h-full" fill="#3F71B7" />
+                  </div>
+
+                  {/* 2. Main White Logo Shape (Spotted Heart & Squares) */}
+                  <div className="absolute top-0 left-0 w-[220px] h-[220px] z-10">
+                    <Image
+                      src="/icons/HeartPitaBintik.svg"
+                      alt="Lyfline White Shape"
+                      width={220}
+                      height={220}
+                      className="w-full h-full object-contain"
                     />
-                  </svg>
+                  </div>
                 </div>
-
-                {/* Floating Glassmorphic Badges */}
-                
-                {/* 1. Thumbs Up (Top Right) */}
-                <motion.div 
-                  className="absolute top-[8%] right-[10%] z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-lg cursor-pointer"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                >
-                  <ThumbsUp className="w-5 h-5 fill-current" />
-                </motion.div>
-
-                {/* 2. Star/Flower (Middle Left) */}
-                <motion.div 
-                  className="absolute top-[32%] left-[4%] z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-lg cursor-pointer"
-                  animate={{ scale: [1, 1.06, 1] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                >
-                  <Star className="w-5 h-5 fill-current" />
-                </motion.div>
-
-                {/* 3. Smiling Face (Bottom Right) */}
-                <motion.div 
-                  className="absolute bottom-[20%] right-[6%] z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-lg cursor-pointer"
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
-                >
-                  <Smile className="w-5 h-5 fill-current" />
-                </motion.div>
-
-                {/* 4. Consult Now! Pill Button (Bottom Left) */}
-                <a
-                  href="https://wa.me/6281291578559"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute bottom-[10%] left-[2%] z-20 px-5 py-3 rounded-full bg-white/25 backdrop-blur-md border border-white/30 text-white font-bold text-sm tracking-wide flex items-center gap-2 shadow-lg hover:bg-white/40 active:scale-95 transition-all cursor-pointer"
-                >
-                  <MessageSquare className="w-4 h-4 fill-current" /> Consult Now!
-                </a>
 
               </div>
             </div>
@@ -101,3 +88,13 @@ export const CtaSection: React.FC = () => {
     </section>
   );
 };
+
+// Helper component for the Lyfline Logo shape
+const LogoShape: React.FC<{ className?: string; fill?: string }> = ({ className, fill = "currentColor" }) => (
+  <svg viewBox="0 0 186 186" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path 
+      d="M131.406 0.446799C112.704 3.79861 97.3369 18.4795 93.4781 36.6802C92.6479 40.594 92.3755 48.0496 92.3656 67.1454L92.3527 92.4284L67.051 92.4413C38.4248 92.4565 34.9008 92.8869 25.5312 97.5131C14.7401 102.841 5.89253 113.094 2.03298 124.745C0.35128 129.821 0.0149414 132.214 0.000483264 139.193C-0.0139748 146.276 0.28812 148.431 1.97135 153.26C4.64457 160.931 7.29344 165.459 12.21 170.766C17.6127 176.597 23.4622 180.394 31.443 183.25L37.9446 185.576L111.972 185.788L186 186L185.773 112.03C185.561 42.7124 185.459 37.7973 184.153 33.8782C178.832 17.9107 166.958 6.09879 151.731 1.62617C146.518 0.0954966 136.584 -0.48088 131.406 0.446799Z" 
+      fill={fill}
+    />
+  </svg>
+);

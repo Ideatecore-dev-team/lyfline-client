@@ -17,24 +17,24 @@ export const AboutServices: React.FC = () => {
       id: "col-1",
       className: "flex flex-col gap-3 md:gap-4",
       items: [
-        { id: "nurse", path: "/icons/Nurse icon.png", label: "Nurse Support" },
-        { id: "ambulance", path: "/icons/Ambulance icon.png", label: "Ambulance Evacuation" },
+        { id: "nurse", path: "/icons/Nurse.svg", label: "Nurse Support" },
+        { id: "ambulance", path: "/icons/Ambulance - Fast.svg", label: "Ambulance Evacuation" },
       ],
     },
     {
       id: "col-2",
       className: "flex flex-col gap-3 md:gap-4 translate-y-4 md:translate-y-6",
       items: [
-        { id: "shield", path: "/icons/Medical Shield icon.png", label: "Medical Shield Protection" },
-        { id: "stethoscope", path: "/icons/Stethoscope icon.png", label: "Doctor Stethoscope" },
+        { id: "shield", path: "/icons/Medical Shield.svg", label: "Medical Shield Protection" },
+        { id: "stethoscope", path: "/icons/Stethoscope.svg", label: "Doctor Stethoscope" },
       ],
     },
     {
       id: "col-3",
       className: "flex flex-col gap-3 md:gap-4",
       items: [
-        { id: "checkup", path: "/icons/Checkup icon.png", label: "Medical Checkup" },
-        { id: "location", path: "/icons/Location icon.png", label: "Network Location" },
+        { id: "checkup", path: "/icons/Checkup.svg", label: "Medical Checkup" },
+        { id: "location", path: "/icons/Location.svg", label: "Network Location" },
       ],
     },
   ];
