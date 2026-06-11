@@ -2,12 +2,12 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://lyfline.id";
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-  ];
+  const routes = ["", "/about", "/services", "/doctors", "/partners", "/articles"];
+  
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: route === "" ? 1.0 : 0.8,
+  }));
 }

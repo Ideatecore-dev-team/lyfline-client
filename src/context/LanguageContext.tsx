@@ -23,6 +23,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.articles": "Articles",
     "nav.appointment": "Appointment",
     "nav.select_language": "Select Language",
+    "nav.doctors": "Doctors",
 
     // Hero Section
     "hero.badge": "Hearts icon",
@@ -34,6 +35,20 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.promo.discount": "10% Off",
     "hero.promo.desc": "For your first consultation",
     "hero.promo.btn": "Consult Now! →",
+
+    // Doctors Section
+    "doctors.hero.subtitle": "OUR DOCTORS",
+    "doctors.hero.title": "Wide Range of Medical Specialists",
+    "doctors.hero.search_placeholder": "Dr. Abraham...",
+    "doctors.hero.search_btn": "Search",
+    "doctors.hero.consult_btn": "Consult Now!",
+    "doctors.filter.label": "FILTER DOCTOR",
+    "doctors.filter.region": "Pick a Region",
+    "doctors.filter.hospital": "Pick a Hospital",
+    "doctors.filter.specialty": "Pick a Specialty",
+    "doctors.grid.showing_all": "Showing All Doctors",
+    "doctors.grid.showing_results": "Showing {n} results",
+    "doctors.card.view_details": "View Details",
 
     // Partners Section
     "partners.headline": "Partnered with {30+} hospitals accross {7} countries",
@@ -53,6 +68,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.articles": "Artikel",
     "nav.appointment": "Janji Temu",
     "nav.select_language": "Pilih Bahasa",
+    "nav.doctors": "Dokter",
 
     // Hero Section
     "hero.badge": "Ikon Hati",
@@ -64,6 +80,20 @@ const translations: Record<Language, Record<string, string>> = {
     "hero.promo.discount": "Diskon 10%",
     "hero.promo.desc": "Untuk konsultasi pertama Anda",
     "hero.promo.btn": "Konsultasi Sekarang! →",
+
+    // Doctors Section
+    "doctors.hero.subtitle": "DOKTER KAMI",
+    "doctors.hero.title": "Berbagai Spesialis Medis",
+    "doctors.hero.search_placeholder": "Nama dokter...",
+    "doctors.hero.search_btn": "Cari",
+    "doctors.hero.consult_btn": "Konsultasi Sekarang!",
+    "doctors.filter.label": "FILTER DOKTER",
+    "doctors.filter.region": "Pilih Wilayah",
+    "doctors.filter.hospital": "Pilih Rumah Sakit",
+    "doctors.filter.specialty": "Pilih Spesialisasi",
+    "doctors.grid.showing_all": "Menampilkan Semua Dokter",
+    "doctors.grid.showing_results": "Menampilkan {n} hasil",
+    "doctors.card.view_details": "Lihat Detail",
 
     // Partners Section
     "partners.headline": "Bekerjasama dengan {30+} rumah sakit di {7} negara",

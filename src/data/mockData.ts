@@ -6,6 +6,15 @@ export interface Hospital {
   flag: string; // Emoji flag or path
 }
 
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  hospital: string;
+  region: string;
+  imageUrl: string;
+}
+
 export interface MedicalService {
   id: string;
   title: string;
@@ -238,4 +247,103 @@ export const ARTICLES: Article[] = [
     imageUrl: "/articles/lemas-puasa.jpg",
     readTime: "6 min read",
   },
+];
+
+export const DOCTORS: Doctor[] = [
+  {
+    id: "1",
+    name: "Dr. Albert H. W., Sp.A",
+    specialty: "Pediatrician",
+    hospital: "Mayapada Hospital",
+    region: "Indonesia",
+    imageUrl: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "2",
+    name: "Dr. Sarah Johnson, MD",
+    specialty: "Cardiologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "3",
+    name: "Dr. Min-Jun Kim",
+    specialty: "Plastic Surgeon",
+    hospital: "Ready Plastic Surgery",
+    region: "South Korea",
+    imageUrl: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "4",
+    name: "Dr. Ramesh Nair, MS",
+    specialty: "Neurologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "5",
+    name: "Dr. Ling Ching Wei",
+    specialty: "Orthopedist",
+    hospital: "Pantai Hospitals",
+    region: "Malaysia",
+    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "6",
+    name: "Dr. Somchai Devakul",
+    specialty: "Cardiologist",
+    hospital: "Bumrungrad International Hospital",
+    region: "Thailand",
+    imageUrl: "https://images.unsplash.com/photo-1638202993928-7267a557d3be?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "7",
+    name: "Dr. Kartika Siregar, Sp.JP",
+    specialty: "Cardiologist",
+    hospital: "Mayapada Hospital",
+    region: "Indonesia",
+    imageUrl: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "8",
+    name: "Dr. Ye-Ji Park",
+    specialty: "Plastic Surgeon",
+    hospital: "Ready Plastic Surgery",
+    region: "South Korea",
+    imageUrl: "https://images.unsplash.com/photo-1623556182441-2c62f829ddef?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "9",
+    name: "Dr. Sanjay Gupta",
+    specialty: "Neurologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "10",
+    name: "Dr. Nurul Huda",
+    specialty: "Pediatrician",
+    hospital: "Pantai Hospitals",
+    region: "Malaysia",
+    imageUrl: "https://images.unsplash.com/photo-1622960206062-f6104e7c1898?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "11",
+    name: "Dr. Ananya Sharma",
+    specialty: "General Practitioner",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "12",
+    name: "Dr. Tatsuya Watanabe",
+    specialty: "Orthopedist",
+    hospital: "Bumrungrad International Hospital",
+    region: "Thailand",
+    imageUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=400&q=80",
+  }
 ];
