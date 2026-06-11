@@ -6,7 +6,6 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { PartnerCard } from "@/components/card/PartnerCard";
-import { useLanguage } from "@/context/LanguageContext";
 
 const COUNTRIES = [
   "All Country",
@@ -94,7 +93,6 @@ const ALL_PARTNERS = [
 ];
 
 export default function PartnersPage() {
-  const { lang } = useLanguage();
   const [selectedCountry, setSelectedCountry] = useState("All Country");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -124,7 +122,7 @@ export default function PartnersPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
@@ -141,7 +139,7 @@ export default function PartnersPage() {
                     maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                   }}
-                  className="size-6 bg-[#3F71B7] mask-contain mask-no-repeat mask-center shrink-0"
+                  className="size-6 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
                   aria-hidden="true"
                 />
                 <h1 className="justify-start text-primary text-3xl font-semibold font-poppins">
@@ -222,7 +220,7 @@ export default function PartnersPage() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-gradient-to-r from-[#3F71B7] to-[#3365AC] text-white outline outline-1 outline-offset-[-1px] outline-slate-500"
+                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
                           : "text-slate-500 hover:bg-slate-100"
                           }`}
                       >

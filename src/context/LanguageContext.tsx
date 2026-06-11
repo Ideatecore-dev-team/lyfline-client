@@ -24,7 +24,6 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.articles": "Articles",
     "nav.appointment": "Appointment",
     "nav.select_language": "Select Language",
-    "nav.doctors": "Doctors",
 
     // Hero Section
     "hero.badge": "Hearts icon",
@@ -70,7 +69,6 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.articles": "Artikel",
     "nav.appointment": "Janji Temu",
     "nav.select_language": "Pilih Bahasa",
-    "nav.doctors": "Dokter",
 
     // Hero Section
     "hero.badge": "Ikon Hati",

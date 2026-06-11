@@ -6,14 +6,11 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import InputBox from "@/components/inputbox";
 import { ArticleCard } from "@/components/card/ArticleCard";
-import { type BadgeVariant } from "@/components/Badge";
-import { useLanguage } from "@/context/LanguageContext";
 import { ALL_ARTICLES } from "@/data/articlesData";
 
 const CATEGORIES = ["All Category", "Cardiology", "Preventive Care", "Lifestyle", "Nutrition"];
 
 export default function ArticlesPage() {
-  const { lang } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Category");
@@ -61,7 +58,7 @@ export default function ArticlesPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
 
         {/* Main Section */}
         <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
@@ -180,7 +177,7 @@ export default function ArticlesPage() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-gradient-to-r from-[#3F71B7] to-[#3365AC] text-white outline outline-1 outline-offset-[-1px] outline-slate-500"
+                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
                           : "text-slate-500 hover:bg-slate-100"
                           }`}
                       >

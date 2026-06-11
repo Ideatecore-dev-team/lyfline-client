@@ -2,7 +2,7 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { Header } from "@/sections/Header";
+import { NavBar } from "@/components/NavBar";
 
 // Dynamic imports to preserve optimal bundle chunking and render performance
 const ServiceHeroSection = dynamic(
@@ -21,14 +21,14 @@ const CtaSection = dynamic(
 );
 
 const Footer = dynamic(
-  () => import("@/sections/Footer").then((m) => m.Footer),
+  () => import("@/components/Footer").then((m) => m.Footer),
   { ssr: true }
 );
 
 export default function ServicesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <Header />
+      <NavBar />
       <main className="grow">
         <ServiceHeroSection />
         <ServiceAccordionSection />
