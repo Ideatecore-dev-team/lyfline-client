@@ -27,17 +27,17 @@ export const PartnersSection: React.FC = () => {
 
   return (
     <section id="partners" className="py-16 bg-white border-y border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 text-center">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36 text-center">
         
         {/* Section Headline */}
         <h2 className="text-base md:text-lg font-medium text-neutral-dark mb-10 tracking-wide">
           {lang === "en" ? (
             <>
-              Partnered with <span className="text-[#E02828] font-bold">30+</span> hospitals accross <span className="text-[#E02828] font-bold">7</span> countries
+              Partnered with <span className="text-accent font-bold">30+</span> hospitals accross <span className="text-accent font-bold">7</span> countries
             </>
           ) : (
             <>
-              Bekerjasama dengan <span className="text-[#E02828] font-bold">30+</span> rumah sakit di <span className="text-[#E02828] font-bold">7</span> negara
+              Bekerjasama dengan <span className="text-accent font-bold">30+</span> rumah sakit di <span className="text-accent font-bold">7</span> negara
             </>
           )}
         </h2>
@@ -69,7 +69,7 @@ export const PartnersSection: React.FC = () => {
               </div>
 
               {/* Hospital Logo Centered below the flag */}
-              <div className="flex-grow flex items-center justify-center w-full max-h-[60px] mt-2">
+              <div className="grow flex items-center justify-center w-full max-h-[60px] mt-2">
                 <Image
                   src={hospital.logo}
                   alt={hospital.name}
@@ -87,7 +87,7 @@ export const PartnersSection: React.FC = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="group gap-2 rounded-full px-7 py-3 text-xs font-bold border-[#3F71B7] text-[#3F71B7] hover:bg-[#3F71B7]/5 hover:border-[#3F71B7]"
+            className="group gap-2 rounded-full px-7 py-3 text-xs font-bold border-primary text-primary hover:bg-primary/5 hover:border-primary"
           >
             {t("partners.btn.view")}
           </Button>

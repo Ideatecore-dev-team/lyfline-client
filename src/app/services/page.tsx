@@ -29,7 +29,7 @@ export default function ServicesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
-      <main className="grow">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         <ServiceHeroSection />
         <ServiceAccordionSection />
         <CtaSection />

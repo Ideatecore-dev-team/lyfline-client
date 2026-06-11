@@ -12,7 +12,7 @@ export const AboutUsSection: React.FC = () => {
       <div className="absolute top-20 left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-3xl -z-10" />
       <div className="absolute top-40 right-[-10%] w-[30%] h-[30%] rounded-full bg-accent/5 blur-3xl -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* TEXT CONTENT (LEFT SIDE - 7 cols on lg) */}

@@ -41,7 +41,7 @@ export const AboutServices: React.FC = () => {
 
   return (
     <section className="py-20 md:py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
 
         {/* Section Heading Subtitle - Styled exactly like Expertise Across The World */}
         <span className="text-xs font-bold text-[#95B0D7] tracking-widest uppercase mb-4 block text-left font-poppins">

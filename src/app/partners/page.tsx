@@ -1,11 +1,27 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import Image from "next/image";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { PartnerCard } from "@/components/card/PartnerCard";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
 
 const COUNTRIES = [
   "All Country",
@@ -178,24 +194,44 @@ export default function PartnersPage() {
               Showing {selectedCountry === "All Country" ? "All" : selectedCountry} Partner
             </div>
 
-            {paginatedPartners.length > 0 ? (
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
-                {paginatedPartners.map((partner) => (
-                  <PartnerCard
-                    key={partner.id}
-                    name={partner.name}
-                    location={partner.location}
-                    phone={partner.phone}
-                    email={partner.email}
-                    logoUrl={partner.logoUrl}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="py-12 text-center text-slate-400 font-poppins text-base">
-                No partners found in this country.
-              </div>
-            )}
+            <AnimatePresence mode="wait">
+              {paginatedPartners.length > 0 ? (
+                <motion.div
+                  key={`${selectedCountry}-${currentPage}`}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center"
+                >
+                  {paginatedPartners.map((partner) => (
+                    <motion.div
+                      key={partner.id}
+                      variants={cardVariants}
+                      className="w-full max-w-[288px]"
+                    >
+                      <PartnerCard
+                        name={partner.name}
+                        location={partner.location}
+                        phone={partner.phone}
+                        email={partner.email}
+                        logoUrl={partner.logoUrl}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="no-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-12 text-center text-slate-400 font-poppins text-base w-full"
+                >
+                  No partners found in this country.
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Pagination Controls */}
             {totalPages > 1 && (

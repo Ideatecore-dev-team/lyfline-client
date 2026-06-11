@@ -46,12 +46,12 @@ export const AboutUsHero: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden bg-white mt-16">
+    <section className="relative w-full py-16 overflow-hidden bg-white">
       {/* Decorative premium glows */}
       <div className="absolute top-20 left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-3xl -z-10" />
       <div className="absolute bottom-10 right-[-10%] w-[35%] h-[35%] rounded-full bg-accent/5 blur-3xl -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* LEFT SIDE: WHO WE ARE CARD (7 columns on lg) */}

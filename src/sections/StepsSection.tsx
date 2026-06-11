@@ -26,7 +26,7 @@ export const StepsSection: React.FC = () => {
       <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-white/5 blur-3xl rounded-full" />
       <div className="absolute bottom-0 left-0 w-[45%] h-[40%] bg-white/5 blur-3xl rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         
         {/* Section Header */}
         <div className="mb-16 md:mb-24 text-left">

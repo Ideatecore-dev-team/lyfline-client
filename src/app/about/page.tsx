@@ -42,7 +42,7 @@ export default function AboutPage() {
       <NavBar />
       
       {/* Main Content Sections */}
-      <main className="flex-grow">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Who We Are & Statistics */}
         <AboutUsHero />
         

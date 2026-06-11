@@ -34,7 +34,7 @@ const realArticleImages = [
 export const ArticlesSection: React.FC = () => {
   return (
     <section id="blog" className="py-20 md:py-28 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         
         {/* Section Header with row alignment (Desktop) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
@@ -68,7 +68,7 @@ export const ArticlesSection: React.FC = () => {
               >
                 <div>
                   {/* Article Image Container */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+                  <div className="relative aspect-16/10 w-full overflow-hidden bg-slate-100">
                     <Image
                       src={realArticleImages[index] || article.imageUrl}
                       alt={article.title}

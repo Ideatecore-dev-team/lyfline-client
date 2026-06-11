@@ -10,7 +10,7 @@ export const HeroSection: React.FC = () => {
   const { lang, t } = useLanguage();
 
   return (
-    <section className="relative pt-32 pb-24 md:pt-44 md:pb-36 overflow-hidden min-h-[90vh] flex items-center bg-[#0C3D49]">
+    <section className="relative w-full py-16 md:py-24 overflow-hidden min-h-[calc(100vh-80px)] flex items-center bg-[#0C3D49]">
       {/* Background Image layer - Positive z-index (z-0) so it's guaranteed to draw on top of body's white background */}
       <div 
         className="absolute inset-0 bg-cover bg-center z-0"
@@ -26,7 +26,7 @@ export const HeroSection: React.FC = () => {
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-accent/5 blur-3xl z-0" />
 
       {/* Content wrapper with positive z-index (z-10) to sit perfectly on top of the background image */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 w-full">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-36 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* TEXT CONTENT (LEFT COLUMN - 7 cols) */}

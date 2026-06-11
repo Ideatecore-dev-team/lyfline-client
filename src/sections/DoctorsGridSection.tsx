@@ -67,7 +67,7 @@ export const DoctorsGridSection: React.FC<DoctorsGridSectionProps> = ({
 
   return (
     <section className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         
         {/* Results Banner Info */}
         <div className="flex items-center justify-between mb-8 pb-3 border-b border-slate-100">

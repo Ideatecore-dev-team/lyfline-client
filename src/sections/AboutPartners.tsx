@@ -27,7 +27,7 @@ export const AboutPartners: React.FC = () => {
 
   return (
     <section className="py-20 md:py-24 bg-white border-t border-slate-50">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         
         {/* Section Headings */}
         <span className="text-xs font-bold text-[#95B0D7] tracking-widest uppercase mb-3 block text-left font-poppins">

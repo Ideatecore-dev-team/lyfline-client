@@ -103,7 +103,7 @@ export default function DoctorsPage() {
       <NavBar />
 
       {/* Main Content Sections */}
-      <main className="grow">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Banner Section */}
         <DoctorsHeroSection
           initialSearch={searchQuery}

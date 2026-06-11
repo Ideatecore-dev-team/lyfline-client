@@ -35,7 +35,7 @@ export const DoctorsFilterSection: React.FC<DoctorsFilterSectionProps> = ({
 
   return (
     <section className="bg-white py-4 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         <div className="flex flex-col gap-3">
           {/* Label */}
           <span className="text-[10px] font-extrabold tracking-widest text-accent uppercase">

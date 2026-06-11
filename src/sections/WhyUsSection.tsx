@@ -20,7 +20,7 @@ export const WhyUsSection: React.FC = () => {
       <div className="absolute top-20 right-[-10%] w-[40%] h-[40%] bg-primary/5 blur-3xl rounded-full" />
       <div className="absolute bottom-20 left-[-10%] w-[30%] h-[30%] bg-accent/5 blur-3xl rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* STATS GRID (LEFT COLUMN - 5 cols) */}
@@ -98,7 +98,7 @@ export const WhyUsSection: React.FC = () => {
                   >
                     {/* Icon container */}
                     <div className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0",
+                      "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
                       isFirst ? "bg-white/20 text-white" : "bg-primary-light text-primary"
                     )}>
                       <IconComponent className="w-5 h-5" />

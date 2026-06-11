@@ -41,7 +41,7 @@ export const VisionMission: React.FC = () => {
       {/* Noise Texture Overlay */}
       <NoiseOverlay opacity={0.6} />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36 relative z-10">
 
         {/* Section Title */}
         <div className="flex flex-col items-center mb-12">

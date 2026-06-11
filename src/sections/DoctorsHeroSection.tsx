@@ -28,8 +28,8 @@ export const DoctorsHeroSection: React.FC<DoctorsHeroSectionProps> = ({
   };
 
   return (
-    <section className="relative pt-32 pb-0 bg-white overflow-visible">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 w-full overflow-visible">
+    <section className="relative w-full pt-16 pb-0 bg-white overflow-visible">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36 w-full overflow-visible">
         
         {/* Main Blue Banner Box */}
         <div className="relative w-full bg-primary rounded-[24px] px-6 py-8 md:px-12 md:py-10 text-white overflow-visible shadow-xl shadow-primary/10 min-h-[220px] lg:h-[220px] flex items-center">

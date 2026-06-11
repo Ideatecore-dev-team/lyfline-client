@@ -27,7 +27,7 @@ export const TestimonialsSection: React.FC = () => {
       <div className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] bg-white/5 blur-3xl rounded-full" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-white/5 blur-3xl rounded-full" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
         
         {/* Section Header */}
         <div className="mb-16 md:mb-20 text-left">

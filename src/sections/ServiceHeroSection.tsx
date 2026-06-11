@@ -103,12 +103,12 @@ export const ServiceHeroSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-20 md:py-24 bg-primary-light/30 overflow-hidden mt-16">
+    <section className="relative w-full py-16 bg-primary-light/30 overflow-hidden">
       {/* Decorative background glows */}
       <div className="absolute top-20 left-[-10%] w-[45%] h-[45%] rounded-full bg-primary/5 blur-3xl -z-10" />
       <div className="absolute bottom-10 right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-3xl -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col items-center">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-36 flex flex-col items-center">
         {/* Title row with red Lyfline logo mark */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
