@@ -30,10 +30,10 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
         className="overflow-hidden p-0 flex flex-col h-full rounded-[32px] border border-slate-100 bg-white"
       >
         {/* Skeleton Image Area */}
-        <div className="relative aspect-[4/3] w-full bg-slate-200 animate-pulse" />
+        <div className="relative aspect-4/3 w-full bg-slate-200 animate-pulse" />
         
         {/* Skeleton Content */}
-        <div className="p-6 flex flex-col gap-4 flex-grow justify-between">
+        <div className="p-6 flex flex-col gap-4 grow justify-between">
           <div className="flex flex-col gap-2">
             {/* Badge Shimmer */}
             <div className="h-5 w-24 bg-slate-200 rounded-full animate-pulse" />
@@ -68,7 +68,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
         className="overflow-hidden p-0 flex flex-col h-full rounded-[32px] border border-slate-100 bg-white group"
       >
         {/* Doctor Image Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+        <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-100">
           <Image
             src={doctor.imageUrl}
             alt={doctor.name}
@@ -79,7 +79,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
         </div>
 
         {/* Doctor Details */}
-        <div className="p-6 flex flex-col justify-between flex-grow">
+        <div className="p-6 flex flex-col justify-between grow">
           <div>
             {/* Specialty Badge */}
             <Badge variant="accent" className="mb-3 px-3 py-1 font-bold text-[10px] uppercase flex items-center gap-1.5 w-fit rounded-full bg-[#FDF2F2] text-accent">

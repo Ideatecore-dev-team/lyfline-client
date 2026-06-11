@@ -52,7 +52,7 @@ export const Header: React.FC = () => {
                   "text-[14px] font-semibold transition-colors",
                   isActive
                     ? "text-primary"
-                    : "text-[#000000] hover:text-primary"
+                    : "text-neutral-dark hover:text-primary"
                 )}
               >
                 {link.label}

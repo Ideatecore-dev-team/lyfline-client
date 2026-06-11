@@ -103,7 +103,7 @@ export default function DoctorsPage() {
       <Header />
 
       {/* Main Content Sections */}
-      <main className="flex-grow">
+      <main className="grow">
         {/* Banner Section */}
         <DoctorsHeroSection
           initialSearch={searchQuery}

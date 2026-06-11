@@ -65,14 +65,14 @@ export const DoctorsHeroSection: React.FC<DoctorsHeroSectionProps> = ({
                 </label>
                 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full">
-                  <div className="relative flex-grow">
+                  <div className="relative grow">
                     <input
                       type="text"
                       value={localSearch}
                       onChange={(e) => setLocalSearch(e.target.value)}
                       onKeyDown={handleKeyPress}
                       placeholder={t("doctors.hero.search_placeholder")}
-                      className="w-full bg-[#ECF1F8] border-0 rounded-[12px] px-4 py-3 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/40 shadow-xs"
+                      className="w-full bg-primary-light border-0 rounded-[12px] px-4 py-3 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-white/40 shadow-xs"
                     />
                   </div>
                   
@@ -138,7 +138,7 @@ export const DoctorsHeroSection: React.FC<DoctorsHeroSectionProps> = ({
               href="https://wa.me/6281291578559"
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute right-[20px] bottom-[15px] z-40 bg-[#E02828] hover:bg-[#D43030] text-white hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-[10px] px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-xl shadow-[#E02828]/40 cursor-pointer pointer-events-auto"
+              className="absolute right-[20px] bottom-[15px] z-40 bg-accent hover:bg-accent-hover text-white hover:scale-105 active:scale-95 transition-all duration-200 font-bold text-[10px] px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-xl shadow-accent/40 cursor-pointer pointer-events-auto"
             >
               <MessageSquare className="w-3.5 h-3.5 fill-current text-white" />
               {t("doctors.hero.consult_btn")}
