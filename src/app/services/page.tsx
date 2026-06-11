@@ -1,16 +1,38 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import { Header } from "@/sections/Header";
-import { Footer } from "@/sections/Footer";
-import { ServicesSection } from "@/sections/ServicesSection";
+
+// Dynamic imports to preserve optimal bundle chunking and render performance
+const ServiceHeroSection = dynamic(
+  () => import("@/sections/ServiceHeroSection").then((m) => m.ServiceHeroSection),
+  { ssr: true }
+);
+
+const ServiceAccordionSection = dynamic(
+  () => import("@/sections/ServiceAccordionSection").then((m) => m.ServiceAccordionSection),
+  { ssr: true }
+);
+
+const CtaSection = dynamic(
+  () => import("@/sections/CtaSection").then((m) => m.CtaSection),
+  { ssr: true }
+);
+
+const Footer = dynamic(
+  () => import("@/sections/Footer").then((m) => m.Footer),
+  { ssr: true }
+);
 
 export default function ServicesPage() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       <Header />
-      <main className="flex-grow pt-16">
-        <ServicesSection />
+      <main className="flex-grow">
+        <ServiceHeroSection />
+        <ServiceAccordionSection />
+        <CtaSection />
       </main>
       <Footer />
     </div>
