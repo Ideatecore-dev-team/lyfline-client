@@ -17,6 +17,7 @@ export const NavBar: React.FC = () => {
     { label: t("nav.home"), href: "/" },
     { label: t("nav.about"), href: "/about" },
     { label: t("nav.services"), href: "/services" },
+    { label: t("nav.doctors"), href: "/doctors" },
     { label: t("nav.doctors"), href: "/#doctors" },
     { label: t("nav.partners"), href: "/partners" },
     { label: t("nav.articles"), href: "/articles" },
@@ -43,6 +44,17 @@ export const NavBar: React.FC = () => {
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
             return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  "text-[14px] font-semibold transition-colors",
+                  isActive
+                    ? "text-primary"
+                    : "text-neutral-dark hover:text-primary"
+                )}
+              >
+                {link.label}
               <Link key={link.label} href={link.href}>
                 <Button
                   variant={isActive ? "ghost-primary" : "ghost-black"}

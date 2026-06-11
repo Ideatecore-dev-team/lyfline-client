@@ -48,7 +48,7 @@ export const AboutUsSection: React.FC = () => {
                 Our team will help you explore the best treatment options, recommended doctors, hospitals or clinics, preferred destinations, travel arrangements, and more — all tailored to your needs.
               </p>
               <p className="flex items-center gap-2 font-medium text-primary">
-                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-500" />
+                <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-500" />
                 <span>With LYFLINE, there are no hidden fees and no complicated payment schemes. You only pay for the services you receive.</span>
               </p>
             </div>
@@ -68,7 +68,7 @@ export const AboutUsSection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           >
             {/* The Telehealth mockup frame */}
-            <div className="relative w-full max-w-[480px] aspect-[4/3] rounded-[32px] overflow-hidden bg-slate-900 border-4 border-white shadow-2xl shadow-slate-300/50 group">
+            <div className="relative w-full max-w-[480px] aspect-4/3 rounded-[32px] overflow-hidden bg-slate-900 border-4 border-white shadow-2xl shadow-slate-300/50 group">
               
               {/* Doctor Background (Simulated via high-quality styling) */}
               <div 
@@ -78,7 +78,7 @@ export const AboutUsSection: React.FC = () => {
                 }}
               >
                 {/* Visual fallback gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-900/10 pointer-events-none" />
+                <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-slate-900/10 pointer-events-none" />
 
                 {/* Patient Picture-in-Picture Frame (Upper left) */}
                 <div className="absolute top-4 left-4 w-28 h-36 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-slate-800">
@@ -105,7 +105,7 @@ export const AboutUsSection: React.FC = () => {
                 {/* Telehealth Controls Panel overlay (Bottom center) */}
                 <div className="relative z-10 flex items-center justify-center gap-3 w-full bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15">
                   <button className="p-2.5 rounded-xl bg-accent text-white hover:bg-accent-hover transition-colors shadow-sm" aria-label="End consultation">
-                    <Phone className="w-4 h-4 rotate-[135deg]" />
+                    <Phone className="w-4 h-4 rotate-135" />
                   </button>
                   <button className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors" aria-label="Toggle camera">
                     <Video className="w-4 h-4" />

@@ -6,11 +6,21 @@ export interface Hospital {
   flag: string; // Emoji flag or path
 }
 
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  hospital: string;
+  region: string;
+  imageUrl: string;
+}
+
 export interface MedicalService {
   id: string;
   title: string;
   description: string;
   iconName: "Calendar" | "Home" | "Truck" | "UserCheck" | "Plane" | "ShieldCheck";
+  bullets?: string[];
 }
 
 export interface RecoveryStep {
@@ -55,36 +65,72 @@ export const SERVICES: MedicalService[] = [
     title: "Medical Appointment Assistance",
     description: "We help schedule your consultations and treatments with trusted medical providers.",
     iconName: "Calendar",
+    bullets: [
+      "Thorough information and background understanding via initial consultation",
+      "Complete options provided - doctors, clinics, hospitals and treatment packages",
+      "Post-treatment care locally and internationally",
+      "Access to teleconsultation from doctors worldwide"
+    ]
   },
   {
     id: "2",
     title: "Your Personalized Home Care",
     description: "Get medical care from the comfort of your home, including lab tests, IV therapy, home visits, and more.",
     iconName: "Home",
+    bullets: [
+      "At-home lab tests and blood draws",
+      "Intravenous (IV) therapy and infusions",
+      "Professional nurse and doctor home visits",
+      "Post-hospitalization recovery care at home"
+    ]
   },
   {
     id: "3",
     title: "Medical Evacuation",
     description: "Safe and reliable transportation to your preferred medical provider.",
     iconName: "Truck",
+    bullets: [
+      "24/7 emergency medical coordination",
+      "Safe transfer to preferred medical centers",
+      "Air and ground ambulance arrangements",
+      "Medical escort accompanied transport"
+    ]
   },
   {
     id: "4",
     title: "Patient–Doctor Matching",
     description: "We carefully match patients with suitable doctors based on medical needs and background analysis.",
     iconName: "UserCheck",
+    bullets: [
+      "Personalized specialist recommendations",
+      "Comprehensive medical background reviews",
+      "Second opinion coordination",
+      "Doctor qualification and credential verification"
+    ]
   },
   {
     id: "5",
     title: "Travel & Accommodation Support",
     description: "We assist with flights, accommodation, transport, visas, and travel arrangements for your medical journey.",
     iconName: "Plane",
+    bullets: [
+      "Flight booking and routing assistance",
+      "Hotel and long-term stay accommodation",
+      "Airport transfer and local transport booking",
+      "Medical visa documentation and support"
+    ]
   },
   {
     id: "6",
     title: "Guided Care",
     description: "Your treatment journey is carefully monitored to ensure the right care for your medical needs.",
     iconName: "ShieldCheck",
+    bullets: [
+      "Continuous treatment journey monitoring",
+      "Dedicated care coordinator throughout",
+      "Translation and documentation support",
+      "Post-treatment follow-up scheduling"
+    ]
   },
 ];
 
@@ -201,4 +247,103 @@ export const ARTICLES: Article[] = [
     imageUrl: "/articles/lemas-puasa.jpg",
     readTime: "6 min read",
   },
+];
+
+export const DOCTORS: Doctor[] = [
+  {
+    id: "1",
+    name: "Dr. Albert H. W., Sp.A",
+    specialty: "Pediatrician",
+    hospital: "Mayapada Hospital",
+    region: "Indonesia",
+    imageUrl: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "2",
+    name: "Dr. Sarah Johnson, MD",
+    specialty: "Cardiologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "3",
+    name: "Dr. Min-Jun Kim",
+    specialty: "Plastic Surgeon",
+    hospital: "Ready Plastic Surgery",
+    region: "South Korea",
+    imageUrl: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "4",
+    name: "Dr. Ramesh Nair, MS",
+    specialty: "Neurologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "5",
+    name: "Dr. Ling Ching Wei",
+    specialty: "Orthopedist",
+    hospital: "Pantai Hospitals",
+    region: "Malaysia",
+    imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "6",
+    name: "Dr. Somchai Devakul",
+    specialty: "Cardiologist",
+    hospital: "Bumrungrad International Hospital",
+    region: "Thailand",
+    imageUrl: "https://images.unsplash.com/photo-1638202993928-7267a557d3be?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "7",
+    name: "Dr. Kartika Siregar, Sp.JP",
+    specialty: "Cardiologist",
+    hospital: "Mayapada Hospital",
+    region: "Indonesia",
+    imageUrl: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "8",
+    name: "Dr. Ye-Ji Park",
+    specialty: "Plastic Surgeon",
+    hospital: "Ready Plastic Surgery",
+    region: "South Korea",
+    imageUrl: "https://images.unsplash.com/photo-1623556182441-2c62f829ddef?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "9",
+    name: "Dr. Sanjay Gupta",
+    specialty: "Neurologist",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "10",
+    name: "Dr. Nurul Huda",
+    specialty: "Pediatrician",
+    hospital: "Pantai Hospitals",
+    region: "Malaysia",
+    imageUrl: "https://images.unsplash.com/photo-1622960206062-f6104e7c1898?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "11",
+    name: "Dr. Ananya Sharma",
+    specialty: "General Practitioner",
+    hospital: "MAX Healthcare",
+    region: "India",
+    imageUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=400&q=80",
+  },
+  {
+    id: "12",
+    name: "Dr. Tatsuya Watanabe",
+    specialty: "Orthopedist",
+    hospital: "Bumrungrad International Hospital",
+    region: "Thailand",
+    imageUrl: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=400&q=80",
+  }
 ];
