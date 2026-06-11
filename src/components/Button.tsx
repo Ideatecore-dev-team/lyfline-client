@@ -1,40 +1,109 @@
+import type { ButtonHTMLAttributes } from "react";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "danger";
+export type ButtonVariant =
+  | "primary"
+  | "outline-white"
+  | "outline-primary"
+  | "slate-primary"
+  | "ghost-primary"
+  | "ghost-white"
+  | "ghost-black";
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text?: string;
+  leftIcon?: string;
+  rightIcon?: string;
+  variant?: ButtonVariant | "secondary" | "outline" | "ghost" | "danger";
   size?: "sm" | "md" | "lg";
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
+const variantClasses: Record<ButtonVariant, string> = {
+  primary: "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:opacity-95",
+  "outline-white": "bg-transparent text-white outline outline-2 outline-offset-[-2px] outline-white hover:bg-white/10",
+  "outline-primary": "bg-transparent text-[#3F71B7] outline outline-2 outline-offset-[-2px] outline-[#3F71B7] hover:bg-[#3F71B7]/10",
+  "slate-primary": "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:opacity-95",
+  "ghost-primary": "bg-transparent text-[#3F71B7] hover:bg-[#3F71B7]/10",
+  "ghost-white": "bg-transparent text-white hover:bg-white/10",
+  "ghost-black": "bg-transparent text-black hover:bg-black/10",
+};
+
+// Map old variants to new ones
+const mapVariant = (v?: ButtonProps["variant"]): ButtonVariant => {
+  if (!v) return "primary";
+  if (v === "outline") return "outline-primary";
+  if (v === "secondary") return "ghost-primary";
+  if (v === "ghost") return "ghost-black";
+  if (v === "danger") return "primary";
+  return v as ButtonVariant;
+};
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
+  (
+    {
+      text,
+      leftIcon,
+      rightIcon,
+      variant = "primary",
+      size,
+      className = "",
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    // Helper to format the icon filename
+    const getIconSrc = (iconName: string) => {
+      const formattedName = iconName.endsWith(".svg") ? iconName : `${iconName}.svg`;
+      return `/icons/${formattedName}`;
+    };
+
+    const resolvedVariant = mapVariant(variant);
+    const selectedVariantClass = variantClasses[resolvedVariant] || variantClasses.primary;
+
+    const sizeClass = size === "sm"
+      ? "h-10 px-4 text-sm"
+      : size === "lg"
+        ? "h-14 px-8 text-base"
+        : "h-12 px-4 text-sm";
+
     return (
       <button
         ref={ref}
-        className={cn(
-          "inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98]",
-          {
-            // Variants
-            "bg-primary text-white hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/20": variant === "primary",
-            "bg-primary-light text-primary hover:bg-primary/20": variant === "secondary",
-            "border-2 border-primary text-primary hover:bg-primary-light": variant === "outline",
-            "text-neutral-dark hover:bg-slate-100": variant === "ghost",
-            "bg-accent text-white hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/20": variant === "danger",
-            
-            // Sizes
-            "px-4 py-1.5 text-xs": size === "sm",
-            "px-6 py-3 text-sm": size === "md",
-            "px-8 py-4 text-base": size === "lg",
-          },
-          className
-        )}
+        className={`rounded-[48px] inline-flex justify-center items-center gap-2.5 font-semibold font-sans active:scale-98 transition-all cursor-pointer ${sizeClass} ${selectedVariantClass} ${className}`}
         {...props}
       >
-        {children}
+        {leftIcon && (
+          <span
+            style={{
+              maskImage: `url("${getIconSrc(leftIcon)}")`,
+              WebkitMaskImage: `url("${getIconSrc(leftIcon)}")`,
+            }}
+            className="size-6 bg-current mask-contain mask-no-repeat mask-center shrink-0"
+            aria-hidden="true"
+          />
+        )}
+        {text !== undefined ? (
+          <span className="leading-none">{text}</span>
+        ) : (
+          children
+        )}
+        {rightIcon && (
+          <span
+            style={{
+              maskImage: `url("${getIconSrc(rightIcon)}")`,
+              WebkitMaskImage: `url("${getIconSrc(rightIcon)}")`,
+            }}
+            className="size-6 bg-current mask-contain mask-no-repeat mask-center shrink-0"
+            aria-hidden="true"
+          />
+        )}
       </button>
     );
   }
 );
 
 Button.displayName = "Button";
+
+export default Button;

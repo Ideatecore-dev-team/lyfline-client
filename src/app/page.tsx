@@ -2,7 +2,7 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { Header } from "@/sections/Header";
+import { NavBar } from "@/components/NavBar";
 import { HeroSection } from "@/sections/HeroSection";
 
 // Lazy load below-the-fold components using Next.js dynamic imports
@@ -49,7 +49,7 @@ const CtaSection = dynamic(
 );
 
 const Footer = dynamic(
-  () => import("@/sections/Footer").then((m) => m.Footer),
+  () => import("@/components/Footer").then((m) => m.Footer),
   { ssr: true }
 );
 
@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Critical path widgets (Rendered immediately) */}
-      <Header />
+      <NavBar />
       <main className="flex-grow">
         <HeroSection />
         <AboutUsSection />

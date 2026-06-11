@@ -2,7 +2,7 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
-import { Header } from "@/sections/Header";
+import { NavBar } from "@/components/NavBar";
 
 // Dynamic imports to preserve optimal bundle chunking and render performance
 const AboutUsHero = dynamic(
@@ -31,7 +31,7 @@ const AboutPartners = dynamic(
 );
 
 const Footer = dynamic(
-  () => import("@/sections/Footer").then((m) => m.Footer),
+  () => import("@/components/Footer").then((m) => m.Footer),
   { ssr: true }
 );
 
@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Dynamic Path Header */}
-      <Header />
+      <NavBar />
       
       {/* Main Content Sections */}
       <main className="flex-grow">
