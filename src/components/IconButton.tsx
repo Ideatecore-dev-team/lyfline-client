@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import * as React from "react";
 
 export type IconButtonVariant =
+  | "primary"
   | "slate-solid"
   | "primary-outline"
   | "black"
@@ -18,7 +19,8 @@ export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 const variantClasses: Record<IconButtonVariant, string> = {
-  "slate-solid": "bg-slate-500 text-white outline outline-1 outline-offset-[-1px] outline-slate-500 hover:bg-slate-600 hover:outline-slate-600",
+  "primary": "bg-primary text-white outline outline-1 outline-offset-[-1px] outline-primary hover:bg-primary-hover hover:outline-primary-hover",
+  "slate-solid": "bg-[#3F71B7] text-white outline outline-1 outline-offset-[-1px] outline-[#3F71B7] hover:bg-slate-600 hover:outline-slate-600",
   "primary-outline": "bg-slate-100 text-[#3F71B7] outline outline-1 outline-offset-[-1px] outline-[#3F71B7] hover:bg-slate-200",
   "black": "bg-black text-white hover:bg-black/90",
   "glass": "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm",
@@ -52,6 +54,10 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       : "size-6";
 
     const selectedVariantClass = variantClasses[variant] || variantClasses["slate-solid"];
+    const isPrimary = variant === "primary";
+    const animationClass = isPrimary
+      ? "group-hover:scale-125"
+      : "group-hover:-translate-y-1";
 
     return (
       <button
@@ -65,7 +71,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
               maskImage: `url("${getIconSrc(icon)}")`,
               WebkitMaskImage: `url("${getIconSrc(icon)}")`,
             }}
-            className={`bg-current mask-contain mask-no-repeat mask-center shrink-0 transition-transform duration-300 group-hover:-translate-y-1 ${iconSizeClass}`}
+            className={`bg-current mask-contain mask-no-repeat mask-center shrink-0 transition-transform duration-300 ${animationClass} ${iconSizeClass}`}
             aria-hidden="true"
           />
         ) : (

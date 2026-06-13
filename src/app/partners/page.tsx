@@ -216,6 +216,7 @@ export default function PartnersPage() {
                         phone={partner.phone}
                         email={partner.email}
                         logoUrl={partner.logoUrl}
+                        href={`/partners/${partner.id}`}
                       />
                     </motion.div>
                   ))}

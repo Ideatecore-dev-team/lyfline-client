@@ -1,141 +1,256 @@
 "use client";
 
-import * as React from "react";
-import dynamic from "next/dynamic";
+import React, { useState, useMemo } from "react";
 import { NavBar } from "@/components/NavBar";
-import { DOCTORS } from "@/data/mockData";
-
-// Dynamic imports for best bundle sizes and performance
-const DoctorsHeroSection = dynamic(
-  () => import("@/sections/DoctorsHeroSection").then((m) => m.DoctorsHeroSection),
-  { ssr: true }
-);
-
-const DoctorsFilterSection = dynamic(
-  () => import("@/sections/DoctorsFilterSection").then((m) => m.DoctorsFilterSection),
-  { ssr: true }
-);
-
-const DoctorsGridSection = dynamic(
-  () => import("@/sections/DoctorsGridSection").then((m) => m.DoctorsGridSection),
-  { ssr: true }
-);
-
-const Pagination = dynamic(
-  () => import("@/components/Pagination").then((m) => m.Pagination),
-  { ssr: true }
-);
-
-const CtaSection = dynamic(
-  () => import("@/sections/CtaSection").then((m) => m.CtaSection),
-  { ssr: true }
-);
-
-const Footer = dynamic(
-  () => import("@/components/Footer").then((m) => m.Footer),
-  { ssr: true }
-);
+import { Footer } from "@/components/Footer";
+import { Button } from "@/components/Button";
+import InputBox from "@/components/inputbox";
+import Dropdown from "@/components/Dropdown";
+import { DoctorCard } from "@/components/card/DoctorCard";
+import { DoctorModals } from "@/components/card/DoctorModals";
+import { Doctor, DOCTORS } from "@/data/mockData";
 
 export default function DoctorsPage() {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [filters, setFilters] = React.useState({
+  const [searchVal, setSearchVal] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState({
     region: "",
     hospital: "",
     specialty: "",
   });
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Filter logic
-  const filteredDoctors = React.useMemo(() => {
-    return DOCTORS.filter((doc) => {
+  // Exactly 9 dummy data items to demonstrate pagination (8 per page)
+  const DUMMY_DOCTORS = useMemo(() => {
+    return DOCTORS.slice(0, 9);
+  }, []);
+
+  // Filter options dynamically extracted from the dummy doctor list
+  const regionOptions = useMemo(() => {
+    const uniqueRegions = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.region))).sort();
+    return [
+      { value: "", label: "Pick a Region" },
+      ...uniqueRegions.map((r) => ({ value: r, label: r })),
+    ];
+  }, [DUMMY_DOCTORS]);
+
+  const hospitalOptions = useMemo(() => {
+    const uniqueHospitals = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.hospital))).sort();
+    return [
+      { value: "", label: "Pick a Hospital" },
+      ...uniqueHospitals.map((h) => ({ value: h, label: h })),
+    ];
+  }, [DUMMY_DOCTORS]);
+
+  const specialtyOptions = useMemo(() => {
+    const uniqueSpecialties = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.specialty))).sort();
+    return [
+      { value: "", label: "Pick a Specialty" },
+      ...uniqueSpecialties.map((s) => ({ value: s, label: s })),
+    ];
+  }, [DUMMY_DOCTORS]);
+
+  const handleSearch = () => {
+    setSearchQuery(searchVal);
+    setCurrentPage(1);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleFilterChange = (key: "region" | "hospital" | "specialty", val: string) => {
+    setFilters((prev) => ({ ...prev, [key]: val }));
+    setCurrentPage(1);
+  };
+
+  // Filtered doctors list based on search and selected options
+  const filteredDoctors = useMemo(() => {
+    return DUMMY_DOCTORS.filter((doc) => {
       const matchesSearch =
         searchQuery.trim() === "" ||
         doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         doc.specialty.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesRegion =
-        filters.region === "" || doc.region === filters.region;
-
-      const matchesHospital =
-        filters.hospital === "" || doc.hospital === filters.hospital;
-
-      const matchesSpecialty =
-        filters.specialty === "" || doc.specialty === filters.specialty;
+      const matchesRegion = filters.region === "" || doc.region === filters.region;
+      const matchesHospital = filters.hospital === "" || doc.hospital === filters.hospital;
+      const matchesSpecialty = filters.specialty === "" || doc.specialty === filters.specialty;
 
       return matchesSearch && matchesRegion && matchesHospital && matchesSpecialty;
     });
-  }, [searchQuery, filters]);
+  }, [DUMMY_DOCTORS, searchQuery, filters]);
 
-  // Show loading skeleton whenever search query or filter criteria change
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 350);
-    return () => clearTimeout(timer);
-  }, [searchQuery, filters]);
+  // Pagination bounds (8 doctors per page)
+  const doctorsPerPage = 8;
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage) || 1;
 
-  // Pagination bounds
-  const totalPages = Math.ceil(filteredDoctors.length / 8);
-  const pagedDoctors = React.useMemo(() => {
-    const start = (currentPage - 1) * 8;
-    return filteredDoctors.slice(start, start + 8);
+  const paginatedDoctors = useMemo(() => {
+    const startIndex = (currentPage - 1) * doctorsPerPage;
+    return filteredDoctors.slice(startIndex, startIndex + doctorsPerPage);
   }, [filteredDoctors, currentPage]);
-
-  const handleFilterChange = (
-    key: "region" | "hospital" | "specialty",
-    value: string
-  ) => {
-    setIsLoading(true);
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    setCurrentPage(1);
-  };
-
-  const handleSearchSubmit = (val: string) => {
-    setIsLoading(true);
-    setSearchQuery(val);
-    setCurrentPage(1);
-  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {/* Sticky Header */}
       <NavBar />
 
-      {/* Main Content Sections */}
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
-        {/* Banner Section */}
-        <DoctorsHeroSection
-          initialSearch={searchQuery}
-          onSearchSubmit={handleSearchSubmit}
-        />
+        {/* Main centered container */}
+        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
-        {/* Filter Section */}
-        <DoctorsFilterSection
-          filters={filters}
-          onFilterChange={handleFilterChange}
-        />
+          {/* Background Decorative Shapes */}
+          <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
+          {/* Banner segment with search layout */}
+          <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
+            <div className="w-full p-6 md:p-8 bg-gradient-to-r from-[#3F71B7] to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative overflow-hidden">
+              <div className="self-stretch inline-flex justify-between items-end">
+                <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
+                  <div className="justify-start text-indigo-200 text-sm font-normal font-poppins tracking-wider">OUR DOCTORS</div>
+                  <h1 className="justify-start text-white text-3xl font-semibold font-sans">Wide Range of Medical Specialists</h1>
+                </div>
+              </div>
 
-        {/* Results Grid Section */}
-        <DoctorsGridSection
-          doctors={pagedDoctors}
-          totalCount={filteredDoctors.length}
-          isLoading={isLoading}
-          currentPage={currentPage}
-        />
+              <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3">
+                <InputBox
+                  label={<span className="text-white text-base font-normal font-poppins">Search Doctor Name</span>}
+                  placeholder="Dr. Abraham.."
+                  value={searchVal}
+                  onChange={(e) => setSearchVal(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  containerClassName="w-full md:w-[466px]"
+                />
+                <Button
+                  variant="outline-white"
+                  text="Search"
+                  leftIcon="Search 1"
+                  className="h-12 px-6 font-poppins text-base font-semibold"
+                  onClick={handleSearch}
+                />
+              </div>
+            </div>
 
-        {/* Dynamic Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+            {/* Filter segments using dropdown.tsx */}
+            <div className="self-stretch flex flex-col justify-start items-start gap-2 mt-4 w-full">
+              <span className="text-primary/50 text-sm font-semibold font-poppins tracking-wider">FILTER DOCTOR</span>
+              <div className="self-stretch grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2">
+                <Dropdown
+                  label="Region"
+                  placeholder="Pick a Region"
+                  options={regionOptions}
+                  value={filters.region}
+                  onChange={(val) => handleFilterChange("region", val)}
+                  containerClassName="w-full"
+                />
+                <Dropdown
+                  label="Hospital"
+                  placeholder="Pick a Hospital"
+                  options={hospitalOptions}
+                  value={filters.hospital}
+                  onChange={(val) => handleFilterChange("hospital", val)}
+                  containerClassName="w-full"
+                />
+                <Dropdown
+                  label="Specialty"
+                  placeholder="Pick a Specialty"
+                  options={specialtyOptions}
+                  value={filters.specialty}
+                  onChange={(val) => handleFilterChange("specialty", val)}
+                  containerClassName="w-full"
+                />
+              </div>
+            </div>
+          </div>
 
-        {/* Contact/Appointment CTA */}
-        <CtaSection />
+          {/* Divider line */}
+          <hr className="w-full border-t border-gray-200 my-4 z-10" />
+
+          {/* Results grid and pagination */}
+          <div className="w-full flex flex-col justify-start items-start gap-6 relative z-10">
+            <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
+              {searchQuery || filters.region || filters.hospital || filters.specialty ? "Showing Filtered Results" : "Showing All Doctors"}
+            </div>
+
+            {paginatedDoctors.length > 0 ? (
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+                {paginatedDoctors.map((doc) => (
+                  <DoctorCard
+                    key={doc.id}
+                    name={doc.name}
+                    specialty={doc.specialty}
+                    hospital={doc.hospital}
+                    imageUrl={doc.imageUrl}
+                    onViewDetails={() => {
+                      setSelectedDoctor(doc);
+                      setIsModalOpen(true);
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="py-12 text-center text-slate-400 font-poppins text-base w-full">
+                No doctors match your search or filters.
+              </div>
+            )}
+
+            {/* Dynamic Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="self-stretch flex justify-between items-center mt-6 w-full">
+
+                {/* Previous Button */}
+                <Button
+                  variant="outline-primary"
+                  text="Previous"
+                  leftIcon="Left 1"
+                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                />
+
+                {/* Page numbers list */}
+                <div className="flex justify-start items-center gap-4">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    const isCurrent = currentPage === page;
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
+                            ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
+                            : "text-slate-500 hover:bg-slate-100"
+                          }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Next Button */}
+                <Button
+                  variant="primary"
+                  text="Next"
+                  rightIcon="Right 1"
+                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                />
+
+              </div>
+            )}
+          </div>
+
+          <DoctorModals
+            isOpen={isModalOpen}
+            doctor={selectedDoctor}
+            onClose={() => setIsModalOpen(false)}
+          />
+
+        </section>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

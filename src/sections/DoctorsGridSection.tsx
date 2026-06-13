@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-import { DoctorCard } from "@/components/DoctorCard";
+import { DoctorCard } from "@/components/card/DoctorCard";
 import { Doctor, DOCTORS } from "@/data/mockData";
 
 interface DoctorsGridSectionProps {
@@ -42,7 +42,7 @@ export const DoctorsGridSection: React.FC<DoctorsGridSectionProps> = ({
     // Render actual doctors
     doctors.forEach((doctor, idx) => {
       slots.push(
-        <DoctorCard key={doctor.id} doctor={doctor} index={idx} isLoading={false} />
+        <DoctorCard key={doctor.id} doctor={doctor} isLoading={false} />
       );
     });
 
