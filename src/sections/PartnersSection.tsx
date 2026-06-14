@@ -87,7 +87,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           <div className="w-full flex flex-row flex-wrap justify-center lg:justify-between items-center gap-6 lg:gap-0">
             {countries.map((country, idx) => (
               <div key={idx} className="w-24 flex flex-col justify-start items-center gap-2 group">
-                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
+                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
                   <Image
                     src={country.flagSrc}
                     alt={country.name}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Quote } from "lucide-react";
+
 import { motion } from "framer-motion";
 
 interface TestimonialCardProps {
@@ -23,7 +23,14 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name, r
         >
             {/* Quote Icon */}
             <div className="relative z-10 animate-fade-in-up" style={{ transform: "translateZ(20px)" }}>
-                <Quote className="w-6 h-5 text-primary/80 transform rotate-180" />
+                <span
+                    style={{
+                        maskImage: 'url("/icons/Quotes.svg")',
+                        WebkitMaskImage: 'url("/icons/Quotes.svg")',
+                    }}
+                    className="w-6 h-5 bg-primary/80 mask-contain mask-no-repeat mask-center block"
+                    aria-hidden="true"
+                />
             </div>
 
             {/* Quote Text */}
