@@ -41,7 +41,7 @@ export const ServiceDetailCard: React.FC<ServiceDetailCardProps> = ({
     };
 
     return (
-        <div className="self-stretch p-6 relative bg-white rounded-3xl border border-gray-200 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-md">
+        <div className="self-stretch p-6 relative bg-white rounded-3xl border border-gray-200 flex flex-col justify-start items-start overflow-hidden transition-shadow transition-colors duration-300 shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-md">
 
             {/* Main card header row */}
             <div

@@ -23,7 +23,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   href = "#",
 }) => {
   return (
-    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden group">
+    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden group transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
 
       {/* Article Image Container */}
       <div className="self-stretch h-52 relative overflow-hidden border-b-2 border-gray-200 rounded-b-3xl">
@@ -32,7 +32,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             src={imageUrl}
             alt={title}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (

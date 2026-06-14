@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
+import Image from "next/image";
 import InputBox from "@/components/inputbox";
 import Dropdown from "@/components/Dropdown";
 import { DoctorCard } from "@/components/card/DoctorCard";
@@ -101,21 +102,19 @@ export default function DoctorsPage() {
         {/* Main centered container */}
         <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
-          {/* Background Decorative Shapes */}
-          <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
           {/* Banner segment with search layout */}
           <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
-            <div className="w-full p-6 md:p-8 bg-gradient-to-r from-[#3F71B7] to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative overflow-hidden">
-              <div className="self-stretch inline-flex justify-between items-end">
+            <div className="w-full p-6 md:p-6 bg-gradient-to-r from-[#3F71B7] to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative">
+              <div className="self-stretch inline-flex justify-between items-end relative z-10">
                 <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                  <div className="justify-start text-indigo-200 text-sm font-normal font-poppins tracking-wider">OUR DOCTORS</div>
+                  <div className="justify-start text-indigo-200 text-sm font-poppins tracking-wider">OUR DOCTORS</div>
                   <h1 className="justify-start text-white text-3xl font-semibold font-sans">Wide Range of Medical Specialists</h1>
                 </div>
               </div>
 
-              <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3">
+              <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3 relative z-10">
                 <InputBox
-                  label={<span className="text-white text-base font-normal font-poppins">Search Doctor Name</span>}
+                  label={<span className="text-white text-sm font-normal font-poppins">Search Doctor Name</span>}
                   placeholder="Dr. Abraham.."
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
@@ -130,11 +129,22 @@ export default function DoctorsPage() {
                   onClick={handleSearch}
                 />
               </div>
+
+              {/* Doctor Illustration (3D overlap illusion) */}
+              <div className="hidden md:block absolute bottom-[-1] right-8 ml-6 w-[406px] h-[258px] pointer-events-none z-0">
+                <Image
+                  src="/Illustration/DoctorIllustration.png"
+                  alt="Doctor Illustration"
+                  width={406}
+                  height={258}
+                  className="object-contain object-bottom"
+                />
+              </div>
             </div>
 
             {/* Filter segments using dropdown.tsx */}
             <div className="self-stretch flex flex-col justify-start items-start gap-2 mt-4 w-full">
-              <span className="text-primary/50 text-sm font-semibold font-poppins tracking-wider">FILTER DOCTOR</span>
+              <span className="text-primary/50 text-sm font-poppins tracking-wider">FILTER DOCTOR</span>
               <div className="self-stretch grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2">
                 <Dropdown
                   label="Region"
@@ -145,7 +155,7 @@ export default function DoctorsPage() {
                   containerClassName="w-full"
                 />
                 <Dropdown
-                  label="Hospital"
+                  label="Hospital Name"
                   placeholder="Pick a Hospital"
                   options={hospitalOptions}
                   value={filters.hospital}
@@ -218,8 +228,8 @@ export default function DoctorsPage() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                            ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
-                            : "text-slate-500 hover:bg-slate-100"
+                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
+                          : "text-slate-500 hover:bg-slate-100"
                           }`}
                       >
                         {page}
@@ -249,6 +259,25 @@ export default function DoctorsPage() {
           />
 
         </section>
+
+        {/* Decorative Brand Watermark */}
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
       </main>
 
       <Footer />

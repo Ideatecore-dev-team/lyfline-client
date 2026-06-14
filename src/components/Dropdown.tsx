@@ -130,7 +130,7 @@ export default function Dropdown({
       } ${containerClassName}`}
     >
       {label && (
-        <label className="self-stretch justify-start text-primary text-sm font-normal font-sans">
+        <label className="self-stretch justify-start text-red-600 text-sm font-normal font-sans">
           {label}
         </label>
       )}

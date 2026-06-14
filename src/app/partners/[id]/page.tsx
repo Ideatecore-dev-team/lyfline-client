@@ -10,6 +10,8 @@ import { notFound } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DOCTORS } from "@/data/mockData";
 import { DoctorCard } from "@/components/card/DoctorCard";
+import GooglaMapsPreviewModal from "@/components/googleMapsPreview";
+import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -31,16 +33,16 @@ interface PartnerDetail {
 const getFlagUrl = (country: string) => {
   switch (country.toLowerCase()) {
     case "indonesia":
-      return "/Flags/ID-Indonesia icon.png";
+      return "/Flags/ID - Indonesia.svg";
     case "india":
-      return "/Flags/IN-India icon.png";
+      return "/Flags/IN - India.svg";
     case "korea":
     case "south korea":
-      return "/Flags/KR-Korea icon.png";
+      return "/Flags/KR - Korea (South).svg";
     case "malaysia":
-      return "/Flags/MY-malaysia icon.png";
+      return "/Flags/MY - Malaysia.svg";
     case "thailand":
-      return "/Flags/TH-Thailand icon.png";
+      return "/Flags/TH - Thailand.svg";
     default:
       return null;
   }
@@ -180,6 +182,7 @@ const PARTNERS_DETAILS: Record<string, PartnerDetail> = {
 export default function PartnerDetailPage({ params }: PageProps) {
   const { id } = use(params);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   // Find partner details, or build a dynamic fallback if not defined in local dictionary
   const partner = PARTNERS_DETAILS[id] || {
@@ -270,25 +273,29 @@ export default function PartnerDetailPage({ params }: PageProps) {
                   {/* Active Image View */}
                   <div className="w-full h-72 relative bg-gradient-to-b from-blue-800/0 to-blue-800/20 rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
                     {partner.images && partner.images.length > 0 ? (
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={activeImageIdx}
-                          initial={{ opacity: 0, scale: 1.02 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.98 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute inset-0"
-                        >
-                          <Image
-                            src={partner.images[activeImageIdx]}
-                            alt={`${partner.name} view`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 490px"
-                            priority
-                          />
-                        </motion.div>
-                      </AnimatePresence>
+                      <>
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={activeImageIdx}
+                            initial={{ opacity: 0, scale: 1.02 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute inset-0"
+                          >
+                            <Image
+                              src={partner.images[activeImageIdx]}
+                              alt={`${partner.name} view`}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 490px"
+                              priority
+                            />
+                          </motion.div>
+                        </AnimatePresence>
+                        {/* Brand alignment gradient overlay in front of the image */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/25 pointer-events-none z-10" />
+                      </>
                     ) : (
                       <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-poppins">
                         No image available
@@ -329,19 +336,13 @@ export default function PartnerDetailPage({ params }: PageProps) {
                 </div>
 
                 {/* Maps Button CTA */}
-                <a
-                  href={partner.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full md:w-auto"
-                >
-                  <Button
-                    variant="outline-primary"
-                    text="Google Maps View"
-                    leftIcon="maps"
-                    className="w-full md:w-auto font-poppins text-base font-medium"
-                  />
-                </a>
+                <Button
+                  variant="outline-primary"
+                  text="Google Maps View"
+                  leftIcon="maps"
+                  className="w-full md:w-auto font-poppins text-base font-medium"
+                  onClick={() => setIsMapOpen(true)}
+                />
               </div>
 
               {/* Right Side: Hospital Info & Location Details */}
@@ -353,17 +354,18 @@ export default function PartnerDetailPage({ params }: PageProps) {
                   {/* Dynamic Country Badge */}
                   <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline outline-offset-[-1px] outline-gray-200 inline-flex justify-center items-center gap-2">
                     {flagUrl ? (
-                      <div className="w-4 h-3 relative overflow-hidden rounded-[1px]">
+                      <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                         <Image
                           src={flagUrl}
                           alt={`${partner.country} flag`}
                           fill
                           className="object-contain"
+                          unoptimized
                         />
                       </div>
                     ) : (
-                      <div className="w-4 h-3 relative bg-white rounded-[1px] outline outline-black overflow-hidden">
-                        <div className="w-4 h-3 left-0 top-0 absolute bg-slate-50" />
+                      <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
+                        <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                       </div>
                     )}
@@ -446,10 +448,21 @@ export default function PartnerDetailPage({ params }: PageProps) {
             </div>
 
           </div>
+
+          {/* Decorative Brand Watermark */}
+          <span
+            style={{
+              maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+              WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            }}
+            className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+            aria-hidden="true"
+          />
         </div>
 
         {/* Hospital Available Doctors Section */}
         <section className="w-full py-16 bg-white flex flex-col justify-start items-center relative overflow-hidden">
+          <NoiseTexture />
           {/* Decorative background shape */}
           {/* Centered content container */}
           <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-center gap-8 relative z-10">
@@ -486,16 +499,32 @@ export default function PartnerDetailPage({ params }: PageProps) {
             <Button
               variant="outline-primary"
               text="View All Doctor"
-              rightIcon="Right 1"
+              rightIcon="Stethoscope"
               disabled
               className="font-poppins text-base font-medium cursor-not-allowed"
             />
 
           </div>
+
+          {/* Decorative Brand Watermark */}
+          <span
+            style={{
+              maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+              WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            }}
+            className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-[#3F71B7]/50 mask-contain mask-no-repeat mask-center shrink-0"
+            aria-hidden="true"
+          />
         </section>
       </main>
 
       <Footer />
+
+      <GooglaMapsPreviewModal
+        isOpen={isMapOpen}
+        onClose={() => setIsMapOpen(false)}
+        embedUrl={partner.mapsUrl}
+      />
     </div>
   );
 }

@@ -99,8 +99,8 @@ export default function ArticlesPage() {
             <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3">
               <InputBox
                 label={
-                  <span className="text-red-600 text-base font-normal font-poppins">
-                    Look for an Article
+                  <span className="text-red-600 text-sm font-normal font-poppins">
+                    Search Article
                   </span>
                 }
                 placeholder="Tips untuk.."
@@ -246,7 +246,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -255,7 +255,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/40 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

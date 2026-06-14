@@ -59,14 +59,15 @@ export const NavBar: React.FC = () => {
               className="flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer border-0 bg-transparent p-0"
               title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
             >
-              <Image
-                src={lang === "en" ? "/Flags/GB-UKM icon.png" : "/Flags/ID-Indonesia icon.png"}
-                alt={lang === "en" ? "English" : "Bahasa Indonesia"}
-                width={22}
-                height={15}
-                unoptimized
-                className="w-[22px] h-[15px] object-contain rounded-sm shadow-sm border border-slate-100"
-              />
+              <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+                <Image
+                  src={lang === "en" ? "/Flags/GB-UKM - United Kingdom.svg" : "/Flags/ID - Indonesia.svg"}
+                  alt={lang === "en" ? "English" : "Bahasa Indonesia"}
+                  fill
+                  unoptimized
+                  className="object-contain"
+                />
+              </div>
             </button>
           </div>
         </nav>
@@ -113,14 +114,15 @@ export const NavBar: React.FC = () => {
               onClick={toggleLang}
               className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer"
             >
-              <Image
-                src={lang === "en" ? "/Flags/GB-UKM icon.png" : "/Flags/ID-Indonesia icon.png"}
-                alt="Language Switcher"
-                width={20}
-                height={14}
-                unoptimized
-                className="w-5 h-[14px] object-contain rounded-sm"
-              />
+              <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+                <Image
+                  src={lang === "en" ? "/Flags/GB-UKM - United Kingdom.svg" : "/Flags/ID - Indonesia.svg"}
+                  alt="Language Switcher"
+                  fill
+                  unoptimized
+                  className="object-contain"
+                />
+              </div>
               <span className="text-[10px] font-bold text-slate-600 tracking-wider">
                 {lang === "en" ? "EN" : "ID"}
               </span>

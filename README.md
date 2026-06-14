@@ -28,7 +28,7 @@ This project strictly follows a **flat, highly clean, and standard Next.js direc
     - `Button.tsx`: Highly styled primary, secondary, and outline interactive triggers.
     - `Card.tsx`: Glassmorphic, outline, flat, or shadow structural cards.
     - `Section.tsx`: Core wrapper containing standardized section margins, backgrounds, subtitles, and headings.
-    - `NoiseOverlay.tsx`: Reusable premium SVG noise texture backdrop.
+    - `NoiseTexture.tsx`: Reusable premium SVG noise texture backdrop from Magic UI.
     - `StatCard.tsx`: Reusable motion-animated card displaying metrics.
     - `HospitalPartnerCard.tsx`: Reusable motion-animated global partner logo card.
 *   **`src/sections/`**: Centralized, flat directory containing all main page sections (e.g. `Header.tsx`, `HeroSection.tsx`, `AboutUsSection.tsx`, `Footer.tsx`). There is **zero nesting** (no internal `/ui` subfolders).
@@ -42,23 +42,24 @@ This project strictly follows a **flat, highly clean, and standard Next.js direc
 
 We have extracted several highly custom, reusable UI elements from the About page sections to maintain modularity, standard design tokens, and dry coding principles:
 
-### 1. `NoiseOverlay.tsx`
-A hardware-accelerated, custom SVG `feTurbulence` noise texture that renders a subtle visual grain texture overlay. It is used on components like `AboutServices` and `VisionMission` sections.
+### 1. `NoiseTexture.tsx`
+A hardware-accelerated, custom SVG `feTurbulence` noise texture that renders a subtle visual grain texture overlay. It is located at `src/components/magicui/NoiseTexture.tsx`.
 
 **Props API**:
 
 | Prop | Type | Required | Default | Description |
 | :--- | :--- | :---: | :---: | :--- |
-| `opacity` | `number` | No | `0.06` | Controls the density and visibility of the noise grain texture backdrop. |
+| `noiseOpacity` | `number` | No | `0.05` | Controls the density and visibility of the noise grain texture backdrop. |
+| `frequency` | `number` | No | `0.4` | Turbulence base frequency. |
 | `className` | `string` | No | `-` | Additional Tailwind CSS classes (e.g. custom z-index or positions). |
 
 **Usage Example**:
 ```tsx
-import { NoiseOverlay } from "@/components/NoiseOverlay";
+import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
 const CustomCard = () => (
   <div className="relative bg-primary text-white rounded-3xl p-8 overflow-hidden">
-    <NoiseOverlay opacity={0.12} />
+    <NoiseTexture noiseOpacity={0.08} />
     <h2 className="relative z-10">Premium Content with Noise</h2>
   </div>
 );

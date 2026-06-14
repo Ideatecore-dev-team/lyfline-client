@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { NoiseOverlay } from "@/components/NoiseOverlay";
+import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
 export const AboutServices: React.FC = () => {
   // Staggered columns for the services icon layout:
@@ -67,7 +67,7 @@ export const AboutServices: React.FC = () => {
           <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[50%] bg-white/5 blur-2xl rounded-full pointer-events-none" />
 
           {/* Noise Texture Overlay */}
-          <NoiseOverlay opacity={0.6} />
+          <NoiseTexture noiseOpacity={0.08} />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
 

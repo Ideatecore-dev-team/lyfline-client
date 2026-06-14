@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
@@ -16,19 +17,43 @@ interface DoctorModalsProps {
 const getFlagUrl = (country: string) => {
     switch (country.toLowerCase()) {
         case "indonesia":
-            return "/Flags/ID-Indonesia icon.png";
+            return "/Flags/ID - Indonesia.svg";
         case "india":
-            return "/Flags/IN-India icon.png";
+            return "/Flags/IN - India.svg";
         case "korea":
         case "south korea":
-            return "/Flags/KR-Korea icon.png";
+            return "/Flags/KR - Korea (South).svg";
         case "malaysia":
-            return "/Flags/MY-malaysia icon.png";
+            return "/Flags/MY - Malaysia.svg";
         case "thailand":
-            return "/Flags/TH-Thailand icon.png";
+            return "/Flags/TH - Thailand.svg";
+        case "singapore":
+            return "/Flags/SG - Singapore.svg";
+        case "china":
+            return "/Flags/CN - China.svg";
+        case "united kingdom":
+        case "uk":
+            return "/Flags/GB-UKM - United Kingdom.svg";
+        case "japan":
+            return "/Flags/JP - Japan.svg";
+        case "taiwan":
+            return "/Flags/TW - Taiwan.svg";
         default:
             return null;
     }
+};
+
+const getHospitalSlug = (hospitalName: string) => {
+    const clean = hospitalName.toLowerCase().trim();
+    if (clean.includes("siloam")) return "siloam-hospitals";
+    if (clean.includes("mayapada")) return "mayapada-hospital";
+    if (clean.includes("prince court") || clean.includes("princecourt")) return "prince-court";
+    if (clean.includes("apollo")) return "apollo-hospitals";
+    if (clean.includes("ready plastic") || clean.includes("readyplastic")) return "ready-plastic-surgery";
+    if (clean.includes("sam hospital") || clean.includes("singapore institute") || clean.includes("sam")) return "sam-hospital";
+    if (clean.includes("nulook")) return "nulook-clinic";
+    if (clean.includes("royal progress") || clean.includes("royalprogress")) return "royal-progress";
+    return hospitalName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 };
 
 export const DoctorModals: React.FC<DoctorModalsProps> = ({
@@ -67,12 +92,12 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                     >
                         {/* Header */}
                         <div className="self-stretch inline-flex justify-between items-center w-full">
-                            <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                            <span className="justify-start text-primary/50 text-sm font-poppins tracking-wider">
                                 DOCTOR DETAILS
                             </span>
                             <button
                                 onClick={onClose}
-                                className="size-6 text-primary hover:text-slate-700 transition-colors flex items-center justify-center cursor-pointer"
+                                className="size-8 text-slate-500 hover:bg-slate-100 hover:text-slate-700 rounded-lg transition-all flex items-center justify-center cursor-pointer border-none bg-transparent"
                                 aria-label="Close modal"
                             >
                                 <span
@@ -94,9 +119,24 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                             {/* Left Column: Image and Name info */}
                             <div className="w-64 shrink-0 flex flex-col justify-start items-start gap-6">
                                 {/* Doctor Image Container */}
-                                <div className="w-64 h-48 relative bg-indigo-50 rounded-3xl outline-2 outline-gray-200 overflow-hidden">
-                                    <div className="size-14 left-[213px] top-[138.50px] absolute bg-primary/5 z-10" />
-                                    <div className="size-28 left-[-60px] top-[-59.50px] absolute bg-primary/5 rounded-full z-10" />
+                                <div className="w-64 h-48 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden">
+                                    {/* Background Decorative Shapes */}
+                                    <span
+                                        style={{
+                                            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                                            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                                        }}
+                                        className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+                                        aria-hidden="true"
+                                    />
+                                    <span
+                                        style={{
+                                            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                                            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                                        }}
+                                        className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+                                        aria-hidden="true"
+                                    />
 
                                     {doctor.imageUrl ? (
                                         <Image
@@ -111,9 +151,9 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     )}
                                 </div>
 
-                                {/* Name and Specialty */}
-                                <div className="self-stretch flex flex-col justify-start items-start gap-1">
-                                    <h3 className="justify-start text-slate-800 text-2xl font-semibold font-poppins">
+                                {/* Name and Title */}
+                                <div className="self-stretch flex flex-col justify-start items-start gap-1.5">
+                                    <h3 className="justify-start text-primary text-2xl font-semibold font-poppins">
                                         {doctor.name}
                                     </h3>
                                     <div className="px-2.5 py-1.5 bg-indigo-50 border border-indigo-100 rounded-2xl inline-flex justify-center items-center gap-2">
@@ -189,23 +229,27 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     </span>
                                     <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline-1 outline-offset-[-1px] outline-gray-200 inline-flex justify-center items-center gap-2">
                                         {flagUrl ? (
-                                            <div className="w-4 h-3 relative overflow-hidden rounded-[1px]">
+                                            <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                                                 <Image
                                                     src={flagUrl}
                                                     alt={`${doctor.region} flag`}
                                                     fill
                                                     className="object-contain"
+                                                    unoptimized
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="w-4 h-3 relative bg-white rounded-[1px] outline-1 outline-black overflow-hidden">
-                                                <div className="w-4 h-3 left-0 top-0 absolute bg-slate-50" />
+                                            <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
+                                                <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
                                                 <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                                             </div>
                                         )}
-                                        <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                        <Link
+                                            href={`/partners/${getHospitalSlug(doctor.hospital)}`}
+                                            className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
+                                        >
                                             {doctor.hospital}
-                                        </span>
+                                        </Link>
                                     </div>
                                 </div>
 

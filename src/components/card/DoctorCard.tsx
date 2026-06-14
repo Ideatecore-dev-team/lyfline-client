@@ -66,13 +66,27 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
   }
 
   return (
-    <div className="w-full max-w-[270px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
+    <div className="w-full max-w-[270px] h-full bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
 
       {/* Doctor Image Container */}
-      <div className="self-stretch h-48 relative bg-indigo-50 rounded-3xl outline-2 outline-gray-200 overflow-hidden">
+      <div className="self-stretch h-48 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden shrink-0">
         {/* Background Decorative Shapes */}
-        <div className="size-14 left-[213px] top-[138.50px] absolute bg-primary/5 z-10" />
-        <div className="size-28 left-[-60px] top-[-59.50px] absolute bg-primary/5 rounded-full z-10" />
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
 
         {displayImageUrl ? (
           <Image
@@ -88,7 +102,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
       </div>
 
       {/* Content Area */}
-      <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden">
+      <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col flex-grow justify-between gap-6 overflow-hidden">
         <div className="self-stretch flex flex-col justify-start items-start gap-3">
           {/* Specialty Badge */}
           <Badge
