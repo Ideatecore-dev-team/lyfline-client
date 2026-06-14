@@ -77,7 +77,7 @@ export default function ArticlesPage() {
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         {/* Main Section */}
-        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
 
           <div className="self-stretch flex flex-col justify-start items-start gap-8 z-10">
 

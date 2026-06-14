@@ -30,7 +30,7 @@ export const ArticlesSection: React.FC = () => {
   const displayedArticles = ALL_ARTICLES.slice(0, 3);
 
   return (
-    <section id="blog" className="w-full py-16 bg-white z-10 relative">
+    <section id="blog" className="w-full pt-16 bg-white z-20 relative">
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-36 flex flex-col justify-start items-start gap-6">
 
         {/* Section Header */}

@@ -50,11 +50,17 @@ export const WhyUsSection: React.FC = () => {
   ];
 
   return (
-    <section id="why-us" className="w-full py-16 bg-white relative overflow-hidden flex flex-col justify-start items-center">
+    <section id="why-us" className="bg-white w-full pb-16 relative overflow-hidden flex flex-col justify-start items-center">
 
-      {/* Decorative background elements */}
-      <div className="size-40 absolute left-[1272px] top-[245px] bg-[#FAFAFA] rounded-full z-0 hidden xl:block pointer-events-none"></div>
-      <div className="size-48 absolute left-[-100px] top-[-89px] bg-blue-50 rounded-full z-0 pointer-events-none"></div>
+      {/* Decorative Brand Watermark */}
+      <span
+        style={{
+          maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+        }}
+        className="absolute top-0 left-0 size-[100px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        aria-hidden="true"
+      />
 
       <div className="w-full max-w-[1440px] px-6 md:px-36 relative z-10 flex flex-col justify-start items-start gap-8">
 

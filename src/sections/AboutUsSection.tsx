@@ -6,14 +6,36 @@ import { Button } from "@/components/Button";
 
 export interface AboutUsSectionProps {
   showButton?: boolean;
+  isAboutPage?: boolean;
 }
 
-export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = true }) => {
+export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = true, isAboutPage = false }) => {
   const { lang } = useLanguage();
 
   return (
-    <section id="about-us" className="w-full bg-white flex justify-center">
-      <div className="w-full py-12 relative bg-white rounded-bl-[48px] rounded-br-[48px] outline outline-offset-[-1px] outline-gray-200 flex flex-col justify-start items-center gap-2.5 overflow-hidden">
+    <section id="about-us" className="w-full bg-transparent flex justify-center">
+      <div className={`w-full py-12 relative bg-white flex flex-col justify-start items-center gap-2.5 overflow-hidden ${
+        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline outline-offset-[-1px] outline-gray-200"
+      }`}>
+
+        {/* Decorative Watermarks */}
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
 
         {/* Content Container */}
         <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
@@ -21,9 +43,9 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
             {/* Left Column (WHO WE ARE card) */}
             <div className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-6">
-              <div className="w-full px-6 py-8 bg-slate-100 rounded-3xl flex flex-col justify-start items-start gap-6">
+              <div className="w-full px-6 py-8 bg-primary/10 rounded-3xl flex flex-col justify-start items-start gap-6">
                 <div className="flex flex-col justify-start items-start gap-2">
-                  <div className="text-slate-400 text-sm font-normal font-poppins tracking-wider">
+                  <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
                     {lang === "en" ? "WHO WE ARE" : "SIAPA KAMI"}
                   </div>
                   <h2 className="text-primary text-3xl font-medium font-poppins leading-tight">
@@ -70,7 +92,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
             </div>
 
             {/* Right Column (Stat Cards Sidebar) */}
-            <div className="w-full lg:w-[384px] p-6 bg-slate-100 rounded-[32px] flex flex-col justify-center items-start gap-6">
+            <div className="w-full lg:w-[384px] p-6 bg-primary/10 rounded-[32px] flex flex-col justify-center items-start gap-6">
               <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
                 {lang === "en" ? "MORE ABOUT US" : "TENTANG KAMI"}
               </div>
@@ -78,6 +100,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
               <div className="w-full grid grid-cols-2 gap-4">
                 {/* Stat 1: 30+ Hospitals Partners */}
                 <div className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  {/* Decorative Heart Watermark */}
+                  <span
+                    style={{
+                      maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                      WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                    }}
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#E83C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    aria-hidden="true"
+                  />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
                       <div className="text-center justify-start text-white text-3xl font-medium font-poppins">30+</div>
@@ -94,6 +125,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 2: 7 Countries */}
                 <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                  {/* Decorative Heart Watermark */}
+                  <span
+                    style={{
+                      maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                      WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                    }}
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    aria-hidden="true"
+                  />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
                       <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">7</div>
@@ -110,6 +150,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 3: 100% End-to-End Service Coverage */}
                 <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                  {/* Decorative Heart Watermark */}
+                  <span
+                    style={{
+                      maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                      WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                    }}
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    aria-hidden="true"
+                  />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
                       <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">100%</div>
@@ -126,6 +175,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 4: 95% Satisfaction Rate */}
                 <div className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  {/* Decorative Heart Watermark */}
+                  <span
+                    style={{
+                      maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                      WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                    }}
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    aria-hidden="true"
+                  />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
                       <div className="text-center justify-start text-white text-3xl font-medium font-poppins">95%</div>

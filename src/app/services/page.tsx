@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { NavBar } from "@/components/NavBar";
 import { CtaSection } from "@/sections/CtaSection";
 import { Footer } from "@/components/Footer";
@@ -9,9 +10,29 @@ import { ServiceDetailCard } from "@/components/card/ServiceDetailCard";
 import { SERVICES } from "@/data/mockData";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
-export default function ServicesPage() {
+function ServicesPageContent() {
   // First services card is open by default (index 0)
   const [openCardIdx, setOpenCardIdx] = useState<number | null>(0);
+  const searchParams = useSearchParams();
+  const serviceParam = searchParams.get("service");
+
+  useEffect(() => {
+    if (serviceParam) {
+      const idx = SERVICES.findIndex(s => s.id === serviceParam);
+      if (idx !== -1) {
+        setOpenCardIdx(idx);
+        
+        // Allow DOM layout and hydration to complete before calculating position
+        const timer = setTimeout(() => {
+          const element = document.getElementById(`service-detail-${serviceParam}`);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 300);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [serviceParam]);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -146,15 +167,16 @@ export default function ServicesPage() {
               </span>
               <div className="self-stretch flex flex-col justify-start items-start gap-8 w-full">
                 {SERVICES.map((service, index) => (
-                  <ServiceDetailCard
-                    key={service.id}
-                    icon={service.iconName}
-                    title={service.title}
-                    description={service.description}
-                    bullets={service.bullets}
-                    isOpen={openCardIdx === index}
-                    onToggle={() => setOpenCardIdx(openCardIdx === index ? null : index)}
-                  />
+                  <div key={service.id} id={`service-detail-${service.id}`} className="w-full">
+                    <ServiceDetailCard
+                      icon={service.iconName}
+                      title={service.title}
+                      description={service.description}
+                      bullets={service.bullets}
+                      isOpen={openCardIdx === index}
+                      onToggle={() => setOpenCardIdx(openCardIdx === index ? null : index)}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -176,5 +198,13 @@ export default function ServicesPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white text-primary">Loading...</div>}>
+      <ServicesPageContent />
+    </Suspense>
   );
 }

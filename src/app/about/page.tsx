@@ -44,7 +44,7 @@ export default function AboutPage() {
       {/* Main Content Sections */}
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Who We Are & Statistics */}
-        <AboutUsSection showButton={false} />
+        <AboutUsSection showButton={false} isAboutPage={true} />
         
         {/* Vision & Mission */}
         <VisionMissionSection />

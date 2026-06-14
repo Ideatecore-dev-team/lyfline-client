@@ -20,7 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:opacity-95",
+  primary: "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:from-[#335E99] hover:to-[#28528C]",
   "outline-white": "bg-transparent text-white outline outline-2 outline-offset-[-2px] outline-white hover:bg-white/10",
   "outline-primary": "bg-transparent text-[#3F71B7] outline outline-2 outline-offset-[-2px] outline-[#3F71B7] hover:bg-[#3F71B7]/10",
   "slate-primary": "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:opacity-95",

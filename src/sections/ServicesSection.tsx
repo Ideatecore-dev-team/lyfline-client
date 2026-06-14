@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 import { SERVICES } from "@/data/mockData";
 import { ServiceCard } from "@/components/card/ServiceCard";
 
@@ -96,12 +97,12 @@ export const ServicesSection: React.FC = () => {
   const { lang } = useLanguage();
 
   return (
-    <section className="w-full py-16 bg-slate-100 flex flex-col justify-start items-center gap-2.5">
+    <section className="w-full py-16 bg-transparent flex flex-col justify-start items-center gap-2.5">
       <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-start gap-12 z-10">
-        
+
         {/* Header Block */}
         <div className="flex flex-col justify-start items-start gap-1">
-          <div className="text-slate-400 text-sm font-normal font-poppins tracking-wider">
+          <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "WHAT WE DO" : "APA YANG KAMI LAKUKAN"}
           </div>
           <div className="inline-flex justify-start items-center gap-3 mt-2">
@@ -135,12 +136,14 @@ export const ServicesSection: React.FC = () => {
                 variants={cardVariants}
                 className="w-full flex justify-center"
               >
-                <ServiceCard
-                  icon={service.iconName}
-                  title={localized.title}
-                  description={localized.desc}
-                  variant={index === 0 ? "blue" : "white"}
-                />
+                <Link href={`/services?service=${service.id}`} className="w-full flex justify-center">
+                  <ServiceCard
+                    icon={service.iconName}
+                    title={localized.title}
+                    description={localized.desc}
+                    variant={index === 0 ? "blue" : "white"}
+                  />
+                </Link>
               </motion.div>
             );
           })}

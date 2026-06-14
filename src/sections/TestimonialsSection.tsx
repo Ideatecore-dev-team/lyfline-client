@@ -3,6 +3,7 @@
 import React from "react";
 import { TestimonialCard } from "@/components/card/TestimonialCard";
 import { useLanguage } from "@/context/LanguageContext";
+import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
 interface Testimonial {
   id: string;
@@ -51,7 +52,29 @@ export const TestimonialsSection: React.FC = () => {
   const tripleTestimonials = [...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS];
 
   return (
-    <section className="w-full py-16 bg-gradient-to-b from-[#E23737] to-[#E02828] text-white relative overflow-hidden flex flex-col justify-start items-center gap-6">
+    <section className="w-full py-16 bg-gradient-to-b from-[#E23737] to-[#E02828] text-white relative overflow-hidden flex flex-col justify-start items-center gap-0">
+
+      {/* Noise Texture Background */}
+      <NoiseTexture noiseOpacity={0.2} />
+
+      {/* Decorative Brand Watermarks */}
+      <span
+        style={{
+          maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+        }}
+        className="absolute top-0 left-0 size-[120px] pointer-events-none select-none bg-[#F33C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        aria-hidden="true"
+      />
+
+      <span
+        style={{
+          maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+        }}
+        className="absolute bottom-0 right-0 size-[150px] pointer-events-none select-none bg-[#F33C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        aria-hidden="true"
+      />
 
       {/* Header Container */}
       <div className="w-full max-w-[1152px] px-6 xl:px-0 flex flex-col justify-start items-start gap-1 z-10">
@@ -76,7 +99,7 @@ export const TestimonialsSection: React.FC = () => {
       </div>
 
       {/* Infinite scrolling ticker wrapper */}
-      <div className="w-full overflow-hidden py-10 relative z-10 flex justify-center items-center">
+      <div className="w-full overflow-hidden pt-6 pb-10 relative z-10 flex justify-center items-center">
         {/* Inject infinite marquee keyframes inline */}
         <style>{`
           @keyframes marqueeLeftToRight {
@@ -111,3 +134,4 @@ export const TestimonialsSection: React.FC = () => {
     </section>
   );
 };
+

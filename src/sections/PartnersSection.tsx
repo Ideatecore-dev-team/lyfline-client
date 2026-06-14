@@ -1,133 +1,71 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
 
-export const PartnersSection: React.FC = () => {
+export interface PartnersSectionProps {
+  isHomePage?: boolean;
+}
+
+export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = false }) => {
   const { lang } = useLanguage();
 
   const countries = [
     {
       name: lang === "en" ? "Indonesia" : "Indonesia",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-40 h-28 left-[-42px] top-[-22px] absolute bg-slate-50"></div>
-          <div className="w-40 h-28 left-[-42px] top-[-22px] absolute bg-slate-50"></div>
-          <div className="w-40 h-14 left-[-42px] top-[-22px] absolute bg-red-600"></div>
-        </div>
-      )
+      flagSrc: "/Flags/ID - Indonesia.svg"
     },
     {
       name: lang === "en" ? "Singapore" : "Singapura",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="w-24 h-9 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-        </div>
-      )
+      flagSrc: "/Flags/SG - Singapore.svg"
     },
     {
       name: lang === "en" ? "Malaysia" : "Malaysia",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="w-24 h-2.5 left-[-11.92px] top-[16.13px] absolute bg-red-600"></div>
-          <div className="w-24 h-2.5 left-[-11.92px] top-[32.38px] absolute bg-red-600"></div>
-          <div className="w-24 h-2 left-[-11.65px] top-[48px] absolute bg-red-600"></div>
-          <div className="w-24 h-2 left-[-11.65px] top-[63.63px] absolute bg-red-600"></div>
-          <div className="w-24 h-2 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-          <div className="w-12 h-9 left-[-12px] top-[0.50px] absolute bg-indigo-600"></div>
-          <div className="w-6 h-7 left-[-7.34px] top-[6.56px] absolute bg-yellow-400"></div>
-          <div className="size-5 left-[13px] top-[9.25px] absolute bg-yellow-400"></div>
-        </div>
-      )
+      flagSrc: "/Flags/MY - Malaysia.svg"
     },
     {
       name: lang === "en" ? "Thailand" : "Thailand",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-6 left-[-12px] top-[50.50px] absolute bg-red-600"></div>
-          <div className="w-24 h-5 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-          <div className="w-24 h-6 left-[-12px] top-[25.50px] absolute bg-indigo-600 outline-8 outline-white"></div>
-        </div>
-      )
+      flagSrc: "/Flags/TH - Thailand.svg"
     },
     {
       name: lang === "en" ? "China" : "China",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-          <div className="size-8 left-[-5.40px] top-[6.59px] absolute bg-yellow-400"></div>
-          <div className="size-4 left-[26.73px] top-[6.49px] absolute bg-yellow-400"></div>
-          <div className="size-4 left-[32.98px] top-[18.99px] absolute bg-yellow-400"></div>
-          <div className="size-4 left-[26.73px] top-[31.49px] absolute bg-yellow-400"></div>
-          <div className="size-4 left-[14.23px] top-[37.74px] absolute bg-yellow-400"></div>
-        </div>
-      )
+      flagSrc: "/Flags/CN - China.svg"
     },
     {
       name: lang === "en" ? "Japan" : "Jepang",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="size-12 left-[14.56px] top-[14.56px] absolute bg-red-600"></div>
-        </div>
-      )
+      flagSrc: "/Flags/JP - Japan.svg"
     },
     {
       name: lang === "en" ? "Korea" : "Korea",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-slate-50"></div>
-          <div className="size-10 left-[18px] top-[18.95px] absolute bg-indigo-600"></div>
-          <div className="size-10 left-[18px] top-[18.95px] absolute bg-indigo-600"></div>
-          <div className="w-10 h-7 left-[18.23px] top-[17.56px] absolute bg-red-600"></div>
-        </div>
-      )
+      flagSrc: "/Flags/KR - Korea (South).svg"
     },
     {
       name: lang === "en" ? "India" : "India",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-32 h-24 left-[-24.50px] top-[-12px] absolute bg-slate-50"></div>
-          <div className="w-32 h-24 left-[-24.50px] top-[-12px] absolute bg-slate-50"></div>
-          <div className="w-32 h-8 left-[-24.50px] top-[-12px] absolute bg-amber-500"></div>
-          <div className="w-32 h-8 left-[-24.50px] top-[50.50px] absolute bg-lime-600"></div>
-          <div className="size-8 left-[22.40px] top-[19.25px] absolute bg-indigo-600"></div>
-        </div>
-      )
+      flagSrc: "/Flags/IN - India.svg"
     },
     {
       name: lang === "en" ? "Taiwan" : "Taiwan",
-      flagElement: (
-        <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-          <div className="w-24 h-20 left-[-12px] top-[0.50px] absolute bg-red-600"></div>
-          <div className="w-14 h-11 left-[-12px] top-[0.50px] absolute bg-blue-800"></div>
-        </div>
-      )
+      flagSrc: "/Flags/TW - Taiwan.svg"
     }
   ];
 
   const logos = [
-    { src: "https://placehold.co/119x78", className: "w-28 h-20" },
-    { src: "https://placehold.co/160x60", className: "w-40 h-14" },
-    { src: "https://placehold.co/176x59", className: "w-44 h-14" },
-    { src: "https://placehold.co/182x41", className: "w-44 h-10" },
-    { src: "https://placehold.co/167x67", className: "w-40 h-16" },
-    { src: "https://placehold.co/197x55", className: "w-full h-14" },
-    { src: "https://placehold.co/154x50", className: "w-40 h-12" },
-    { src: "https://placehold.co/58x55", className: "w-14 h-14" },
-    { src: "https://placehold.co/170x43", className: "w-44 h-11" },
-    { src: "https://placehold.co/171x52", className: "w-44 h-12" }
+    { src: "/Partners/1.png" },
+    { src: "/Partners/2.png" },
+    { src: "/Partners/3.png" },
+    { src: "/Partners/4.png" },
+    { src: "/Partners/5.png" },
+    { src: "/Partners/6.png" },
+    { src: "/Partners/7.png" },
+    { src: "/Partners/8.png" },
+    { src: "/Partners/9.png" },
+    { src: "/Partners/10.png" }
   ];
 
   return (
-    <section id="partners" className="w-full py-16 bg-white flex flex-col justify-start items-center gap-2.5 relative overflow-hidden">
+    <section id="partners" className={`bg-white w-full py-16 flex flex-col justify-start items-center gap-2.5 relative overflow-hidden ${isHomePage ? "bg-transparent" : "bg-white"}`}>
 
       {/* Content Container */}
       <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 z-10">
@@ -137,7 +75,7 @@ export const PartnersSection: React.FC = () => {
           <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider uppercase">
             {lang === "en" ? "EXPERTISE ACROSS THE WORLD" : "KEAHLIAN DI SELURUH DUNIA"}
           </div>
-          <h2 className="text-primary text-3xl font-semibold font-sans mt-1">
+          <h2 className="text-primary text-3xl font-medium font-sans mt-1">
             {lang === "en" ? "40+ Partners Across These Countries" : "40+ Mitra di Negara-Negara Ini"}
           </h2>
         </div>
@@ -149,7 +87,15 @@ export const PartnersSection: React.FC = () => {
           <div className="w-full flex flex-row flex-wrap justify-center lg:justify-between items-center gap-6 lg:gap-0">
             {countries.map((country, idx) => (
               <div key={idx} className="w-24 flex flex-col justify-start items-center gap-2 group">
-                {country.flagElement}
+                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
+                  <Image
+                    src={country.flagSrc}
+                    alt={country.name}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
                 <div className="self-stretch text-center text-black text-base font-medium font-poppins group-hover:text-primary transition-colors">
                   {country.name}
                 </div>
@@ -165,12 +111,14 @@ export const PartnersSection: React.FC = () => {
             {logos.map((logo, idx) => (
               <div
                 key={idx}
-                className="w-full h-24 p-3 bg-white rounded-xl outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-center items-center gap-2 shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group"
+                className="w-full h-24 relative bg-white rounded-xl outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-center items-center shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group overflow-hidden"
               >
-                <img
+                <Image
                   src={logo.src}
                   alt="Partner Logo"
-                  className={`${logo.className} object-contain filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300`}
+                  fill
+                  className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 20vw"
                 />
               </div>
             ))}
@@ -194,6 +142,47 @@ export const PartnersSection: React.FC = () => {
       <div className="size-48 left-[-100px] top-[570px] absolute bg-blue-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
       <div className="size-48 left-[90%] lg:left-[1340px] top-[-104px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
 
+      {/* Decorative Heart Watermark */}
+      {!isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Decorative Quarter Circle Watermark (Bottom-Left) */}
+      {isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            transform: 'scaleY(-1)',
+            WebkitTransform: 'scaleY(-1)',
+          }}
+          className="absolute bottom-0 left-0 size-[100px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Decorative Quarter Circle Watermark (Top-Right - Red Variant) */}
+      {isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            transform: 'scaleX(-1)',
+            WebkitTransform: 'scaleX(-1)',
+          }}
+          className="absolute top-0 right-0 size-[100px] pointer-events-none select-none opacity-10 bg-[#F33C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
     </section>
   );
 };
+

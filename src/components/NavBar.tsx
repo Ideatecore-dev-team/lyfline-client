@@ -25,15 +25,15 @@ export const NavBar: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200">
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-4 flex justify-between items-center bg-white">
-        
+
         {/* LOGO (matching Figma dimensions and classes) */}
         <Link href="/" className="w-40 h-12 relative overflow-hidden block">
           <Image
             src="/logoBlack.png"
             alt="LYFLINE Logo"
-            width={160}
+            width={200}
             height={32}
-            className="w-40 h-8 left-[3px] top-[8px] absolute object-contain"
+            className="w-40 h-10 left-[3px] top-[4px] absolute object-contain"
             priority
           />
         </Link>
@@ -51,10 +51,10 @@ export const NavBar: React.FC = () => {
               </Link>
             );
           })}
-          
+
           {/* Working Stateful Flag Switcher (matching Figma size-8 wrapper) */}
           <div className="size-8 inline-flex flex-col justify-center items-center">
-            <button 
+            <button
               onClick={toggleLang}
               className="flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer border-0 bg-transparent p-0"
               title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
@@ -110,7 +110,7 @@ export const NavBar: React.FC = () => {
           {/* Language Switcher Mobile */}
           <div className="flex items-center justify-between py-2 border-t border-slate-100 mt-2">
             <span className="text-sm font-medium text-neutral-muted">{t("nav.select_language")}</span>
-            <button 
+            <button
               onClick={toggleLang}
               className="flex items-center gap-1.5 hover:opacity-80 transition-opacity bg-slate-100/80 hover:bg-slate-100 px-3.5 py-2 rounded-full border border-slate-200/50 cursor-pointer"
             >

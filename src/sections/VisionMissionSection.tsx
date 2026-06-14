@@ -3,19 +3,20 @@
 import React from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { Award, Handshake, HeartHandshake } from "lucide-react";
 import { motion } from "framer-motion";
+import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
 export const VisionMissionSection: React.FC = () => {
   const { lang } = useLanguage();
 
   return (
-    <section id="vision-mission" className="w-full bg-primary-light/20 flex justify-center py-16 border-b border-gray-100">
-      <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-center gap-6">
-        
+    <section id="vision-mission" className="w-full bg-primary/10 flex justify-center py-16 border-b border-gray-100 relative overflow-hidden">
+      <NoiseTexture noiseOpacity={0.05} />
+      <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-center gap-6 relative z-10">
+
         {/* Header Section */}
         <div className="flex flex-col justify-start items-center gap-1 text-center">
-          <span className="self-stretch text-slate-400 text-sm font-normal font-poppins tracking-wider">
+          <span className="self-stretch text-primary/50 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "OUR VISION & MISSION" : "VISI & MISI KAMI"}
           </span>
           <div className="inline-flex justify-center items-center gap-3 mt-1">
@@ -28,15 +29,15 @@ export const VisionMissionSection: React.FC = () => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <h2 className="text-accent text-3xl font-semibold font-sans">
+            <h2 className="text-accent text-3xl font-sans">
               {lang === "en" ? "Dedicated to Your Health" : "Didedikasikan untuk Kesehatan Anda"}
             </h2>
           </div>
         </div>
 
         {/* Vision Statement Banner */}
-        <motion.div 
-          className="w-full bg-white rounded-[32px] p-6 md:p-8 shadow-sm flex flex-col justify-center items-center border border-gray-100"
+        <motion.div
+          className="w-full bg-white rounded-[32px] p-6 md:p-8 flex flex-col justify-center items-center border border-gray-100"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -51,21 +52,41 @@ export const VisionMissionSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 3 Cards Row */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-6 relative mt-4">
-          
+        {/* 4 Cards Row */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-[2px] bg-white z-0 pointer-events-none" />
+
+          {/* Connecting Line (Mobile/Tablet Stacked) */}
+          <div className="block lg:hidden absolute left-1/2 -translate-x-1/2 top-[130px] bottom-[130px] w-[2px] bg-white z-0 pointer-events-none" />
+
           {/* Card 1: Professional Excellence */}
-          <motion.div 
-            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group hover:shadow-lg transition-all duration-300 min-h-[260px]"
+          <motion.div
+            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group min-h-[260px] cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            whileHover={{
+              y: -10,
+              rotateX: 8,
+              rotateY: -8,
+              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
-            <div className="p-4 bg-white/10 rounded-2xl outline outline-offset-[-1px] outline-white/20 inline-flex justify-start items-center gap-2.5 z-10">
-              <Award className="w-6 h-6 text-white" />
+            <div className="p-4 bg-[#ECF1F8] rounded-2xl outline outline-offset-[-1px] outline-[#4D7CBC] inline-flex justify-start items-center gap-2.5 z-10">
+              <span
+                style={{
+                  maskImage: 'url("/icons/Star 1.svg")',
+                  WebkitMaskImage: 'url("/icons/Star 1.svg")',
+                }}
+                className="size-6 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
             </div>
-            
+
             <div className="flex flex-col justify-start items-start gap-2 z-10">
               <h3 className="text-white text-2xl font-medium font-poppins">
                 {lang === "en" ? "Professional Excellence" : "Keunggulan Profesional"}
@@ -78,23 +99,44 @@ export const VisionMissionSection: React.FC = () => {
                 )}
               </p>
             </div>
-            
-            {/* Background Decorative Circle */}
-            <div className="w-36 h-36 -right-6 -top-16 absolute bg-white/5 rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-500"></div>
+
+            {/* Background Decorative Quarter Circle */}
+            <span
+              style={{
+                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+              }}
+              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
+              aria-hidden="true"
+            />
           </motion.div>
 
           {/* Card 2: Trusted Partnerships */}
-          <motion.div 
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 shadow-sm group hover:shadow-lg transition-all duration-300 min-h-[260px]"
+          <motion.div
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{
+              y: -10,
+              rotateX: 8,
+              rotateY: -8,
+              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
             <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
-              <Handshake className="w-6 h-6 text-white" />
+              <span
+                style={{
+                  maskImage: 'url("/icons/Like 1.svg")',
+                  WebkitMaskImage: 'url("/icons/Like 1.svg")',
+                }}
+                className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
             </div>
-            
+
             <div className="flex flex-col justify-start items-start gap-2 z-10">
               <h3 className="text-accent text-2xl font-medium font-poppins">
                 {lang === "en" ? "Trusted Partnerships" : "Kemitraan Tepercaya"}
@@ -107,23 +149,44 @@ export const VisionMissionSection: React.FC = () => {
                 )}
               </p>
             </div>
-            
-            {/* Background Decorative Circle */}
-            <div className="w-36 h-36 -right-6 -top-16 absolute bg-primary-light rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-500"></div>
+
+            {/* Background Decorative Quarter Circle */}
+            <span
+              style={{
+                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+              }}
+              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
+              aria-hidden="true"
+            />
           </motion.div>
 
           {/* Card 3: Patient-Centered Service */}
-          <motion.div 
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 shadow-sm group hover:shadow-lg transition-all duration-300 min-h-[260px]"
+          <motion.div
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            whileHover={{
+              y: -10,
+              rotateX: 8,
+              rotateY: -8,
+              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
             <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
-              <HeartHandshake className="w-6 h-6 text-white" />
+              <span
+                style={{
+                  maskImage: 'url("/icons/Happy 2.svg")',
+                  WebkitMaskImage: 'url("/icons/Happy 2.svg")',
+                }}
+                className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
             </div>
-            
+
             <div className="flex flex-col justify-start items-start gap-2 z-10">
               <h3 className="text-accent text-2xl font-medium font-poppins">
                 {lang === "en" ? "Patient-Centered Service" : "Layanan Berpusat pada Pasien"}
@@ -136,9 +199,66 @@ export const VisionMissionSection: React.FC = () => {
                 )}
               </p>
             </div>
-            
-            {/* Background Decorative Circle */}
-            <div className="w-36 h-36 -right-6 -top-16 absolute bg-primary-light rounded-full pointer-events-none group-hover:scale-110 transition-transform duration-500"></div>
+
+            {/* Background Decorative Quarter Circle */}
+            <span
+              style={{
+                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+              }}
+              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
+              aria-hidden="true"
+            />
+          </motion.div>
+
+          {/* Card 4: Seamless Coordination */}
+          <motion.div
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{
+              y: -10,
+              rotateX: 8,
+              rotateY: -8,
+              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
+          >
+            <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
+              <span
+                style={{
+                  maskImage: 'url("/icons/Activity 1.svg")',
+                  WebkitMaskImage: 'url("/icons/Activity 1.svg")',
+                }}
+                className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
+            </div>
+
+            <div className="flex flex-col justify-start items-start gap-2 z-10">
+              <h3 className="text-accent text-2xl font-medium font-poppins">
+                {lang === "en" ? "Seamless Coordination" : "Koordinasi Mulus"}
+              </h3>
+              <p className="text-black text-sm font-normal font-poppins leading-relaxed">
+                {lang === "en" ? (
+                  "Managing all administrative, scheduling, and logistical details so you can focus entirely on recovery."
+                ) : (
+                  "Mengelola semua detail administratif, penjadwalan, dan logistik sehingga Anda dapat fokus sepenuhnya pada pemulihan."
+                )}
+              </p>
+            </div>
+
+            {/* Background Decorative Quarter Circle */}
+            <span
+              style={{
+                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+              }}
+              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
+              aria-hidden="true"
+            />
           </motion.div>
 
         </div>

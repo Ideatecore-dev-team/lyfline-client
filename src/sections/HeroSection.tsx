@@ -18,8 +18,8 @@ export const HeroSection: React.FC = () => {
           backgroundImage: `url('/background-images/bg-hero-1.jpg')`
         }}
       />
-      {/* Slate tint overlay for contrast and layout legibility */}
-      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-0" />
+      {/* Brand blue tint overlay for contrast and layout legibility */}
+      <div className="absolute inset-0 backdrop-blur-[2px] z-0" style={{ backgroundColor: "#345E98CC" }} />
 
       {/* Decorative premium glows */}
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#3F71B7]/10 blur-3xl z-0 animate-pulse" />
@@ -68,7 +68,7 @@ export const HeroSection: React.FC = () => {
               variant="primary"
               text={lang === "en" ? "Find a Doctor" : "Cari Dokter"}
               rightIcon="Right 1"
-              className=" hover:opacity-95 shadow-lg active:scale-98"
+              className="shadow-lg active:scale-98 !bg-[#E02828] !bg-none !text-white hover:!bg-[#E02828]/90"
             />
             <Button
               variant="outline-white"

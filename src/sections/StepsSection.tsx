@@ -65,10 +65,20 @@ export const StepsSection: React.FC = () => {
       <div className="absolute top-0 left-0 w-[40%] h-[30%] bg-white/5 blur-3xl rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[30%] h-[40%] bg-white/5 blur-3xl rounded-full pointer-events-none" />
 
+      {/* Decorative Heart Watermark */}
+      <span
+        style={{
+          maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+        }}
+        className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        aria-hidden="true"
+      />
+
       {/* Header Container */}
       <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-start gap-12 z-10">
         <div className="flex flex-col justify-start items-start gap-0">
-          <div className="text-slate-200/60 text-sm font-normal font-poppins tracking-wider">
+          <div className="text-white/60 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "HOW WE WORK" : "BAGAIMANA KAMI BEKERJA"}
           </div>
           <h2 className="text-white text-3xl font-medium font-poppins mt-2">
@@ -94,9 +104,9 @@ export const StepsSection: React.FC = () => {
             {/* Number Container & Line Row */}
             <div className="relative w-full flex items-center">
               <div
-                className={`size-16 p-4 rounded-2xl flex justify-center items-center backdrop-blur-md border transition-transform duration-300 group-hover:scale-105 shadow-lg ${step.isRed
-                  ? "bg-[#E02828]/45 border-[#E02828]/25"
-                  : "bg-white/10 border-white/15"
+                className={`size-16 p-4 rounded-2xl flex justify-center items-center backdrop-blur-lg border shadow-lg transition-transform duration-300 group-hover:scale-105 ${step.isRed
+                  ? "bg-[#E02828]/35 border-[#E02828]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+                  : "bg-white/10 border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
                   }`}
               >
                 <div className="text-white text-3xl font-semibold font-sans leading-none">
@@ -115,7 +125,7 @@ export const StepsSection: React.FC = () => {
 
             {/* Step Content */}
             <div className="self-stretch flex flex-col justify-start items-start gap-3">
-              <h3 className="self-stretch justify-start text-white text-base font-medium font-poppins group-hover:text-indigo-200 transition-colors">
+              <h3 className="self-stretch justify-start text-white text-base font-medium font-poppins">
                 {step.title}
               </h3>
 
