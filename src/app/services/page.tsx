@@ -16,21 +16,28 @@ function ServicesPageContent() {
   const searchParams = useSearchParams();
   const serviceParam = searchParams.get("service");
 
-  useEffect(() => {
+  const [prevServiceParam, setPrevServiceParam] = useState<string | null>(null);
+
+  if (serviceParam !== prevServiceParam) {
+    setPrevServiceParam(serviceParam);
     if (serviceParam) {
       const idx = SERVICES.findIndex(s => s.id === serviceParam);
       if (idx !== -1) {
         setOpenCardIdx(idx);
-        
-        // Allow DOM layout and hydration to complete before calculating position
-        const timer = setTimeout(() => {
-          const element = document.getElementById(`service-detail-${serviceParam}`);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        }, 300);
-        return () => clearTimeout(timer);
       }
+    }
+  }
+
+  useEffect(() => {
+    if (serviceParam) {
+      // Allow DOM layout and hydration to complete before calculating position
+      const timer = setTimeout(() => {
+        const element = document.getElementById(`service-detail-${serviceParam}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [serviceParam]);
 

@@ -6,12 +6,12 @@ export interface DropdownOption {
   searchLabel?: string;
 }
 
-interface DropdownProps {
+interface DropdownProps<T extends string | string[]> {
   label?: ReactNode;
   placeholder?: string;
   options: DropdownOption[];
-  value: string | string[]; // Single value or array of values for multiple select
-  onChange: (value: any) => void;
+  value: T; // Single value or array of values for multiple select
+  onChange: (value: T) => void;
   multiple?: boolean;
   containerClassName?: string;
   disabled?: boolean;
@@ -30,7 +30,7 @@ const Icon = ({ name, className = "size-5 bg-current" }: { name: string; classNa
   />
 );
 
-export default function Dropdown({
+export default function Dropdown<T extends string | string[]>({
   label,
   placeholder = "Select option...",
   options,
@@ -41,7 +41,7 @@ export default function Dropdown({
   disabled = false,
   selectClassName = "bg-indigo-50",
   allowCustomValues = false,
-}: DropdownProps) {
+}: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +69,7 @@ export default function Dropdown({
   // Helper to check if an option is selected
   const isSelected = (val: string) => {
     if (multiple && Array.isArray(value)) {
-      return value.includes(val);
+      return (value as string[]).includes(val);
     }
     return value === val;
   };
@@ -77,14 +77,14 @@ export default function Dropdown({
   // Toggle selection
   const handleSelect = (optionValue: string) => {
     if (multiple) {
-      const currentValues = Array.isArray(value) ? value : [];
+      const currentValues = (Array.isArray(value) ? value : []) as string[];
       if (currentValues.includes(optionValue)) {
-        onChange(currentValues.filter((v) => v !== optionValue));
+        onChange(currentValues.filter((v) => v !== optionValue) as unknown as T);
       } else {
-        onChange([...currentValues, optionValue]);
+        onChange([...currentValues, optionValue] as unknown as T);
       }
     } else {
-      onChange(optionValue);
+      onChange(optionValue as unknown as T);
       setIsOpen(false);
       setSearchQuery("");
     }
@@ -94,14 +94,14 @@ export default function Dropdown({
   const handleRemoveItem = (e: React.MouseEvent, optionValue: string) => {
     e.stopPropagation();
     if (multiple && Array.isArray(value)) {
-      onChange(value.filter((v) => v !== optionValue));
+      onChange((value as string[]).filter((v) => v !== optionValue) as unknown as T);
     }
   };
 
   // Get display text/elements for input field
   const getSelectedLabels = () => {
     if (multiple && Array.isArray(value)) {
-      return value.map((val) => {
+      return (value as string[]).map((val) => {
         const found = options.find((opt) => opt.value === val);
         return found || { value: val, label: val };
       });
@@ -230,7 +230,7 @@ export default function Dropdown({
               onClick={() => handleSelect(searchQuery.trim())}
               className="px-4 py-2.5 rounded-lg flex items-center justify-between text-base font-medium font-sans text-primary hover:bg-slate-50 cursor-pointer border-t border-slate-100"
             >
-              <span>Add "{searchQuery.trim()}"</span>
+              <span>Add &quot;{searchQuery.trim()}&quot;</span>
               <Icon name="Add" className="size-4 bg-primary shrink-0 animate-pulse" />
             </div>
           )}

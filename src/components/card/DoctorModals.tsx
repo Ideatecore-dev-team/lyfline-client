@@ -66,8 +66,8 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
     const flagUrl = getFlagUrl(doctor.region || "");
 
     // Mock qualifications and languages if not present
-    const qualifications = (doctor as any).qualifications || ["MBBS", "M.Medicine (MAL)"];
-    const languages = (doctor as any).languages || ["English", "Malay"];
+    const qualifications = doctor.qualifications || ["MBBS", "M.Medicine (MAL)"];
+    const languages = doctor.languages || ["English", "Malay"];
 
     return (
         <AnimatePresence>

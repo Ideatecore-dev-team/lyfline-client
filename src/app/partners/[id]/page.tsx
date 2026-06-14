@@ -6,7 +6,6 @@ import Link from "next/link";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
-import { notFound } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DOCTORS } from "@/data/mockData";
 import { DoctorCard } from "@/components/card/DoctorCard";
@@ -179,6 +178,12 @@ const PARTNERS_DETAILS: Record<string, PartnerDetail> = {
   }
 };
 
+const FALLBACK_PARTNER_IMAGES = [
+  "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80"
+];
+
 export default function PartnerDetailPage({ params }: PageProps) {
   const { id } = use(params);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
@@ -195,11 +200,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
     address: "Address details not available.",
     description: "Partner medical service provider description not available.",
     mapsUrl: "https://maps.google.com",
-    images: [
-      "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80"
-    ]
+    images: FALLBACK_PARTNER_IMAGES
   };
 
   useEffect(() => {
@@ -210,7 +211,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [activeImageIdx, partner.images.length]);
+  }, [partner.images]);
 
   const flagUrl = getFlagUrl(partner.country);
 

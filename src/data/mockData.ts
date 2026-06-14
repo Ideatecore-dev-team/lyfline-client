@@ -13,6 +13,8 @@ export interface Doctor {
   hospital: string;
   region: string;
   imageUrl: string;
+  qualifications?: string[];
+  languages?: string[];
 }
 
 export interface MedicalService {

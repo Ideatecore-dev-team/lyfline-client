@@ -49,6 +49,21 @@ const convertToEmbeddable = (url: string): string | null => {
     return null;
 };
 
+const resolveSyncUrl = (url: string): { resolved: string; error: string } => {
+    // 2. If it's already an embed URL, use directly
+    if (url.includes("google.com/maps/embed") || url.includes("output=embed")) {
+        return { resolved: url, error: "" };
+    }
+
+    // 4. Convert normal maps link directly
+    const embeddable = convertToEmbeddable(url);
+    if (embeddable) {
+        return { resolved: embeddable, error: "" };
+    } else {
+        return { resolved: "", error: "Invalid Google Maps link format." };
+    }
+};
+
 export default function GooglaMapsPreviewModal({
     isOpen,
     onClose,
@@ -58,20 +73,48 @@ export default function GooglaMapsPreviewModal({
     const [resolving, setResolving] = useState<boolean>(false);
     const [resolveError, setResolveError] = useState<string>("");
 
-    useEffect(() => {
-        if (!isOpen) return;
+    const [prevProps, setPrevProps] = useState({ isOpen, embedUrl });
 
-        let active = true;
-        const clean = embedUrl?.trim() || "";
-
-        if (!clean) {
+    if (isOpen !== prevProps.isOpen || embedUrl !== prevProps.embedUrl) {
+        setPrevProps({ isOpen, embedUrl });
+        if (!isOpen) {
             setResolvedUrl("");
             setResolveError("");
             setResolving(false);
-            return;
-        }
+        } else {
+            const clean = embedUrl?.trim() || "";
+            if (!clean) {
+                setResolvedUrl("");
+                setResolveError("");
+                setResolving(false);
+            } else {
+                let urlToProcess = clean;
+                if (urlToProcess.startsWith("<iframe")) {
+                    const match = urlToProcess.match(/src="([^"]+)"/);
+                    if (match && match[1]) {
+                        urlToProcess = match[1];
+                    }
+                }
 
-        // 1. If it's an iframe code, extract src first
+                if (urlToProcess.includes("maps.app.goo.gl") || urlToProcess.includes("goo.gl/maps")) {
+                    setResolving(true);
+                    setResolveError("");
+                    setResolvedUrl("");
+                } else {
+                    const { resolved, error } = resolveSyncUrl(urlToProcess);
+                    setResolvedUrl(resolved);
+                    setResolveError(error);
+                    setResolving(false);
+                }
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (!isOpen || !resolving) return;
+
+        let active = true;
+        const clean = embedUrl?.trim() || "";
         let urlToProcess = clean;
         if (urlToProcess.startsWith("<iframe")) {
             const match = urlToProcess.match(/src="([^"]+)"/);
@@ -80,63 +123,38 @@ export default function GooglaMapsPreviewModal({
             }
         }
 
-        // 2. If it's already an embed URL, use directly
-        if (urlToProcess.includes("google.com/maps/embed") || urlToProcess.includes("output=embed")) {
-            setResolvedUrl(urlToProcess);
-            setResolveError("");
-            setResolving(false);
-            return;
-        }
-
-        // 3. If it's a shortened URL (maps.app.goo.gl or goo.gl/maps), resolve it using CORS proxy
-        if (urlToProcess.includes("maps.app.goo.gl") || urlToProcess.includes("goo.gl/maps")) {
-            setResolving(true);
-            setResolveError("");
-            setResolvedUrl("");
-
-            fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(urlToProcess)}`)
-                .then((res) => {
-                    if (!res.ok) throw new Error("Failed to reach unshortening service");
-                    return res.json();
-                })
-                .then((data) => {
-                    if (!active) return;
-                    const destination = data.status?.url;
-                    if (destination && destination.includes("google.com/maps")) {
-                        const embeddable = convertToEmbeddable(destination);
-                        if (embeddable) {
-                            setResolvedUrl(embeddable);
-                            setResolveError("");
-                        } else {
-                            setResolveError("Could not extract a valid location from the resolved link.");
-                        }
+        fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(urlToProcess)}`)
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to reach unshortening service");
+                return res.json();
+            })
+            .then((data) => {
+                if (!active) return;
+                const destination = data.status?.url;
+                if (destination && destination.includes("google.com/maps")) {
+                    const embeddable = convertToEmbeddable(destination);
+                    if (embeddable) {
+                        setResolvedUrl(embeddable);
+                        setResolveError("");
                     } else {
-                        setResolveError("Could not resolve short link to a valid Google Maps address.");
+                        setResolveError("Could not extract a valid location from the resolved link.");
                     }
-                    setResolving(false);
-                })
-                .catch((err) => {
-                    if (!active) return;
-                    console.error("Unshorten error:", err);
-                    setResolveError("Failed to unshorten maps link due to a network connection error.");
-                    setResolving(false);
-                });
-        } else {
-            // 4. Convert normal maps link directly
-            const embeddable = convertToEmbeddable(urlToProcess);
-            if (embeddable) {
-                setResolvedUrl(embeddable);
-                setResolveError("");
-            } else {
-                setResolveError("Invalid Google Maps link format.");
-            }
-            setResolving(false);
-        }
+                } else {
+                    setResolveError("Could not resolve short link to a valid Google Maps address.");
+                }
+                setResolving(false);
+            })
+            .catch((err) => {
+                if (!active) return;
+                console.error("Unshorten error:", err);
+                setResolveError("Failed to unshorten maps link due to a network connection error.");
+                setResolving(false);
+            });
 
         return () => {
             active = false;
         };
-    }, [isOpen, embedUrl]);
+    }, [isOpen, resolving, embedUrl]);
 
     if (!isOpen) return null;
 
