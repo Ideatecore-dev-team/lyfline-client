@@ -31,11 +31,8 @@ export default function ArticleDetailPage({ params }: PageProps) {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center">
-        <div className="w-full max-w-[1440px] px-6 md:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 overflow-hidden relative">
-
-          {/* Decorative background blob */}
-          <div className="size-48 bg-primary/5 rounded-full blur-2xl absolute left-[-98px] top-[-98px] pointer-events-none" />
+      <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center relative">
+        <div className="w-full max-w-[1440px] px-6 md:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 relative">
 
           {/* Back button */}
           <Link href="/articles">
@@ -98,7 +95,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                 {article.sections.map((section, idx) => (
                   <div key={`section-${idx}`} className="flex flex-col gap-3 w-full">
                     {section.heading && (
-                      <h2 className="text-slate-800 text-lg md:text-xl font-semibold font-poppins mt-4 mb-1">
+                      <h2 className="text-[slate-800] text-lg md:text-xl font-semibold font-poppins mt-4 mb-1">
                         {section.heading}
                       </h2>
                     )}
@@ -115,67 +112,47 @@ export default function ArticleDetailPage({ params }: PageProps) {
                   </div>
                 ))}
               </div>
-
-              {/* References Section */}
-              {article.references && article.references.length > 0 && (
-                <div className="mt-12 pt-8 border-t border-gray-200 w-full">
-                  <h4 className="text-neutral-900 text-base font-semibold font-poppins mb-4">References:</h4>
-                  <ul className="flex flex-col gap-2">
-                    {article.references.map((ref, i) => {
-                      const urlMatch = ref.match(/(https?:\/\/[^\s]+)/g);
-                      const url = urlMatch ? urlMatch[0] : null;
-                      const text = url ? ref.replace(url, "").trim() : ref;
-                      return (
-                        <li key={i} className="text-slate-500 text-sm font-normal font-poppins break-all">
-                          {text}{" "}
-                          {url && (
-                            <a
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline font-medium"
-                            >
-                              {url}
-                            </a>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
             </div>
 
             {/* Sidebar - Other Newest Articles */}
-            <div className="w-full lg:w-[384px] p-6 bg-primary rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden shadow-lg shrink-0">
-              <div className="justify-start text-white text-sm font-semibold font-poppins tracking-wider">
+            <div className="w-full lg:w-[384px] p-6 bg-primary rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden shadow-lg shrink-0 relative lg:sticky lg:top-[104px]">
+              <div className="justify-start text-white text-sm font-poppins tracking-wider">
                 OTHER NEWEST ARTICLE
               </div>
+
+              <span
+                style={{
+                  maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                  WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+                }}
+                className="absolute bottom-0 right-0 size-20 md:size-[100px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
 
               <div className="self-stretch flex flex-col justify-start items-start gap-4">
                 {otherArticles.map((other) => (
                   <Link
                     href={`/articles/${other.id}`}
                     key={other.id}
-                    className="self-stretch p-3 bg-white rounded-3xl inline-flex justify-start items-center gap-3 hover:scale-[1.02] active:scale-[0.98] transition-all group"
+                    className="self-stretch p-3 bg-white rounded-3xl inline-flex justify-start items-center gap-3 transition-all group"
                   >
                     <div className="size-20 relative rounded-3xl overflow-hidden border border-gray-200 shrink-0">
                       <Image
                         src={other.imageUrl}
                         alt={other.title}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
                         sizes="80px"
                       />
                     </div>
-                    <div className="flex-grow flex flex-col justify-center items-start gap-2 overflow-hidden">
+                    <div className="flex-grow flex flex-col justify-center items-start gap-2 overflow-hidden group-hover:ml-1">
                       <Badge
                         text={other.category}
                         variant={other.categoryVariant}
                         showDot={true}
                         className="scale-90 origin-left"
                       />
-                      <h4 className="self-stretch text-neutral-900 text-sm font-normal font-poppins line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                      <h4 className="self-stretch text-neutral-900 text-sm font-normal font-poppins line-clamp-2 leading-snug group-hover:ml-1 transition-all">
                         {other.title}
                       </h4>
                     </div>
@@ -189,7 +166,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
                   variant="outline-white"
                   text="View All Articles"
                   rightIcon="Right 1"
-                  className="w-full h-12 text-base font-semibold font-poppins border-white hover:bg-white/10 active:scale-95 transition-all text-white"
+                  className="text-base font-semibold font-poppins border-white hover:bg-white/10 active:scale-95 transition-all text-white"
                 />
               </Link>
             </div>
@@ -197,6 +174,26 @@ export default function ArticleDetailPage({ params }: PageProps) {
           </div>
 
         </div>
+
+        {/* Decorative Brand Watermark */}
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
       </main>
 
       <Footer />

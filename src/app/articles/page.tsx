@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
@@ -9,6 +10,21 @@ import { ArticleCard } from "@/components/card/ArticleCard";
 import { ALL_ARTICLES } from "@/data/articlesData";
 
 const CATEGORIES = ["All Category", "Cardiology", "Preventive Care", "Lifestyle", "Nutrition"];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
 
 export default function ArticlesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,12 +74,12 @@ export default function ArticlesPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         {/* Main Section */}
-        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
 
-          <div className="self-stretch flex flex-col justify-start items-start gap-8">
+          <div className="self-stretch flex flex-col justify-start items-start gap-8 z-10">
 
             {/* Header */}
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
@@ -83,8 +99,8 @@ export default function ArticlesPage() {
             <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3">
               <InputBox
                 label={
-                  <span className="text-red-600 text-base font-normal font-poppins">
-                    Look for an Article
+                  <span className="text-red-600 text-sm font-normal font-poppins">
+                    Search Article
                   </span>
                 }
                 placeholder="Tips untuk.."
@@ -113,9 +129,9 @@ export default function ArticlesPage() {
                   <button
                     key={category}
                     onClick={() => handleCategoryChange(category)}
-                    className={`px-3 py-2 text-sm font-semibold font-poppins transition-all cursor-pointer ${isSelected
+                    className={`px-3 py-2 text-sm font-medium font-poppins transition-all cursor-pointer ${isSelected
                       ? "bg-red-600 rounded-[100px] text-white"
-                      : "rounded-[48px] text-black hover:bg-slate-100"
+                      : "rounded-[48px] text-black hover:text-red-600"
                       }`}
                   >
                     {category}
@@ -127,32 +143,52 @@ export default function ArticlesPage() {
           </div>
 
           {/* Cards & Pagination */}
-          <div className="self-stretch flex flex-col justify-center items-center gap-6 mt-4">
+          <div className="self-stretch flex flex-col justify-center items-center gap-6 mt-4 z-10">
 
             <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
               Showing Newest
             </div>
 
-            {/* Grid Container */}
-            {paginatedArticles.length > 0 ? (
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-                {paginatedArticles.map((article) => (
-                  <ArticleCard
-                    key={article.id}
-                    title={article.title}
-                    date={article.date}
-                    category={article.category}
-                    categoryVariant={article.categoryVariant}
-                    imageUrl={article.imageUrl}
-                    href={`/articles/${article.id}`}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="py-12 text-center text-slate-400 font-poppins text-base">
-                No articles match your search.
-              </div>
-            )}
+            {/* Grid Container with animations */}
+            <AnimatePresence mode="wait">
+              {paginatedArticles.length > 0 ? (
+                <motion.div
+                  key={`${selectedCategory}-${appliedSearchQuery}-${currentPage}`}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center"
+                >
+                  {paginatedArticles.map((article) => (
+                    <motion.div
+                      key={article.id}
+                      variants={cardVariants}
+                      className="w-full max-w-[384px]"
+                    >
+                      <ArticleCard
+                        title={article.title}
+                        date={article.date}
+                        category={article.category}
+                        categoryVariant={article.categoryVariant}
+                        imageUrl={article.imageUrl}
+                        href={`/articles/${article.id}`}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="no-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-12 text-center text-slate-400 font-poppins text-base w-full"
+                >
+                  No articles match your search.
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
@@ -203,6 +239,25 @@ export default function ArticlesPage() {
           </div>
 
         </section>
+
+        {/* Decorative Brand Watermark */}
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
 
       </main>
 

@@ -13,13 +13,15 @@ export interface Doctor {
   hospital: string;
   region: string;
   imageUrl: string;
+  qualifications?: string[];
+  languages?: string[];
 }
 
 export interface MedicalService {
   id: string;
   title: string;
   description: string;
-  iconName: "Calendar" | "Home" | "Truck" | "UserCheck" | "Plane" | "ShieldCheck";
+  iconName: string;
   bullets?: string[];
 }
 
@@ -64,7 +66,7 @@ export const SERVICES: MedicalService[] = [
     id: "1",
     title: "Medical Appointment Assistance",
     description: "We help schedule your consultations and treatments with trusted medical providers.",
-    iconName: "Calendar",
+    iconName: "Nurse",
     bullets: [
       "Thorough information and background understanding via initial consultation",
       "Complete options provided - doctors, clinics, hospitals and treatment packages",
@@ -76,7 +78,7 @@ export const SERVICES: MedicalService[] = [
     id: "2",
     title: "Your Personalized Home Care",
     description: "Get medical care from the comfort of your home, including lab tests, IV therapy, home visits, and more.",
-    iconName: "Home",
+    iconName: "Medical Shield",
     bullets: [
       "At-home lab tests and blood draws",
       "Intravenous (IV) therapy and infusions",
@@ -88,7 +90,7 @@ export const SERVICES: MedicalService[] = [
     id: "3",
     title: "Medical Evacuation",
     description: "Safe and reliable transportation to your preferred medical provider.",
-    iconName: "Truck",
+    iconName: "Ambulance - Fast",
     bullets: [
       "24/7 emergency medical coordination",
       "Safe transfer to preferred medical centers",
@@ -100,7 +102,7 @@ export const SERVICES: MedicalService[] = [
     id: "4",
     title: "Patient–Doctor Matching",
     description: "We carefully match patients with suitable doctors based on medical needs and background analysis.",
-    iconName: "UserCheck",
+    iconName: "Stethoscope",
     bullets: [
       "Personalized specialist recommendations",
       "Comprehensive medical background reviews",
@@ -112,7 +114,7 @@ export const SERVICES: MedicalService[] = [
     id: "5",
     title: "Travel & Accommodation Support",
     description: "We assist with flights, accommodation, transport, visas, and travel arrangements for your medical journey.",
-    iconName: "Plane",
+    iconName: "LocationMed",
     bullets: [
       "Flight booking and routing assistance",
       "Hotel and long-term stay accommodation",
@@ -124,7 +126,7 @@ export const SERVICES: MedicalService[] = [
     id: "6",
     title: "Guided Care",
     description: "Your treatment journey is carefully monitored to ensure the right care for your medical needs.",
-    iconName: "ShieldCheck",
+    iconName: "Checkup",
     bullets: [
       "Continuous treatment journey monitoring",
       "Dedicated care coordinator throughout",

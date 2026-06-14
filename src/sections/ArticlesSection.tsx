@@ -1,13 +1,12 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { Clock, ArrowRight } from "lucide-react";
-import { ARTICLES } from "@/data/mockData";
+import { ALL_ARTICLES } from "@/data/articlesData";
+import { ArticleCard } from "@/components/card/ArticleCard";
 import { Button } from "@/components/Button";
-import { Card } from "@/components/Card";
-import { Badge } from "@/components/Badge";
+import { useLanguage } from "@/context/LanguageContext";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -24,89 +23,59 @@ const cardVariants: Variants = {
   visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-// Map real visual high-quality images to match mock subjects
-const realArticleImages = [
-  "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=600", // Driving a car (Tips Mudik)
-  "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=600", // Knee/Therapy (Lutut Osteoarthritis)
-  "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=600", // Exhausted/rest (Lemas Puasa)
-];
-
 export const ArticlesSection: React.FC = () => {
+  const { lang } = useLanguage();
+
+  // Show only the first 3 articles
+  const displayedArticles = ALL_ARTICLES.slice(0, 3);
+
   return (
-    <section id="blog" className="py-20 md:py-28 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        
-        {/* Section Header with row alignment (Desktop) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
-          <div className="text-left">
-            <span className="text-xs font-bold tracking-widest text-primary uppercase block mb-3">
-              DISCOVER
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-dark">
-              Newest Article
+    <section id="blog" className="w-full pt-16 bg-white z-20 relative">
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-36 flex flex-col justify-start items-start gap-6">
+
+        {/* Section Header */}
+        <div className="self-stretch flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+
+          {/* Header text matching the articles page header style */}
+          <div className="flex flex-col justify-start items-start gap-1">
+            <div>
+              <span className="text-primary/50 text-sm font-medium font-poppins">
+                {lang === "en" ? "DISCOVER" : "TEMUKAN"}
+              </span>
+            </div>
+            <h2 className="justify-start text-primary text-3xl font-semibold font-poppins">
+              {lang === "en" ? "Newest Article" : "Artikel Terbaru"}
             </h2>
           </div>
-          <Button variant="primary" size="sm" className="w-fit gap-2">
-            View Articles <ArrowRight className="w-4 h-4" />
-          </Button>
+
+          {/* View All Articles Button */}
+          <Link href="/articles">
+            <Button
+              variant="primary"
+              text={lang === "en" ? "View All Articles" : "Lihat Semua Artikel"}
+              className=" hover:opacity-95 text-base font-medium"
+            />
+          </Link>
         </div>
 
-        {/* Articles Grid (3 cards) */}
+        {/* Articles Cards Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="self-stretch grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center lg:justify-between items-stretch mt-2"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {ARTICLES.map((article, index) => (
-            <motion.div key={article.id} variants={cardVariants} className="h-full">
-              <Card
-                variant="glass"
-                hoverable={true}
-                className="h-full p-0 overflow-hidden flex flex-col justify-between rounded-3xl border border-slate-100 bg-slate-50/20"
-              >
-                <div>
-                  {/* Article Image Container */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
-                    <Image
-                      src={realArticleImages[index] || article.imageUrl}
-                      alt={article.title}
-                      fill
-                      className="object-cover transition-transform duration-500 hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      loading="lazy"
-                    />
-                  </div>
-
-                  {/* Metadata Row */}
-                  <div className="px-6 pt-6 flex items-center justify-between gap-4 mb-4">
-                    <span className="text-xs font-semibold text-slate-400 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" />
-                      {article.date}
-                    </span>
-                    <Badge variant={article.category === "Cardiology" ? "accent" : "primary"}>
-                      {article.category}
-                    </Badge>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="px-6 text-base md:text-lg font-bold text-neutral-dark leading-snug tracking-tight mb-6 hover:text-primary transition-colors line-clamp-3">
-                    {article.title}
-                  </h3>
-                </div>
-
-                {/* Read More Footer */}
-                <div className="px-6 pb-6 mt-auto">
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:text-primary-hover group"
-                  >
-                    Read More
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </div>
-              </Card>
+          {displayedArticles.map((article) => (
+            <motion.div key={article.id} variants={cardVariants} className="w-full flex justify-center">
+              <ArticleCard
+                title={article.title}
+                date={article.date}
+                category={article.category}
+                categoryVariant={article.categoryVariant}
+                imageUrl={article.imageUrl}
+                href={`/articles/${article.id}`}
+              />
             </motion.div>
           ))}
         </motion.div>

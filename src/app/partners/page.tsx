@@ -1,11 +1,26 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import Image from "next/image";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { PartnerCard } from "@/components/card/PartnerCard";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+};
 
 const COUNTRIES = [
   "All Country",
@@ -90,6 +105,15 @@ const ALL_PARTNERS = [
     phone: "(021) 6400 261",
     email: "cs@royalprogress.com",
   },
+  {
+    id: "pantai-hospital",
+    name: "Pantai Hospital Kuala Lumpur",
+    location: "Kuala Lumpur, Malaysia",
+    country: "Malaysia",
+    phone: "+60 3-2296 0888",
+    email: "cs@pantai.com.my",
+    logoUrl: "https://placehold.co/220x62",
+  },
 ];
 
 export default function PartnersPage() {
@@ -131,7 +155,7 @@ export default function PartnersPage() {
             {/* Header */}
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
               <div>
-                <span className="text-primary/50 text-sm font-medium font-poppins">OUR PARTNERS</span>
+                <span className="text-primary/50 text-sm font-poppins">OUR PARTNERS</span>
               </div>
               <div className="self-stretch inline-flex justify-start items-center gap-3">
                 <span
@@ -156,9 +180,9 @@ export default function PartnersPage() {
                   <button
                     key={country}
                     onClick={() => handleCountryChange(country)}
-                    className={`px-3 py-2 text-sm font-semibold font-poppins transition-all cursor-pointer ${isSelected
+                    className={`px-3 py-2 text-sm font-medium font-poppins transition-all cursor-pointer ${isSelected
                       ? "bg-red-600 rounded-[100px] text-white"
-                      : "rounded-[48px] text-black hover:bg-slate-100"
+                      : "rounded-[48px] text-black hover:text-red-600"
                       }`}
                   >
                     {country}
@@ -178,24 +202,45 @@ export default function PartnersPage() {
               Showing {selectedCountry === "All Country" ? "All" : selectedCountry} Partner
             </div>
 
-            {paginatedPartners.length > 0 ? (
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
-                {paginatedPartners.map((partner) => (
-                  <PartnerCard
-                    key={partner.id}
-                    name={partner.name}
-                    location={partner.location}
-                    phone={partner.phone}
-                    email={partner.email}
-                    logoUrl={partner.logoUrl}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="py-12 text-center text-slate-400 font-poppins text-base">
-                No partners found in this country.
-              </div>
-            )}
+            <AnimatePresence mode="wait">
+              {paginatedPartners.length > 0 ? (
+                <motion.div
+                  key={`${selectedCountry}-${currentPage}`}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center"
+                >
+                  {paginatedPartners.map((partner) => (
+                    <motion.div
+                      key={partner.id}
+                      variants={cardVariants}
+                      className="w-full max-w-[288px]"
+                    >
+                      <PartnerCard
+                        name={partner.name}
+                        location={partner.location}
+                        phone={partner.phone}
+                        email={partner.email}
+                        logoUrl={partner.logoUrl}
+                        href={`/partners/${partner.id}`}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="no-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-12 text-center text-slate-400 font-poppins text-base w-full"
+                >
+                  No partners found in this country.
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
@@ -247,12 +292,22 @@ export default function PartnersPage() {
         </section>
 
         {/* Decorative Brand Watermark */}
-        <Image
-          src="/icons/assets/lyflineHeart.svg"
-          alt="Lyfline Heart Logo"
-          width={100}
-          height={100}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10"
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
         />
 
       </main>

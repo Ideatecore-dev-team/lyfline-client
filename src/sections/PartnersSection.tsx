@@ -2,98 +2,187 @@
 
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { HOSPITALS } from "@/data/mockData";
-import { Button } from "@/components/Button";
 import { useLanguage } from "@/context/LanguageContext";
+import { Button } from "@/components/Button";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
+export interface PartnersSectionProps {
+  isHomePage?: boolean;
+}
+
+export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = false }) => {
+  const { lang } = useLanguage();
+
+  const countries = [
+    {
+      name: lang === "en" ? "Indonesia" : "Indonesia",
+      flagSrc: "/Flags/ID - Indonesia.svg"
     },
-  },
-};
+    {
+      name: lang === "en" ? "Singapore" : "Singapura",
+      flagSrc: "/Flags/SG - Singapore.svg"
+    },
+    {
+      name: lang === "en" ? "Malaysia" : "Malaysia",
+      flagSrc: "/Flags/MY - Malaysia.svg"
+    },
+    {
+      name: lang === "en" ? "Thailand" : "Thailand",
+      flagSrc: "/Flags/TH - Thailand.svg"
+    },
+    {
+      name: lang === "en" ? "China" : "China",
+      flagSrc: "/Flags/CN - China.svg"
+    },
+    {
+      name: lang === "en" ? "Japan" : "Jepang",
+      flagSrc: "/Flags/JP - Japan.svg"
+    },
+    {
+      name: lang === "en" ? "Korea" : "Korea",
+      flagSrc: "/Flags/KR - Korea (South).svg"
+    },
+    {
+      name: lang === "en" ? "India" : "India",
+      flagSrc: "/Flags/IN - India.svg"
+    },
+    {
+      name: lang === "en" ? "Taiwan" : "Taiwan",
+      flagSrc: "/Flags/TW - Taiwan.svg"
+    }
+  ];
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1 },
-};
-
-export const PartnersSection: React.FC = () => {
-  const { lang, t } = useLanguage();
+  const logos = [
+    { src: "/Partners/1.png" },
+    { src: "/Partners/2.png" },
+    { src: "/Partners/3.png" },
+    { src: "/Partners/4.png" },
+    { src: "/Partners/5.png" },
+    { src: "/Partners/6.png" },
+    { src: "/Partners/7.png" },
+    { src: "/Partners/8.png" },
+    { src: "/Partners/9.png" },
+    { src: "/Partners/10.png" }
+  ];
 
   return (
-    <section id="partners" className="py-16 bg-white border-y border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 text-center">
-        
-        {/* Section Headline */}
-        <h2 className="text-base md:text-lg font-medium text-neutral-dark mb-10 tracking-wide">
-          {lang === "en" ? (
-            <>
-              Partnered with <span className="text-[#E02828] font-bold">30+</span> hospitals accross <span className="text-[#E02828] font-bold">7</span> countries
-            </>
-          ) : (
-            <>
-              Bekerjasama dengan <span className="text-[#E02828] font-bold">30+</span> rumah sakit di <span className="text-[#E02828] font-bold">7</span> negara
-            </>
-          )}
-        </h2>
+    <section id="partners" className={`bg-white w-full py-16 flex flex-col justify-start items-center gap-2.5 relative overflow-hidden ${isHomePage ? "bg-transparent" : "bg-white"}`}>
 
-        {/* Partners Logogrid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 items-stretch justify-center mb-10"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {HOSPITALS.map((hospital) => (
-            <motion.div
-              key={hospital.id}
-              variants={itemVariants}
-              className="flex flex-col items-center justify-between p-5 h-36 rounded-2xl bg-white border border-slate-100 hover:shadow-lg hover:shadow-slate-100/50 hover:border-primary/20 transition-all duration-300 group cursor-pointer relative"
-            >
-              {/* Country Flag centered at the top */}
-              <div className="flex items-center justify-center">
+      {/* Content Container */}
+      <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 z-10">
+
+        {/* Header Block */}
+        <div className="self-stretch flex flex-col justify-start items-start gap-1">
+          <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider uppercase">
+            {lang === "en" ? "EXPERTISE ACROSS THE WORLD" : "KEAHLIAN DI SELURUH DUNIA"}
+          </div>
+          <h2 className="text-primary text-3xl font-medium font-sans mt-1">
+            {lang === "en" ? "40+ Partners Across These Countries" : "40+ Mitra di Negara-Negara Ini"}
+          </h2>
+        </div>
+
+        {/* Outer Grid of Countries and Partner Logos */}
+        <div className="self-stretch flex flex-col justify-start items-center gap-8 w-full">
+
+          {/* Countries wrap list */}
+          <div className="w-full flex flex-row flex-wrap justify-center lg:justify-between items-center gap-6 lg:gap-0">
+            {countries.map((country, idx) => (
+              <div key={idx} className="w-24 flex flex-col justify-start items-center gap-2 group">
+                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
+                  <Image
+                    src={country.flagSrc}
+                    alt={country.name}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
+                <div className="self-stretch text-center text-black text-base font-medium font-poppins group-hover:text-primary transition-colors">
+                  {country.name}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider Line */}
+          <div className="w-full h-[1px] bg-gray-200 pointer-events-none" />
+
+          {/* Logo Cards Grid */}
+          <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 justify-items-center">
+            {logos.map((logo, idx) => (
+              <div
+                key={idx}
+                className="w-full h-24 relative bg-white rounded-xl outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-center items-center shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group overflow-hidden"
+              >
                 <Image
-                  src={hospital.flag}
-                  alt={hospital.country}
-                  width={20}
-                  height={13}
-                  className="w-5 h-auto object-contain rounded-sm shadow-xs border border-slate-100"
-                  style={{ height: "auto" }}
+                  src={logo.src}
+                  alt="Partner Logo"
+                  fill
+                  className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 20vw"
                 />
               </div>
+            ))}
+          </div>
 
-              {/* Hospital Logo Centered below the flag */}
-              <div className="flex-grow flex items-center justify-center w-full max-h-[60px] mt-2">
-                <Image
-                  src={hospital.logo}
-                  alt={hospital.name}
-                  width={140}
-                  height={50}
-                  className="max-h-[45px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+          {/* View All Partners CTA Button using button.tsx */}
+          <div className="flex justify-center mt-4">
+            <Button
+              variant="outline-primary"
+              text={lang === "en" ? "View All Partners" : "Lihat Semua Mitra"}
+              rightIcon="Right 1"
+              className="h-12 px-6 outline-2  transition-all duration-300"
+            />
+          </div>
 
-        {/* View All CTA */}
-        <div className="flex justify-center mt-6">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="group gap-2 rounded-full px-7 py-3 text-xs font-bold border-[#3F71B7] text-[#3F71B7] hover:bg-[#3F71B7]/5 hover:border-[#3F71B7]"
-          >
-            {t("partners.btn.view")}
-          </Button>
         </div>
 
       </div>
+
+      {/* Decorative Outer Circles */}
+      <div className="size-48 left-[-100px] top-[570px] absolute bg-blue-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
+      <div className="size-48 left-[90%] lg:left-[1340px] top-[-104px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
+
+      {/* Decorative Heart Watermark */}
+      {!isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Decorative Quarter Circle Watermark (Bottom-Left) */}
+      {isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            transform: 'scaleY(-1)',
+            WebkitTransform: 'scaleY(-1)',
+          }}
+          className="absolute bottom-0 left-0 size-[100px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Decorative Quarter Circle Watermark (Top-Right - Red Variant) */}
+      {isHomePage && (
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            transform: 'scaleX(-1)',
+            WebkitTransform: 'scaleX(-1)',
+          }}
+          className="absolute top-0 right-0 size-[100px] pointer-events-none select-none opacity-10 bg-[#F33C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          aria-hidden="true"
+        />
+      )}
+
     </section>
   );
 };
+
