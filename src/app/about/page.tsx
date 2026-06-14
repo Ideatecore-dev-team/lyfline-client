@@ -5,13 +5,13 @@ import dynamic from "next/dynamic";
 import { NavBar } from "@/components/NavBar";
 
 // Dynamic imports to preserve optimal bundle chunking and render performance
-const AboutUsHero = dynamic(
-  () => import("@/sections/AboutUsHero").then((m) => m.AboutUsHero),
+const AboutUsSection = dynamic(
+  () => import("@/sections/AboutUsSection").then((m) => m.AboutUsSection),
   { ssr: true }
 );
 
-const VisionMission = dynamic(
-  () => import("@/sections/VisionMission").then((m) => m.VisionMission),
+const VisionMissionSection = dynamic(
+  () => import("@/sections/VisionMissionSection").then((m) => m.VisionMissionSection),
   { ssr: true }
 );
 
@@ -25,8 +25,8 @@ const AboutServices = dynamic(
   { ssr: true }
 );
 
-const AboutPartners = dynamic(
-  () => import("@/sections/AboutPartners").then((m) => m.AboutPartners),
+const PartnersSection = dynamic(
+  () => import("@/sections/PartnersSection").then((m) => m.PartnersSection),
   { ssr: true }
 );
 
@@ -44,10 +44,10 @@ export default function AboutPage() {
       {/* Main Content Sections */}
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Who We Are & Statistics */}
-        <AboutUsHero />
+        <AboutUsSection showButton={false} />
         
         {/* Vision & Mission */}
-        <VisionMission />
+        <VisionMissionSection />
         
         {/* How We Work (Steps) */}
         <StepsSection />
@@ -56,7 +56,7 @@ export default function AboutPage() {
         <AboutServices />
         
         {/* Global Partners */}
-        <AboutPartners />
+        <PartnersSection />
       </main>
       
       {/* Sticky footer and Book an Appointment toolbar */}

@@ -321,5 +321,26 @@ export const ALL_ARTICLES: Article[] = [
         ]
       }
     ]
+  },
+  {
+    id: "pentingnya-tidur-cukup-bagi-kesehatan-tubuh",
+    title: "Pentingnya Tidur Cukup Bagi Kesehatan Tubuh dan Mental Anda",
+    date: "Februari 24, 2026",
+    category: "Lifestyle",
+    categoryVariant: "green",
+    imageUrl: "https://images.unsplash.com/photo-1511295742364-92767fc4a098?auto=format&fit=crop&q=80&w=600",
+    readTime: "5 min read",
+    intro: [
+      "Tidur adalah salah satu pilar kesehatan utama yang sering kali terabaikan dalam rutinitas modern yang sibuk. Padahal, kualitas dan kuantitas tidur sangat menentukan kesehatan fisik dan fungsi kognitif seseorang sehari-hari."
+    ],
+    sections: [
+      {
+        heading: "Manfaat Istirahat yang Cukup",
+        paragraphs: [
+          "Saat tidur, tubuh melakukan proses perbaikan sel-sel yang rusak, menyusun kembali memori otak, dan menyeimbangkan hormon penting.",
+          "Kurang tidur secara kronis dapat meningkatkan risiko obesitas, penyakit jantung, hingga gangguan suasana hati seperti depresi dan kecemasan."
+        ]
+      }
+    ]
   }
 ];

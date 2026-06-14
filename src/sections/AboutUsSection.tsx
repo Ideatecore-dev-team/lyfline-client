@@ -1,130 +1,154 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Phone, Video, Volume2, Mic, CheckCircle2, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
 
-export const AboutUsSection: React.FC = () => {
+export interface AboutUsSectionProps {
+  showButton?: boolean;
+}
+
+export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = true }) => {
+  const { lang } = useLanguage();
+
   return (
-    <section id="about-us" className="relative py-20 md:py-28 overflow-hidden bg-white">
-      {/* Background blobs for premium depth */}
-      <div className="absolute top-20 left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-3xl -z-10" />
-      <div className="absolute top-40 right-[-10%] w-[30%] h-[30%] rounded-full bg-accent/5 blur-3xl -z-10" />
+    <section id="about-us" className="w-full bg-white flex justify-center">
+      <div className="w-full py-12 relative bg-white rounded-bl-[48px] rounded-br-[48px] outline outline-offset-[-1px] outline-gray-200 flex flex-col justify-start items-center gap-2.5 overflow-hidden">
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          {/* TEXT CONTENT (LEFT SIDE - 7 cols on lg) */}
-          <motion.div
-            className="lg:col-span-7 flex flex-col items-start"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            {/* Tag Badge */}
-            <span className="text-xs font-bold text-primary tracking-widest uppercase mb-4">
-              ABOUT US
-            </span>
+        {/* Content Container */}
+        <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
+          <div className="w-full flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
 
-            {/* Main Headline */}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-dark leading-tight mb-6">
-              Build on Trust, <br />
-              <span className="text-primary relative inline-block">
-                Driven with Care
-                <svg className="absolute left-0 bottom-[-8px] w-full h-[8px] text-primary-light/50" viewBox="0 0 100 10" preserveAspectRatio="none">
-                  <path d="M0,5 C30,8 70,2 100,5" stroke="currentColor" strokeWidth="4" fill="none" strokeLinecap="round" />
-                </svg>
-              </span>
-            </h2>
+            {/* Left Column (WHO WE ARE card) */}
+            <div className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-6">
+              <div className="w-full px-6 py-8 bg-slate-100 rounded-3xl flex flex-col justify-start items-start gap-6">
+                <div className="flex flex-col justify-start items-start gap-2">
+                  <div className="text-slate-400 text-sm font-normal font-poppins tracking-wider">
+                    {lang === "en" ? "WHO WE ARE" : "SIAPA KAMI"}
+                  </div>
+                  <h2 className="text-primary text-3xl font-medium font-poppins leading-tight">
+                    {lang === "en" ? "Build on Trust, Driven with Care" : "Dibangun di Atas Kepercayaan, Didorong dengan Kepedulian"}
+                  </h2>
+                </div>
 
-            {/* Paragraph Blocks per mockup */}
-            <div className="space-y-4 text-sm md:text-base text-neutral-muted leading-relaxed max-w-2xl mb-8">
-              <p>
-                As your trusted medical care facilitator, we take care of every step of your healthcare journey — from initial consultation to treatment support and travel arrangements. Simply reach out to <strong>LYFLINE</strong> and share your medical history with us.
-              </p>
-              <p>
-                Our team will help you explore the best treatment options, recommended doctors, hospitals or clinics, preferred destinations, travel arrangements, and more — all tailored to your needs.
-              </p>
-              <p className="flex items-center gap-2 font-medium text-primary">
-                <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-500" />
-                <span>With LYFLINE, there are no hidden fees and no complicated payment schemes. You only pay for the services you receive.</span>
-              </p>
+                <div className="text-black text-base font-normal font-poppins leading-relaxed space-y-4">
+                  {lang === "en" ? (
+                    <>
+                      <p>
+                        As your trusted medical care facilitator, we take care of every step of your healthcare journey — from initial consultation to treatment support and travel arrangements. Simply reach out to LYFLINE and share your medical history with us.
+                      </p>
+                      <p>
+                        Our team will help you explore the best treatment options, recommended doctors, hospitals or clinics, preferred destinations, travel arrangements, and more — all tailored to your needs.
+                      </p>
+                      <p>
+                        With LYFLINE, there are no hidden fees and no complicated payment schemes. You only pay for the services you receive.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p>
+                        Sebagai fasilitator perawatan medis tepercaya Anda, kami mengurus setiap langkah perjalanan perawatan kesehatan Anda — mulai dari konsultasi awal hingga dukungan perawatan dan pengaturan perjalanan. Cukup hubungi LYFLINE dan bagikan riwayat medis Anda kepada kami.
+                      </p>
+                      <p>
+                        Tim kami akan membantu Anda menjelajahi pilihan perawatan terbaik, dokter yang direkomendasikan, rumah sakit atau klinik, tujuan pilihan, pengaturan perjalanan, dan banyak lagi — semuanya disesuaikan dengan kebutuhan Anda.
+                      </p>
+                      <p>
+                        Dengan LYFLINE, tidak ada biaya tersembunyi dan tidak ada skema pembayaran yang rumit. Anda hanya membayar untuk layanan yang Anda terima.
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {showButton && (
+                  <Button
+                    variant="primary"
+                    text={lang === "en" ? "Get to know more!" : "Pelajari lebih lanjut!"}
+                    className=" text-white font-medium shadow-md transition-all duration-300"
+                  />
+                )}
+              </div>
             </div>
 
-            {/* Primary Action */}
-            <Button variant="primary" size="md" className="group gap-2 shadow-lg shadow-primary/20">
-              Read More <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </motion.div>
+            {/* Right Column (Stat Cards Sidebar) */}
+            <div className="w-full lg:w-[384px] p-6 bg-slate-100 rounded-[32px] flex flex-col justify-center items-start gap-6">
+              <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
+                {lang === "en" ? "MORE ABOUT US" : "TENTANG KAMI"}
+              </div>
 
-          {/* TELECONSULTATION GRAPHIC MOCKUP (RIGHT SIDE - 5 cols on lg) */}
-          <motion.div
-            className="lg:col-span-5 flex justify-center w-full"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          >
-            {/* The Telehealth mockup frame */}
-            <div className="relative w-full max-w-[480px] aspect-4/3 rounded-[32px] overflow-hidden bg-slate-900 border-4 border-white shadow-2xl shadow-slate-300/50 group">
-              
-              {/* Doctor Background (Simulated via high-quality styling) */}
-              <div 
-                className="absolute inset-0 bg-cover bg-center flex flex-col justify-end p-6"
-                style={{
-                  backgroundImage: `url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=800')` // High-quality medical doctor image
-                }}
-              >
-                {/* Visual fallback gradient overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-slate-900/10 pointer-events-none" />
-
-                {/* Patient Picture-in-Picture Frame (Upper left) */}
-                <div className="absolute top-4 left-4 w-28 h-36 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-slate-800">
-                  <div 
-                    className="w-full h-full bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=300')` // Smiling patient
-                    }}
-                  />
+              <div className="w-full grid grid-cols-2 gap-4">
+                {/* Stat 1: 30+ Hospitals Partners */}
+                <div className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                    <div className="self-stretch inline-flex justify-center items-center gap-3">
+                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">30+</div>
+                    </div>
+                    <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
+                      {lang === "en" ? (
+                        <>Hospitals Partners<br />Worldwide</>
+                      ) : (
+                        <>Mitra Rumah Sakit<br />di Seluruh Dunia</>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Connection Status Indicator */}
-                <div className="absolute top-4 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  Live Call
+                {/* Stat 2: 7 Countries */}
+                <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                    <div className="self-stretch inline-flex justify-center items-center gap-3">
+                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">7</div>
+                    </div>
+                    <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
+                      {lang === "en" ? (
+                        <>Countries in<br />Our Network</>
+                      ) : (
+                        <>Negara dalam<br />Jaringan Kami</>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Call Metadata (Lower-left) */}
-                <div className="relative z-10 text-white mb-2">
-                  <h4 className="font-bold text-sm tracking-wide shadow-text">Doctor Specialist</h4>
-                  <p className="text-[10px] text-slate-300 font-medium">Active Session • 00:15:24</p>
+                {/* Stat 3: 100% End-to-End Service Coverage */}
+                <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                    <div className="self-stretch inline-flex justify-center items-center gap-3">
+                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">100%</div>
+                    </div>
+                    <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
+                      {lang === "en" ? (
+                        <>End-to-End<br />Service Coverage</>
+                      ) : (
+                        <>Cakupan Layanan<br />Ujung-ke-Ujung</>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Telehealth Controls Panel overlay (Bottom center) */}
-                <div className="relative z-10 flex items-center justify-center gap-3 w-full bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15">
-                  <button className="p-2.5 rounded-xl bg-accent text-white hover:bg-accent-hover transition-colors shadow-sm" aria-label="End consultation">
-                    <Phone className="w-4 h-4 rotate-135" />
-                  </button>
-                  <button className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors" aria-label="Toggle camera">
-                    <Video className="w-4 h-4" />
-                  </button>
-                  <button className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors" aria-label="Adjust volume">
-                    <Volume2 className="w-4 h-4" />
-                  </button>
-                  <button className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors" aria-label="Mute microphone">
-                    <Mic className="w-4 h-4" />
-                  </button>
+                {/* Stat 4: 95% Satisfaction Rate */}
+                <div className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                    <div className="self-stretch inline-flex justify-center items-center gap-3">
+                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">95%</div>
+                    </div>
+                    <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
+                      {lang === "en" ? (
+                        <>Satisfaction<br />Rate</>
+                      ) : (
+                        <>Tingkat<br />Kepuasan</>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Decorative graphic border elements */}
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full" />
             </div>
-          </motion.div>
-          
+
+          </div>
         </div>
+
+        {/* Absolute Background Ornaments */}
+        <div className="size-40 left-[85%] lg:left-[1272px] top-[75%] lg:top-[421px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
+        <div className="size-48 left-[-100px] top-[-89.43px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
       </div>
     </section>
   );

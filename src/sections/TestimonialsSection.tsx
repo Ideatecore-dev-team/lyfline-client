@@ -1,84 +1,113 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
-import { Quote } from "lucide-react";
-import { TESTIMONIALS } from "@/data/mockData";
-import { Card } from "@/components/Card";
+import React from "react";
+import { TestimonialCard } from "@/components/card/TestimonialCard";
+import { useLanguage } from "@/context/LanguageContext";
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  quote: string;
+}
+
+const LOCAL_TESTIMONIALS: Testimonial[] = [
+  {
+    id: "1",
+    name: "User A",
+    role: "Manager at PT ABCD",
+    quote: "I have used LYFLINE many times, and I am truly satisfied with their service — fast responses, great pricing, and so much more.\n\nWe are very grateful to have LYFLINE as our support system.\n\nThank you so much!"
   },
-};
-
-const cardVariants: Variants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
-};
+  {
+    id: "2",
+    name: "User B",
+    role: "Graphic Designer",
+    quote: "The most efficient, reliable, fastest, and most responsive healthcare service in Jakarta!\n\nI will always trust LYFLINE to provide our medical needs and healthcare services."
+  },
+  {
+    id: "3",
+    name: "User C",
+    role: "Traveler",
+    quote: "Thank you will never be enough to express how grateful we are for the support, care, and assistance provided by LYFLINE in our home. Their attention to detail is something we truly value.\n\nThey were truly our lifesavers."
+  },
+  {
+    id: "4",
+    name: "User D",
+    role: "Traveler",
+    quote: "We truly appreciated the outstanding service we received during our family’s COVID situation. Thank you for being punctual, making everything easy and hassle-free for us, and always doing your best despite how busy things were every day.\n\nThank you once again, and we wish all the best for your entire team!"
+  },
+  {
+    id: "5",
+    name: "User E",
+    role: "Entrepreneur",
+    quote: "LYFLINE has been our partner in navigating international healthcare. Their team is extremely professional and made every step of the journey smooth and worry-free.\n\nHighly recommended!"
+  }
+];
 
 export const TestimonialsSection: React.FC = () => {
-  return (
-    <section className="py-20 md:py-28 bg-accent text-white relative overflow-hidden">
-      {/* Visual background patterns */}
-      <div className="absolute top-[-10%] left-[-10%] w-[35%] h-[35%] bg-white/5 blur-3xl rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[45%] h-[45%] bg-white/5 blur-3xl rounded-full" />
+  const { lang } = useLanguage();
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-36">
-        
-        {/* Section Header */}
-        <div className="mb-16 md:mb-20 text-left">
-          <span className="text-xs font-bold tracking-widest text-red-200 uppercase block mb-3 opacity-90">
-            WHAT THEY SAY ABOUT US
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-4">
-            Impactful Stories
+  // Triple duplicate for seamless infinite marquee loop on wider viewports
+  const tripleTestimonials = [...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS];
+
+  return (
+    <section className="w-full py-16 bg-gradient-to-b from-[#E23737] to-[#E02828] text-white relative overflow-hidden flex flex-col justify-start items-center gap-6">
+
+      {/* Header Container */}
+      <div className="w-full max-w-[1152px] px-6 xl:px-0 flex flex-col justify-start items-start gap-1 z-10">
+        <div className="flex flex-col justify-start items-start gap-1">
+          <div className="self-stretch justify-start text-white/70 text-sm font-normal font-poppins uppercase tracking-wider">
+            {lang === "en" ? "WHAT THEY SAY ABOUT US" : "APA YANG MEREKA KATAKAN TENTANG KAMI"}
+          </div>
+        </div>
+        <div className="inline-flex justify-start items-center gap-3">
+          <span
+            style={{
+              maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+              WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            }}
+            className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
+            aria-hidden="true"
+          />
+          <h2 className="justify-start text-white text-3xl font-medium font-poppins">
+            {lang === "en" ? "Impactful Stories" : "Cerita Berdampak"}
           </h2>
         </div>
-
-        {/* Testimonials Grid (1, 2, or 4 cols) */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {TESTIMONIALS.map((testimonial) => (
-            <motion.div key={testimonial.id} variants={cardVariants} className="h-full">
-              <Card
-                variant="default"
-                hoverable={true}
-                className="bg-white text-neutral-dark border-transparent p-8 h-full flex flex-col justify-between rounded-3xl"
-              >
-                <div>
-                  {/* Quote icon */}
-                  <Quote className="w-8 h-8 text-primary/20 transform rotate-180 mb-6" />
-
-                  {/* Quote text */}
-                  <p className="text-xs md:text-sm leading-relaxed text-neutral-muted mb-8 italic">
-                    &ldquo;{testimonial.quote}&rdquo;
-                  </p>
-                </div>
-
-                {/* User footer */}
-                <div className="border-t border-slate-100 pt-6 mt-auto">
-                  <h4 className="font-bold text-sm text-primary tracking-tight">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-[10px] text-slate-400 font-semibold mt-0.5">
-                    {testimonial.role}
-                  </p>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
-
       </div>
+
+      {/* Infinite scrolling ticker wrapper */}
+      <div className="w-full overflow-hidden py-10 relative z-10 flex justify-center items-center">
+        {/* Inject infinite marquee keyframes inline */}
+        <style>{`
+          @keyframes marqueeLeftToRight {
+            0% {
+              transform: translateX(-33.3333%);
+            }
+            100% {
+              transform: translateX(0%);
+            }
+          }
+          .animate-marquee-ltr {
+            animation: marqueeLeftToRight 50s linear infinite;
+          }
+          .animate-marquee-ltr:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+
+        {/* Ticker Track */}
+        <div className="flex gap-6 w-max animate-marquee-ltr px-6">
+          {tripleTestimonials.map((testimonial, idx) => (
+            <TestimonialCard
+              key={`${testimonial.id}-${idx}`}
+              quote={testimonial.quote}
+              name={testimonial.name}
+              role={testimonial.role}
+            />
+          ))}
+        </div>
+      </div>
+
     </section>
   );
 };

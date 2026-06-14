@@ -74,12 +74,12 @@ export default function ArticlesPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         {/* Main Section */}
         <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
-          <div className="self-stretch flex flex-col justify-start items-start gap-8">
+          <div className="self-stretch flex flex-col justify-start items-start gap-8 z-10">
 
             {/* Header */}
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
@@ -129,9 +129,9 @@ export default function ArticlesPage() {
                   <button
                     key={category}
                     onClick={() => handleCategoryChange(category)}
-                    className={`px-3 py-2 text-sm font-semibold font-poppins transition-all cursor-pointer ${isSelected
+                    className={`px-3 py-2 text-sm font-medium font-poppins transition-all cursor-pointer ${isSelected
                       ? "bg-red-600 rounded-[100px] text-white"
-                      : "rounded-[48px] text-black hover:bg-slate-100"
+                      : "rounded-[48px] text-black hover:text-red-600"
                       }`}
                   >
                     {category}
@@ -143,7 +143,7 @@ export default function ArticlesPage() {
           </div>
 
           {/* Cards & Pagination */}
-          <div className="self-stretch flex flex-col justify-center items-center gap-6 mt-4">
+          <div className="self-stretch flex flex-col justify-center items-center gap-6 mt-4 z-10">
 
             <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
               Showing Newest
@@ -239,6 +239,25 @@ export default function ArticlesPage() {
           </div>
 
         </section>
+
+        {/* Decorative Brand Watermark */}
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineHeart.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
+          }}
+          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+
+        <span
+          style={{
+            maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+            WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          }}
+          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/40 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
 
       </main>
 

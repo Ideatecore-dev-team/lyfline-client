@@ -23,7 +23,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   href = "#",
 }) => {
   return (
-    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden">
+    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden group">
 
       {/* Article Image Container */}
       <div className="self-stretch h-52 relative overflow-hidden border-b-2 border-gray-200 rounded-b-3xl">
@@ -32,7 +32,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             src={imageUrl}
             alt={title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
@@ -72,8 +72,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         </h3>
 
         {/* Read More Link */}
-        <Link href={href} className="inline-flex justify-start items-center gap-2.5 hover:opacity-85 transition-all group">
-          <span className="justify-start text-primary text-sm font-medium font-poppins group-hover:text-primary transition-colors">
+        <Link href={href} className="inline-flex justify-start items-center gap-2.5 hover:opacity-85 transition-all group/link">
+          <span className="justify-start text-primary text-sm font-medium font-poppins group-hover/link:text-primary transition-colors">
             Read More
           </span>
           <span
@@ -81,7 +81,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               maskImage: 'url("/icons/Right 1.svg")',
               WebkitMaskImage: 'url("/icons/Right 1.svg")',
             }}
-            className="size-4 bg-primary mask-contain mask-no-repeat mask-center shrink-0 group-hover:translate-x-1 transition-all"
+            className="size-4 bg-primary mask-contain mask-no-repeat mask-center shrink-0 group-hover/link:translate-x-1 transition-all"
             aria-hidden="true"
           />
         </Link>

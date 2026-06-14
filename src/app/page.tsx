@@ -63,10 +63,10 @@ export default function Home() {
         <AboutUsSection />
 
         {/* Lazy loaded segments for better Core Web Vitals (LCP, FID) */}
-        <PartnersSection />
         <ServicesSection />
-        <StepsSection />
+        <PartnersSection />
         <WhyUsSection />
+        <StepsSection />
         <TestimonialsSection />
         <ArticlesSection />
         <CtaSection />
