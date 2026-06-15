@@ -21,7 +21,7 @@ export const Section: React.FC<SectionProps> = ({
 }) => {
   return (
     <section className={cn("py-20 md:py-28 overflow-hidden", className)} {...props}>
-      <div className={cn("max-w-[1440px] mx-auto px-6 md:px-36", containerClassName)}>
+      <div className={cn("max-w-[1440px] mx-auto px-6 md:px-16 lg:px-24 xl:px-36", containerClassName)}>
         {(subtitle || title || description) && (
           <div
             className={cn("mb-12 md:mb-16 max-w-3xl", {

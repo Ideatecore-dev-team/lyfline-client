@@ -9,15 +9,27 @@ export const FloatingToolbar: React.FC = () => {
   const { lang } = useLanguage();
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-2 py-2 rounded-full border border-white/10 flex items-center gap-3 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-1.5 py-1.5 min-[630px]:px-2 min-[630px]:py-2 rounded-full border border-white/10 flex items-center gap-1.5 min-[630px]:gap-3 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
       
       {/* Book an Appointment Button */}
       <Link href="#appointment">
         <Button
           variant="primary"
-          text={lang === "en" ? "Book an Appointment" : "Buat Janji Temu"}
+          text={
+            lang === "en" ? (
+              <>
+                <span className="hidden min-[630px]:inline">Book an Appointment</span>
+                <span className="inline min-[630px]:hidden">Appointment</span>
+              </>
+            ) : (
+              <>
+                <span className="hidden min-[630px]:inline">Buat Janji Temu</span>
+                <span className="inline min-[630px]:hidden">Janji Temu</span>
+              </>
+            )
+          }
           rightIcon="Up Right"
-          className="h-12 px-4 py-3 font-poppins text-base font-semibold !bg-[#E02828] !bg-none !text-white hover:!bg-[#E02828]/90"
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !bg-[#E02828] !bg-none !text-white hover:!bg-[#E02828]/90"
         />
       </Link>
 
@@ -25,8 +37,20 @@ export const FloatingToolbar: React.FC = () => {
       <Link href="#services">
         <Button
           variant="ghost-white"
-          text={lang === "en" ? "Find a Doctor" : "Cari Dokter"}
-          className="h-12 px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
+          text={
+            lang === "en" ? (
+              <>
+                <span className="hidden min-[630px]:inline">Find a Doctor</span>
+                <span className="inline min-[630px]:hidden">All Doctors</span>
+              </>
+            ) : (
+              <>
+                <span className="hidden min-[630px]:inline">Cari Dokter</span>
+                <span className="inline min-[630px]:hidden">Semua Dokter</span>
+              </>
+            )
+          }
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
         />
       </Link>
 
@@ -34,8 +58,20 @@ export const FloatingToolbar: React.FC = () => {
       <Link href="#footer">
         <Button
           variant="ghost-white"
-          text={lang === "en" ? "Contact Us" : "Hubungi Kami"}
-          className="h-12 px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
+          text={
+            lang === "en" ? (
+              <>
+                <span className="hidden min-[630px]:inline">Contact Us</span>
+                <span className="inline min-[630px]:hidden">Contact</span>
+              </>
+            ) : (
+              <>
+                <span className="hidden min-[630px]:inline">Hubungi Kami</span>
+                <span className="inline min-[630px]:hidden">Hubungi</span>
+              </>
+            )
+          }
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
         />
       </Link>
     </div>

@@ -11,7 +11,7 @@ export type ButtonVariant =
   | "ghost-black";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text?: string;
+  text?: React.ReactNode;
   leftIcon?: string;
   rightIcon?: string;
   variant?: ButtonVariant | "secondary" | "outline" | "ghost" | "danger";

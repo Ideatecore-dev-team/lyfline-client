@@ -241,7 +241,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
           <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
 
           {/* Centered content container keeping the same max-width and paddings */}
-          <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
+          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
 
             {/* Back Button */}
             <Link href="/partners">
@@ -466,7 +466,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
           <NoiseTexture />
           {/* Decorative background shape */}
           {/* Centered content container */}
-          <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-center gap-8 relative z-10">
+          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-center gap-8 relative z-10">
             <div className="self-stretch flex flex-col justify-start items-start gap-8">
 
               {/* Header */}
@@ -482,7 +482,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
               </div>
 
               {/* Grid of Doctor Cards */}
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
+              <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center">
                 {displayDoctors.map((doc) => (
                   <DoctorCard
                     key={doc.id}

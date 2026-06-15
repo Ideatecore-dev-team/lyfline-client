@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
 
@@ -68,17 +69,23 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
     <section id="partners" className={`bg-white w-full py-16 flex flex-col justify-start items-center gap-2.5 relative overflow-hidden ${isHomePage ? "bg-transparent" : "bg-white"}`}>
 
       {/* Content Container */}
-      <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 z-10">
+      <div className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-center gap-12 z-10">
 
         {/* Header Block */}
-        <div className="self-stretch flex flex-col justify-start items-start gap-1">
+        <motion.div
+          className="self-stretch flex flex-col justify-start items-start gap-1"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-60px" }}
+        >
           <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider uppercase">
             {lang === "en" ? "EXPERTISE ACROSS THE WORLD" : "KEAHLIAN DI SELURUH DUNIA"}
           </div>
           <h2 className="text-primary text-3xl font-medium font-sans mt-1">
             {lang === "en" ? "40+ Partners Across These Countries" : "40+ Mitra di Negara-Negara Ini"}
           </h2>
-        </div>
+        </motion.div>
 
         {/* Outer Grid of Countries and Partner Logos */}
         <div className="self-stretch flex flex-col justify-start items-center gap-8 w-full">
@@ -86,7 +93,14 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           {/* Countries wrap list */}
           <div className="w-full flex flex-row flex-wrap justify-center lg:justify-between items-center gap-6 lg:gap-0">
             {countries.map((country, idx) => (
-              <div key={idx} className="w-24 flex flex-col justify-start items-center gap-2 group">
+              <motion.div
+                key={idx}
+                className="w-24 flex flex-col justify-start items-center gap-2 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.06, ease: "easeOut" }}
+                viewport={{ once: true, margin: "-40px" }}
+              >
                 <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
                   <Image
                     src={country.flagSrc}
@@ -99,7 +113,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
                 <div className="self-stretch text-center text-black text-base font-medium font-poppins group-hover:text-primary transition-colors">
                   {country.name}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -109,9 +123,13 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           {/* Logo Cards Grid */}
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 justify-items-center">
             {logos.map((logo, idx) => (
-              <div
+              <motion.div
                 key={idx}
                 className="w-full h-24 relative bg-white rounded-xl outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-center items-center shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group overflow-hidden"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.45, delay: idx * 0.05, ease: [0.34, 1.56, 0.64, 1] }}
+                viewport={{ once: true, margin: "-40px" }}
               >
                 <Image
                   src={logo.src}
@@ -120,7 +138,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
                   className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 20vw"
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
 

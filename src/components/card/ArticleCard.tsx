@@ -44,7 +44,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden">
 
         {/* Metadata row */}
-        <div className="self-stretch inline-flex justify-between items-center">
+        <div className="self-stretch flex flex-wrap justify-between items-center gap-3">
           {/* Date Badge */}
           <div className="px-2.5 py-1.5 bg-primary/10 rounded-[64px] flex justify-center items-center gap-2">
             <span

@@ -9,14 +9,20 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.18,
     },
   },
 };
 
+// Flip-up entrance — distinctly different from other sections' y-slide
 const stepVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, rotateX: -25, y: 40, transformOrigin: "top" },
+  visible: { opacity: 1, rotateX: 0, y: 0, transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] } },
+};
+
+const headerSlideRight: Variants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } },
 };
 
 export const StepsSection: React.FC = () => {
@@ -76,7 +82,13 @@ export const StepsSection: React.FC = () => {
       />
 
       {/* Header Container */}
-      <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-start gap-12 z-10">
+      <motion.div
+        className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-start gap-12 z-10"
+        variants={headerSlideRight}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+      >
         <div className="flex flex-col justify-start items-start gap-0">
           <div className="text-white/60 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "HOW WE WORK" : "BAGAIMANA KAMI BEKERJA"}
@@ -85,11 +97,11 @@ export const StepsSection: React.FC = () => {
             {lang === "en" ? "Simple Steps to Your Recovery" : "Langkah Mudah Menuju Pemulihan Anda"}
           </h2>
         </div>
-      </div>
+      </motion.div>
 
       {/* Steps Container */}
       <motion.div
-        className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 items-start gap-12 lg:gap-6 z-10"
+        className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 items-start gap-12 lg:gap-6 z-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"

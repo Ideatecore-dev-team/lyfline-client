@@ -32,7 +32,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
       <NavBar />
 
       <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center relative">
-        <div className="w-full max-w-[1440px] px-6 md:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 relative">
+        <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 relative">
 
           {/* Back button */}
           <Link href="/articles">
@@ -190,7 +190,7 @@ export default function ArticleDetailPage({ params }: PageProps) {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

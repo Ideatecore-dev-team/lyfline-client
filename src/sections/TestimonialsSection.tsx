@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { TestimonialCard } from "@/components/card/TestimonialCard";
 import { useLanguage } from "@/context/LanguageContext";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
@@ -77,7 +78,13 @@ export const TestimonialsSection: React.FC = () => {
       />
 
       {/* Header Container */}
-      <div className="w-full max-w-[1152px] px-6 xl:px-0 flex flex-col justify-start items-start gap-1 z-10">
+      <motion.div
+        className="w-full max-w-[1152px] px-6 xl:px-0 flex flex-col justify-start items-start gap-1 z-10"
+        initial={{ opacity: 0, y: -40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+        viewport={{ once: true, margin: "-60px" }}
+      >
         <div className="flex flex-col justify-start items-start gap-1">
           <div className="self-stretch justify-start text-white/70 text-sm font-normal font-poppins uppercase tracking-wider">
             {lang === "en" ? "WHAT THEY SAY ABOUT US" : "APA YANG MEREKA KATAKAN TENTANG KAMI"}
@@ -96,7 +103,7 @@ export const TestimonialsSection: React.FC = () => {
             {lang === "en" ? "Impactful Stories" : "Cerita Berdampak"}
           </h2>
         </div>
-      </div>
+      </motion.div>
 
       {/* Infinite scrolling ticker wrapper */}
       <div className="w-full overflow-hidden pt-6 pb-10 relative z-10 flex justify-center items-center">

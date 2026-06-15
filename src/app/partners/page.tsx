@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
@@ -119,8 +119,23 @@ const ALL_PARTNERS = [
 export default function PartnersPage() {
   const [selectedCountry, setSelectedCountry] = useState("All Country");
   const [currentPage, setCurrentPage] = useState(1);
+  const [partnersPerPage, setPartnersPerPage] = useState(8);
 
-  const partnersPerPage = 8;
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 760) {
+        setPartnersPerPage(10);
+      } else if (width < 1024) {
+        setPartnersPerPage(9);
+      } else {
+        setPartnersPerPage(8);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Filter partners based on country
   const filteredPartners = useMemo(() => {
@@ -133,9 +148,16 @@ export default function PartnersPage() {
   const paginatedPartners = useMemo(() => {
     const startIndex = (currentPage - 1) * partnersPerPage;
     return filteredPartners.slice(startIndex, startIndex + partnersPerPage);
-  }, [filteredPartners, currentPage]);
+  }, [filteredPartners, currentPage, partnersPerPage]);
 
   const totalPages = Math.ceil(filteredPartners.length / partnersPerPage) || 1;
+
+  // Prevent blank page if screen resize reduces totalPages below currentPage
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
@@ -148,7 +170,7 @@ export default function PartnersPage() {
 
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
-        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
 
@@ -210,13 +232,13 @@ export default function PartnersPage() {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center"
+                  className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center"
                 >
                   {paginatedPartners.map((partner) => (
                     <motion.div
                       key={partner.id}
                       variants={cardVariants}
-                      className="w-full max-w-[288px]"
+                      className="w-full min-w-[254px] max-w-[288px]"
                     >
                       <PartnerCard
                         name={partner.name}
@@ -244,20 +266,20 @@ export default function PartnersPage() {
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-              <div className="self-stretch flex justify-between items-center mt-6">
+              <div className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6">
 
                 {/* Previous Button */}
                 <Button
                   variant="outline-primary"
                   text="Previous"
                   leftIcon="Left 1"
-                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 />
 
                 {/* Page numbers */}
-                <div className="flex justify-start items-center gap-4">
+                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
                     const isCurrent = currentPage === page;
                     return (
@@ -280,7 +302,7 @@ export default function PartnersPage() {
                   variant="primary"
                   text="Next"
                   rightIcon="Right 1"
-                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 />
@@ -306,7 +328,7 @@ export default function PartnersPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

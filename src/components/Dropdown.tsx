@@ -125,7 +125,7 @@ export default function Dropdown<T extends string | string[]>({
   return (
     <div
       ref={containerRef}
-      className={`w-full max-w-[466px] inline-flex flex-col justify-start items-start gap-2 relative ${
+      className={`w-full lg:max-w-[466px] inline-flex flex-col justify-start items-start gap-2 relative ${
         isOpen ? "z-30" : "z-10"
       } ${containerClassName}`}
     >
