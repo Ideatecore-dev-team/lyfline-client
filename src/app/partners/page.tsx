@@ -6,6 +6,8 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { PartnerCard } from "@/components/card/PartnerCard";
+import { fetchPartners } from "@/api/partners";
+import { type Partner } from "@/data/partnersData";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -22,104 +24,35 @@ const cardVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-const COUNTRIES = [
-  "All Country",
-  "Indonesia",
-  "Malaysia",
-  "Singapore",
-  "India",
-  "Thailand",
-  "China",
-  "Korea",
-];
-
-const ALL_PARTNERS = [
-  {
-    id: "siloam-hospitals",
-    name: "Siloam Hospitals",
-    location: "Jakarta, Indonesia",
-    country: "Indonesia",
-    phone: "(021) 6400 261",
-    email: "cs@siloam.com",
-    logoUrl: "https://placehold.co/230x57",
-  },
-  {
-    id: "mayapada-hospital",
-    name: "Mayapada Hospital",
-    location: "Jakarta, Indonesia",
-    country: "Indonesia",
-    phone: "+62 1507-70",
-    email: "cs@mayapada.com",
-    logoUrl: "https://placehold.co/220x62",
-  },
-  {
-    id: "prince-court",
-    name: "Prince Court Medical Centre",
-    location: "Kuala Lumpur, Malaysia",
-    country: "Malaysia",
-    phone: "+60 12-999-7262",
-    email: "cs@princecourt.com",
-    logoUrl: "https://placehold.co/234x59",
-  },
-  {
-    id: "apollo-hospitals",
-    name: "Apollo Hospitals",
-    location: "India",
-    country: "India",
-    phone: "+9111-7179-1090",
-    email: "cs@apollohospital.com",
-    logoUrl: "https://placehold.co/147x147",
-  },
-  {
-    id: "ready-plastic-surgery",
-    name: "Ready Plastic Surgery",
-    location: "Seoul, South Korea",
-    country: "Korea",
-    phone: "+8225-1405-57",
-    email: "cs@readyplastic.com",
-    logoUrl: "https://placehold.co/275x110",
-  },
-  {
-    id: "sam-hospital",
-    name: "Singapore Institute of Advanced (SAM)",
-    location: "Singapore",
-    country: "Singapore",
-    phone: "+65-6708-7890",
-    email: "cs@samhospital.com",
-    logoUrl: "https://placehold.co/212x111",
-  },
-  {
-    id: "nulook-clinic",
-    name: "NuLook Clinic",
-    location: "Badung Bali, Indonesia",
-    country: "Indonesia",
-    phone: "081139600303",
-    email: "cs@nulook.clinic",
-    logoUrl: "https://placehold.co/126x106",
-  },
-  {
-    id: "royal-progress",
-    name: "Royal Progress Hospital",
-    location: "Jakarta, Indonesia",
-    country: "Indonesia",
-    phone: "(021) 6400 261",
-    email: "cs@royalprogress.com",
-  },
-  {
-    id: "pantai-hospital",
-    name: "Pantai Hospital Kuala Lumpur",
-    location: "Kuala Lumpur, Malaysia",
-    country: "Malaysia",
-    phone: "+60 3-2296 0888",
-    email: "cs@pantai.com.my",
-    logoUrl: "https://placehold.co/220x62",
-  },
-];
-
 export default function PartnersPage() {
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [selectedCountry, setSelectedCountry] = useState("All Country");
   const [currentPage, setCurrentPage] = useState(1);
   const [partnersPerPage, setPartnersPerPage] = useState(8);
+
+  useEffect(() => {
+    let active = true;
+    fetchPartners()
+      .then((data) => {
+        if (active) {
+          setPartners(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching partners:", err);
+        if (active) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -137,27 +70,32 @@ export default function PartnersPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Compute dynamic countries list from fetched partners
+  const countriesList = useMemo(() => {
+    const list = ["All Country"];
+    partners.forEach((p) => {
+      if (p.country && !list.includes(p.country)) {
+        list.push(p.country);
+      }
+    });
+    return list;
+  }, [partners]);
+
   // Filter partners based on country
   const filteredPartners = useMemo(() => {
-    return ALL_PARTNERS.filter((partner) => {
+    return partners.filter((partner) => {
       return selectedCountry === "All Country" || partner.country === selectedCountry;
     });
-  }, [selectedCountry]);
+  }, [partners, selectedCountry]);
+
+  const totalPages = Math.ceil(filteredPartners.length / partnersPerPage) || 1;
+  const activePage = Math.min(currentPage, totalPages);
 
   // Paginated partners
   const paginatedPartners = useMemo(() => {
-    const startIndex = (currentPage - 1) * partnersPerPage;
+    const startIndex = (activePage - 1) * partnersPerPage;
     return filteredPartners.slice(startIndex, startIndex + partnersPerPage);
-  }, [filteredPartners, currentPage, partnersPerPage]);
-
-  const totalPages = Math.ceil(filteredPartners.length / partnersPerPage) || 1;
-
-  // Prevent blank page if screen resize reduces totalPages below currentPage
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
+  }, [filteredPartners, activePage, partnersPerPage]);
 
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
@@ -196,7 +134,7 @@ export default function PartnersPage() {
 
             {/* Country Tabs */}
             <div className="self-stretch flex flex-wrap justify-center items-center gap-3">
-              {COUNTRIES.map((country) => {
+              {countriesList.map((country) => {
                 const isSelected = selectedCountry === country;
                 return (
                   <button
@@ -225,9 +163,22 @@ export default function PartnersPage() {
             </div>
 
             <AnimatePresence mode="wait">
-              {paginatedPartners.length > 0 ? (
+              {loading ? (
+                <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center">
+                  {Array.from({ length: partnersPerPage }).map((_, i) => (
+                    <div
+                      key={`skeleton-${i}`}
+                      className="w-full min-w-[254px] max-w-[288px] h-64 bg-slate-50 border border-slate-100 rounded-[32px] animate-pulse"
+                    />
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
+                  Failed to load partners: {error}
+                </div>
+              ) : paginatedPartners.length > 0 ? (
                 <motion.div
-                  key={`${selectedCountry}-${currentPage}`}
+                  key={`${selectedCountry}-${activePage}`}
                   variants={containerVariants}
                   initial="hidden"
                   animate="visible"
@@ -274,14 +225,14 @@ export default function PartnersPage() {
                   text="Previous"
                   leftIcon="Left 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
-                  disabled={currentPage === 1}
+                  disabled={activePage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 />
 
                 {/* Page numbers */}
                 <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    const isCurrent = currentPage === page;
+                    const isCurrent = activePage === page;
                     return (
                       <button
                         key={page}
@@ -303,7 +254,7 @@ export default function PartnersPage() {
                   text="Next"
                   rightIcon="Right 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
-                  disabled={currentPage === totalPages}
+                  disabled={activePage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 />
 

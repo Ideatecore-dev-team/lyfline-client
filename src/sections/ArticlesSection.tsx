@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { ALL_ARTICLES } from "@/data/articlesData";
 import { ArticleCard } from "@/components/card/ArticleCard";
 import { Button } from "@/components/Button";
 import { useLanguage } from "@/context/LanguageContext";
+import { fetchArticles } from "@/api/articles";
+import { type Article } from "@/data/articlesData";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -31,9 +32,26 @@ const headerSlideLeft: Variants = {
 
 export const ArticlesSection: React.FC = () => {
   const { lang } = useLanguage();
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Show only the first 3 articles
-  const displayedArticles = ALL_ARTICLES.slice(0, 3);
+  useEffect(() => {
+    let active = true;
+    fetchArticles({ limit: 3 })
+      .then((data) => {
+        if (active) {
+          setArticles(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading home articles:", err);
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <section id="blog" className="w-full pt-16 bg-white z-20 relative">
@@ -78,18 +96,40 @@ export const ArticlesSection: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {displayedArticles.map((article) => (
-            <motion.div key={article.id} variants={cardVariants} className="w-full max-w-[384px] flex justify-center">
-              <ArticleCard
-                title={article.title}
-                date={article.date}
-                category={article.category}
-                categoryVariant={article.categoryVariant}
-                imageUrl={article.imageUrl}
-                href={`/articles/${article.id}`}
-              />
-            </motion.div>
-          ))}
+          {loading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
+                <div className="w-full h-52 bg-slate-200" />
+                <div className="self-stretch p-6 flex flex-col gap-6 w-full">
+                  <div className="flex justify-between items-center gap-3">
+                    <div className="h-8 w-24 bg-slate-200 rounded-full" />
+                    <div className="h-8 w-20 bg-slate-200 rounded-full" />
+                  </div>
+                  <div className="h-5 bg-slate-200 rounded w-full" />
+                  <div className="h-5 bg-slate-200 rounded w-4/5" />
+                  <div className="h-4 bg-slate-200 rounded w-16 mt-2" />
+                </div>
+              </div>
+            ))
+          ) : articles.length > 0 ? (
+            articles.map((article) => (
+              <motion.div key={article.id} variants={cardVariants} className="w-full max-w-[384px] flex justify-center">
+                <ArticleCard
+                  title={article.title}
+                  date={article.date}
+                  category={article.category}
+                  categoryVariant={article.categoryVariant}
+                  customColor={article.customColor}
+                  imageUrl={article.imageUrl}
+                  href={`/articles/${article.id}`}
+                />
+              </motion.div>
+            ))
+          ) : (
+            <div className="py-12 text-center text-slate-400 font-poppins text-base w-full">
+              {lang === "en" ? "No articles available." : "Tidak ada artikel tersedia."}
+            </div>
+          )}
         </motion.div>
 
       </div>

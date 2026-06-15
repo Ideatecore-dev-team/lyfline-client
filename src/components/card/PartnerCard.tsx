@@ -30,10 +30,8 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
                     <Image
                         src={logoUrl}
                         alt={`${name} Logo`}
-                        width={224}
-                        height={56}
-                        unoptimized
-                        className="w-56 h-14 object-contain"
+                        fill
+                        className="object-contain p-4"
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary font-poppins text-lg font-semibold px-4 text-center">

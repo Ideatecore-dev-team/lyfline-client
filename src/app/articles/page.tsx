@@ -7,9 +7,8 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import InputBox from "@/components/inputbox";
 import { ArticleCard } from "@/components/card/ArticleCard";
-import { ALL_ARTICLES } from "@/data/articlesData";
-
-const CATEGORIES = ["All Category", "Cardiology", "Preventive Care", "Lifestyle", "Nutrition"];
+import { fetchArticles } from "@/api/articles";
+import { type Article } from "@/data/articlesData";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -27,12 +26,37 @@ const cardVariants: Variants = {
 };
 
 export default function ArticlesPage() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Category");
   const [currentPage, setCurrentPage] = useState(1);
   const [articlesPerPage, setArticlesPerPage] = useState(9);
   const [isMobileSearch, setIsMobileSearch] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetchArticles()
+      .then((data) => {
+        if (active) {
+          setArticles(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching articles:", err);
+        if (active) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,7 +75,7 @@ export default function ArticlesPage() {
 
   // Filter articles based on category and search query
   const filteredArticles = useMemo(() => {
-    return ALL_ARTICLES.filter((article) => {
+    return articles.filter((article) => {
       const matchesCategory =
         selectedCategory === "All Category" || article.category === selectedCategory;
       const matchesSearch = article.title
@@ -59,7 +83,21 @@ export default function ArticlesPage() {
         .includes(appliedSearchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, appliedSearchQuery]);
+  }, [articles, selectedCategory, appliedSearchQuery]);
+
+  // Dynamically compute category buttons from actual loaded articles
+  const categoriesList = useMemo(() => {
+    if (articles.length === 0) {
+      return ["All Category", "Cardiology", "Preventive Care", "Lifestyle", "Nutrition"];
+    }
+    const list = ["All Category"];
+    articles.forEach((a) => {
+      if (a.category && !list.includes(a.category)) {
+        list.push(a.category);
+      }
+    });
+    return list;
+  }, [articles]);
 
   // Paginated articles
   const paginatedArticles = useMemo(() => {
@@ -145,7 +183,7 @@ export default function ArticlesPage() {
 
             {/* Categories segment */}
             <div className="self-stretch flex flex-wrap justify-center items-center gap-3">
-              {CATEGORIES.map((category) => {
+              {categoriesList.map((category) => {
                 const isSelected = selectedCategory === category;
                 return (
                   <button
@@ -183,7 +221,28 @@ export default function ArticlesPage() {
 
             {/* Grid Container with animations */}
             <AnimatePresence mode="wait">
-              {paginatedArticles.length > 0 ? (
+              {loading ? (
+                <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-8 justify-items-center">
+                  {Array.from({ length: articlesPerPage }).map((_, i) => (
+                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
+                      <div className="w-full h-52 bg-slate-200" />
+                      <div className="self-stretch p-6 flex flex-col gap-6 w-full">
+                        <div className="flex justify-between items-center gap-3">
+                          <div className="h-8 w-24 bg-slate-200 rounded-full" />
+                          <div className="h-8 w-20 bg-slate-200 rounded-full" />
+                        </div>
+                        <div className="h-5 bg-slate-200 rounded w-full" />
+                        <div className="h-5 bg-slate-200 rounded w-4/5" />
+                        <div className="h-4 bg-slate-200 rounded w-16 mt-2" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
+                  Failed to load articles: {error}
+                </div>
+              ) : paginatedArticles.length > 0 ? (
                 <motion.div
                   key={`${selectedCategory}-${appliedSearchQuery}-${currentPage}`}
                   variants={containerVariants}
@@ -203,6 +262,7 @@ export default function ArticlesPage() {
                         date={article.date}
                         category={article.category}
                         categoryVariant={article.categoryVariant}
+                        customColor={article.customColor}
                         imageUrl={article.imageUrl}
                         href={`/articles/${article.id}`}
                       />
