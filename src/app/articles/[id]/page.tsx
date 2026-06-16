@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import ArticleClient from "./ArticleClient";
@@ -11,7 +12,14 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getArticleData(slug: string) {
+const getBannerFileList = cache(async () => {
+  const { data: fileList } = await supabase.storage
+    .from("Lyfline Files")
+    .list("Articles/Banner");
+  return fileList || [];
+});
+
+const getArticleData = cache(async (slug: string) => {
   const id = extractIdFromSlug(slug);
 
   const { data: article, error } = await supabase
@@ -24,14 +32,11 @@ async function getArticleData(slug: string) {
     return null;
   }
 
-  const { data: fileList } = await supabase.storage
-    .from("Lyfline Files")
-    .list("Articles/Banner");
+  const fileList = await getBannerFileList();
+  return mapDbArticleToArticle(article as DbArticle, fileList);
+});
 
-  return mapDbArticleToArticle(article as DbArticle, fileList || []);
-}
-
-async function getOtherArticles(excludeId: string) {
+const getOtherArticles = cache(async (excludeId: string) => {
   const { data: articles } = await supabase
     .from("articles")
     .select("*")
@@ -39,15 +44,13 @@ async function getOtherArticles(excludeId: string) {
     .order("created_at", { ascending: false })
     .limit(3);
 
-  const { data: fileList } = await supabase.storage
-    .from("Lyfline Files")
-    .list("Articles/Banner");
+  const fileList = await getBannerFileList();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (articles || []).map((art: any) =>
-    mapDbArticleToArticle(art as DbArticle, fileList || [])
+    mapDbArticleToArticle(art as DbArticle, fileList)
   );
-}
+});
 
 export async function generateMetadata(
   { params }: PageProps

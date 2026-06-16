@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 type Language = "en" | "id";
 
@@ -109,12 +109,31 @@ const translations: Record<Language, Record<string, string>> = {
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [lang, setLangState] = useState<Language>("en");
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedLang = localStorage.getItem("lyfline_lang") as Language;
+      if (savedLang === "en" || savedLang === "id") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLangState(savedLang);
+      }
+    }
+  }, []);
+
   const setLang = (newLang: Language) => {
     setLangState(newLang);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("lyfline_lang", newLang);
+    }
   };
 
   const toggleLang = () => {
-    setLangState((prev) => (prev === "en" ? "id" : "en"));
+    setLangState((prev) => {
+      const newLang = prev === "en" ? "id" : "en";
+      if (typeof window !== "undefined") {
+        localStorage.setItem("lyfline_lang", newLang);
+      }
+      return newLang;
+    });
   };
 
   const t = (key: string): string => {

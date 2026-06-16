@@ -9,6 +9,8 @@ export function slugify(text: string) {
   if (!text) return '';
   return text
     .toString()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim()
     .replace(/\s+/g, '-')

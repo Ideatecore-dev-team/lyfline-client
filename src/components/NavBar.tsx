@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/Button";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { WHATSAPP_HREF } from "@/lib/constants";
 
 export const NavBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -74,7 +75,7 @@ export const NavBar: React.FC = () => {
 
         {/* DESKTOP CTA (matching Figma styles via Button component) */}
         <div className="hidden lg:flex items-center">
-          <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
+          <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer">
             <Button
               variant="primary"
               text={t("nav.appointment")}
@@ -198,7 +199,7 @@ export const NavBar: React.FC = () => {
                 </div>
 
                 <Link
-                  href="https://wa.me/6281291578559"
+                  href={WHATSAPP_HREF}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full"

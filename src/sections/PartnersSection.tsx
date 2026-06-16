@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
@@ -144,12 +145,14 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
 
           {/* View All Partners CTA Button using button.tsx */}
           <div className="flex justify-center mt-4">
-            <Button
-              variant="outline-primary"
-              text={lang === "en" ? "View All Partners" : "Lihat Semua Mitra"}
-              rightIcon="Right 1"
-              className="h-12 px-6 outline-2  transition-all duration-300"
-            />
+            <Link href="/partners">
+              <Button
+                variant="outline-primary"
+                text={lang === "en" ? "View All Partners" : "Lihat Semua Mitra"}
+                rightIcon="Right 1"
+                className="h-12 px-6 outline-2  transition-all duration-300"
+              />
+            </Link>
           </div>
 
         </div>

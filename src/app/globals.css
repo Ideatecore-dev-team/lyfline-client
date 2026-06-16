@@ -171,3 +171,20 @@ body {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
+/* FloatingToolbar Custom Style Overrides */
+.floating-toolbar-appointment-btn {
+  background-color: #E02828 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+.floating-toolbar-appointment-btn:hover {
+  background-color: rgba(224, 40, 40, 0.9) !important;
+}
+
+.floating-toolbar-ghost-btn {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+.floating-toolbar-ghost-btn:hover {
+  color: #ffffff !important;
+}
+

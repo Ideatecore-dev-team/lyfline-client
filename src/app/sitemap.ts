@@ -27,11 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    const { data: partners } = await supabase.from("partners").select("id, updated_at");
+    const { data: partners } = await supabase.from("partners").select("id, hospital_name, updated_at");
     if (partners) {
       partners.forEach((partner) => {
+        const slug = slugify(partner.hospital_name);
         routes.push({
-          url: `${baseUrl}/partners/${partner.id}`,
+          url: `${baseUrl}/partners/${slug}-${partner.id}`,
           lastModified: partner.updated_at ? new Date(partner.updated_at) : new Date(),
           changeFrequency: "monthly",
           priority: 0.6,
