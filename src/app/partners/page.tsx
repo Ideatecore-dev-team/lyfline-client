@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import { PartnerCard } from "@/components/card/PartnerCard";
 import { fetchPartners } from "@/api/partners";
 import { type Partner } from "@/data/partnersData";
+import { slugify } from "@/lib/utils";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -197,7 +198,7 @@ export default function PartnersPage() {
                         phone={partner.phone}
                         email={partner.email}
                         logoUrl={partner.logoUrl}
-                        href={`/partners/${partner.id}`}
+                        href={`/partners/${slugify(partner.name)}-${partner.id}`}
                       />
                     </motion.div>
                   ))}

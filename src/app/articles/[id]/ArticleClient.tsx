@@ -73,7 +73,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
           <div className="w-full flex flex-col lg:flex-row justify-start items-start gap-8">
 
             {/* Main Article Content */}
-            <div className="flex-1 w-full flex flex-col justify-start items-start gap-6">
+            <div className="flex-1 min-w-0 w-full flex flex-col justify-start items-start gap-6">
 
               {/* Cover Image Container */}
               <div className="self-stretch h-64 md:h-96 relative rounded-3xl overflow-hidden border-2 border-gray-200 bg-linear-to-b from-blue-800/20 to-blue-800/40 flex items-center justify-center">
@@ -141,7 +141,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                           {article.references.map((ref, idx) => (
                             <li key={`ref-${idx}`}>
                               {ref.startsWith("http") ? (
-                                <a href={ref} target="_blank" rel="noopener noreferrer" className="hover:text-primary underline">
+                                <a href={ref} target="_blank" rel="noopener noreferrer" className="hover:text-primary underline break-all">
                                   {ref}
                                 </a>
                               ) : (

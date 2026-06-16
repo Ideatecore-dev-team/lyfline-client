@@ -86,7 +86,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 15 }}
                         transition={{ type: "spring", duration: 0.4 }}
-                        className="w-full max-w-[800px] p-6 bg-white rounded-[32px] outline-1 -outline-offset-1 outline-gray-200 flex flex-col justify-start items-start gap-6 relative z-10 shadow-2xl"
+                        className="w-full max-w-[800px] max-h-[calc(100vh-2rem)] overflow-y-auto p-6 bg-white rounded-[32px] outline-1 -outline-offset-1 outline-gray-200 flex flex-col justify-start items-start gap-6 relative z-10 shadow-2xl"
                     >
                         {/* Header */}
                         <div className="self-stretch inline-flex justify-between items-center w-full">
@@ -178,14 +178,14 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                 </div>
 
                                 {/* Qualifications & Languages */}
-                                <div className="self-stretch inline-flex justify-between items-start gap-4">
+                                <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-4">
 
                                     {/* Qualifications Stack */}
-                                    <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
+                                    <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
                                         <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
                                             Qualifications
                                         </span>
-                                        <div className="flex flex-col gap-1.5 items-start">
+                                        <div className="flex flex-col gap-1.5 items-start w-full">
                                             {qualifications.map((q: string, idx: number) => (
                                                 <div
                                                     key={idx}
@@ -200,11 +200,11 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     </div>
 
                                     {/* Languages Stack */}
-                                    <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
+                                    <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
                                         <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
                                             Languages
                                         </span>
-                                        <div className="flex flex-col gap-1.5 items-start">
+                                        <div className="flex flex-col gap-1.5 items-start w-full">
                                             {languages.map((l: string, idx: number) => (
                                                 <div
                                                     key={idx}

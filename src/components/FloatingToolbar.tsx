@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { useLanguage } from "@/context/LanguageContext";
+import { WHATSAPP_HREF } from "@/lib/constants";
 
 export const FloatingToolbar: React.FC = () => {
   const { lang } = useLanguage();
@@ -12,7 +13,7 @@ export const FloatingToolbar: React.FC = () => {
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-1.5 py-1.5 min-[630px]:px-2 min-[630px]:py-2 rounded-full border border-white/10 flex items-center gap-1.5 min-[630px]:gap-3 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
 
       {/* Book an Appointment Button */}
-      <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
+      <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer">
         <Button
           variant="primary"
           text={
@@ -29,7 +30,7 @@ export const FloatingToolbar: React.FC = () => {
             )
           }
           rightIcon="Up Right"
-          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !bg-[#E02828] !bg-none !text-white hover:!bg-[#E02828]/90"
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold floating-toolbar-appointment-btn"
         />
       </Link>
 
@@ -50,12 +51,12 @@ export const FloatingToolbar: React.FC = () => {
               </>
             )
           }
-          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold floating-toolbar-ghost-btn"
         />
       </Link>
 
       {/* Contact Us Button */}
-      <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
+      <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer">
         <Button
           variant="ghost-white"
           text={
@@ -71,7 +72,7 @@ export const FloatingToolbar: React.FC = () => {
               </>
             )
           }
-          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold !text-slate-300 hover:!text-white"
+          className="h-12 px-2.5 min-[630px]:px-4 py-3 font-poppins text-base font-semibold floating-toolbar-ghost-btn"
         />
       </Link>
     </div>

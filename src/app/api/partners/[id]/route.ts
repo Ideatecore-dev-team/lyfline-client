@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { mapDbPartnerToPartner, type DbPartner } from "../route";
+import { extractIdFromSlug } from "@/lib/utils";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -8,7 +9,8 @@ interface RouteContext {
 
 export async function GET(request: Request, context: RouteContext) {
   try {
-    const { id } = await context.params;
+    const rawId = (await context.params).id;
+    const id = extractIdFromSlug(rawId);
 
     const { data: partner, error } = await supabase
       .from("partners")
