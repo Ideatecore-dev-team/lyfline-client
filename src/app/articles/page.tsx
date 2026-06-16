@@ -89,7 +89,7 @@ export default function ArticlesPage() {
   // Dynamically compute category buttons from actual loaded articles
   const categoriesList = useMemo(() => {
     if (articles.length === 0) {
-      return ["All Category", "Cardiology", "Preventive Care", "Lifestyle", "Nutrition"];
+      return ["All Category"];
     }
     const list = ["All Category"];
     articles.forEach((a) => {

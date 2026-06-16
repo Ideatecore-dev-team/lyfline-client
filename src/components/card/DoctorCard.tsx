@@ -4,21 +4,13 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge, type BadgeVariant } from "@/components/Badge";
-
-export interface Doctor {
-  id?: string | number;
-  name: string;
-  specialty: string;
-  hospital: string;
-  region?: string;
-  imageUrl?: string;
-}
+import { type Doctor } from "@/data/doctorsData";
 
 interface DoctorCardProps {
   doctor?: Doctor;
   name?: string;
-  specialty?: string;
-  specialtyVariant?: BadgeVariant;
+  title?: string;
+  titleVariant?: BadgeVariant;
   hospital?: string;
   imageUrl?: string;
   href?: string;
@@ -29,17 +21,17 @@ interface DoctorCardProps {
 export const DoctorCard: React.FC<DoctorCardProps> = ({
   doctor,
   name,
-  specialty,
-  specialtyVariant = "red",
+  title,
+  titleVariant = "red",
   hospital,
   imageUrl,
   href = "#",
   isLoading = false,
   onViewDetails,
 }) => {
-  const displayName = name || doctor?.name || "Dr. Hafiz Steven Law";
-  const displaySpecialty = specialty || doctor?.specialty || "NeuroLogist";
-  const displayHospital = hospital || doctor?.hospital || "Gleneagles Hospital Kuala Lumpur";
+  const displayName = name || doctor?.name || "";
+  const displayTitle = title || doctor?.title || "";
+  const displayHospital = hospital || doctor?.hospital || "";
   const displayImageUrl = imageUrl || doctor?.imageUrl;
 
   if (isLoading) {
@@ -76,7 +68,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0 z-0"
           aria-hidden="true"
         />
         <span
@@ -84,7 +76,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0 z-0"
           aria-hidden="true"
         />
 
@@ -93,7 +85,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             src={displayImageUrl}
             alt={displayName}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
@@ -104,10 +96,10 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
       {/* Content Area */}
       <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col flex-grow justify-between gap-6 overflow-hidden">
         <div className="self-stretch flex flex-col justify-start items-start gap-3">
-          {/* Specialty Badge */}
+          {/* Title Badge */}
           <Badge
-            text={displaySpecialty}
-            variant={specialtyVariant}
+            text={displayTitle}
+            variant={titleVariant}
             showDot={true}
           />
 

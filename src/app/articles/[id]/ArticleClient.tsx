@@ -15,6 +15,15 @@ interface ArticleClientProps {
 }
 
 export default function ArticleClient({ article, otherArticles }: ArticleClientProps) {
+  const [sanitizedHtml, setSanitizedHtml] = React.useState(article.htmlContent);
+
+  React.useEffect(() => {
+    if (article.htmlContent) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSanitizedHtml(DOMPurify.sanitize(article.htmlContent));
+    }
+  }, [article.htmlContent]);
+
   return (
     <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative">
       <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 relative">
@@ -94,9 +103,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                   <div 
                     className="article-rich-content" 
                     dangerouslySetInnerHTML={{
-                      __html: typeof window !== "undefined"
-                        ? DOMPurify.sanitize(article.htmlContent)
-                        : article.htmlContent
+                      __html: sanitizedHtml || ""
                     }}
                   />
                 ) : (

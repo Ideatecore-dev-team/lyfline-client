@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
-import { Doctor } from "@/data/mockData";
+import { type Doctor } from "@/data/doctorsData";
 
 interface DoctorModalsProps {
     isOpen: boolean;
@@ -64,10 +64,8 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
     if (!doctor) return null;
 
     const flagUrl = getFlagUrl(doctor.region || "");
-
-    // Mock qualifications and languages if not present
-    const qualifications = doctor.qualifications || ["MBBS", "M.Medicine (MAL)"];
-    const languages = doctor.languages || ["English", "Malay"];
+    const qualifications = doctor.qualification || [];
+    const languages = doctor.language || [];
 
     return (
         <AnimatePresence>
@@ -126,7 +124,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                                             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                                         }}
-                                        className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+                                        className="absolute top-0 left-0 size-12 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0 z-0"
                                         aria-hidden="true"
                                     />
                                     <span
@@ -134,7 +132,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                                             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                                         }}
-                                        className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0"
+                                        className="absolute bottom-0 right-0 size-14 pointer-events-none select-none bg-primary/5 mask-contain mask-no-repeat mask-center shrink-0 z-0"
                                         aria-hidden="true"
                                     />
 
@@ -143,7 +141,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                             src={doctor.imageUrl}
                                             alt={doctor.name}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover z-10"
                                             sizes="(max-width: 768px) 100vw, 256px"
                                         />
                                     ) : (
@@ -156,9 +154,9 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     <h3 className="justify-start text-primary text-2xl font-semibold font-poppins">
                                         {doctor.name}
                                     </h3>
-                                    <div className="px-2.5 py-1.5 bg-indigo-50 border border-indigo-100 rounded-2xl inline-flex justify-center items-center gap-2">
-                                        <span className="justify-start text-primary text-sm font-normal font-poppins">
-                                            {doctor.specialty}
+                                    <div className="px-2.5 py-1.5 bg-red-50 border border-red-100 rounded-2xl inline-flex justify-center items-center gap-2">
+                                        <span className="justify-start text-red-600 text-sm font-normal font-poppins">
+                                            {doctor.title}
                                         </span>
                                     </div>
                                 </div>
@@ -167,16 +165,16 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                             {/* Right Column: Spec / qualifications / languages */}
                             <div className="flex-1 flex flex-col justify-between items-start gap-6">
 
-                                {/* Specialty */}
+                                {/* Specialties */}
                                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
                                     <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
                                         Speciality
                                     </span>
-                                    <Badge
-                                        text={doctor.specialty}
-                                        variant="green"
-                                        showDot={true}
-                                    />
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {(doctor.specialty || []).map((s, idx) => (
+                                            <Badge key={idx} text={s} variant="green" showDot={true} />
+                                        ))}
+                                    </div>
                                 </div>
 
                                 {/* Qualifications & Languages */}
@@ -244,17 +242,29 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                                 <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                                             </div>
                                         )}
-                                        <Link
-                                            href={`/partners/${getHospitalSlug(doctor.hospital)}`}
-                                            className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
-                                        >
-                                            {doctor.hospital}
-                                        </Link>
+                                        {doctor.hospital ? (
+                                            <Link
+                                                href={`/partners/${getHospitalSlug(doctor.hospital)}`}
+                                                className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
+                                            >
+                                                {doctor.hospital}
+                                            </Link>
+                                        ) : (
+                                            <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                                Unknown Hospital
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
 
                                 {/* CTA Button */}
-                                <a href="#appointment" onClick={onClose} className="w-full mt-2">
+                                <a 
+                                    href={`https://wa.me/6281291578559?text=${encodeURIComponent(`Halo Lyfline,\n\nSaya ingin appointment dengan ${doctor.name}`)}`} 
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={onClose} 
+                                    className="w-full mt-2"
+                                >
                                     <Button
                                         variant="primary"
                                         text="Make an Appointment"

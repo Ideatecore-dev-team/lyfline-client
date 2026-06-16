@@ -10,9 +10,9 @@ export const FloatingToolbar: React.FC = () => {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#071318]/95 backdrop-blur-md px-1.5 py-1.5 min-[630px]:px-2 min-[630px]:py-2 rounded-full border border-white/10 flex items-center gap-1.5 min-[630px]:gap-3 shadow-2xl scale-90 md:scale-100 transition-all duration-300">
-      
+
       {/* Book an Appointment Button */}
-      <Link href="#appointment">
+      <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
         <Button
           variant="primary"
           text={
@@ -34,7 +34,7 @@ export const FloatingToolbar: React.FC = () => {
       </Link>
 
       {/* Find a Doctor Button */}
-      <Link href="#services">
+      <Link href="/doctors">
         <Button
           variant="ghost-white"
           text={
@@ -55,7 +55,7 @@ export const FloatingToolbar: React.FC = () => {
       </Link>
 
       {/* Contact Us Button */}
-      <Link href="#footer">
+      <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
         <Button
           variant="ghost-white"
           text={
