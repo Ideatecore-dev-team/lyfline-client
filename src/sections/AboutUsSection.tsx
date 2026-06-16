@@ -1,8 +1,29 @@
 "use client";
 
 import React from "react";
+import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
+
+const slideFromLeft: Variants = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const slideFromRight: Variants = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.15 } },
+};
+
+const statCardVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: "easeOut", delay: 0.25 + i * 0.1 },
+  }),
+};
 
 export interface AboutUsSectionProps {
   showButton?: boolean;
@@ -15,7 +36,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
   return (
     <section id="about-us" className="w-full bg-transparent flex justify-center">
       <div className={`w-full py-12 relative bg-white flex flex-col justify-start items-center gap-2.5 overflow-hidden ${
-        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline outline-offset-[-1px] outline-gray-200"
+        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline -outline-offset-1 outline-gray-200"
       }`}>
 
         {/* Decorative Watermarks */}
@@ -38,11 +59,17 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
         />
 
         {/* Content Container */}
-        <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
+        <div className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
           <div className="w-full flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
 
             {/* Left Column (WHO WE ARE card) */}
-            <div className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-6">
+            <motion.div
+              className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-6"
+              variants={slideFromLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+            >
               <div className="w-full px-6 py-8 bg-primary/10 rounded-3xl flex flex-col justify-start items-start gap-6">
                 <div className="flex flex-col justify-start items-start gap-2">
                   <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
@@ -89,17 +116,30 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                   />
                 )}
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Column (Stat Cards Sidebar) */}
-            <div className="w-full lg:w-[384px] p-6 bg-primary/10 rounded-[32px] flex flex-col justify-center items-start gap-6">
+            <motion.div
+              className="w-full lg:w-[384px] p-6 bg-primary/10 rounded-[32px] flex flex-col justify-center items-start gap-6"
+              variants={slideFromRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+            >
               <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
                 {lang === "en" ? "MORE ABOUT US" : "TENTANG KAMI"}
               </div>
 
               <div className="w-full grid grid-cols-2 gap-4">
                 {/* Stat 1: 30+ Hospitals Partners */}
-                <div className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                <motion.div
+                  className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  custom={0}
+                  variants={statCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {/* Decorative Heart Watermark */}
                   <span
                     style={{
@@ -121,10 +161,17 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Stat 2: 7 Countries */}
-                <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                <motion.div
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  custom={1}
+                  variants={statCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {/* Decorative Heart Watermark */}
                   <span
                     style={{
@@ -146,10 +193,17 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Stat 3: 100% End-to-End Service Coverage */}
-                <div className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300">
+                <motion.div
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  custom={2}
+                  variants={statCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {/* Decorative Heart Watermark */}
                   <span
                     style={{
@@ -171,17 +225,24 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Stat 4: 95% Satisfaction Rate */}
-                <div className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300">
+                <motion.div
+                  className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  custom={3}
+                  variants={statCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {/* Decorative Heart Watermark */}
                   <span
                     style={{
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">
@@ -196,10 +257,10 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
-            </div>
+            </motion.div>
 
           </div>
         </div>

@@ -1,8 +1,23 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
+
+const headerDropDown: Variants = {
+  hidden: { opacity: 0, y: -40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const colLeft: Variants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } },
+};
+
+const colRight: Variants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } },
+};
 
 interface Benefit {
   id: string;
@@ -62,30 +77,38 @@ export const WhyUsSection: React.FC = () => {
         aria-hidden="true"
       />
 
-      <div className="w-full max-w-[1440px] px-6 md:px-36 relative z-10 flex flex-col justify-start items-start gap-8">
+      <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 relative z-10 flex flex-col justify-start items-start gap-8">
 
         {/* Header Section */}
-        <div className="self-stretch flex flex-col justify-start items-start gap-1">
+        <motion.div
+          className="self-stretch flex flex-col justify-start items-start gap-1"
+          variants={headerDropDown}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
           <span className="text-primary/50 text-sm font-normal font-poppins">
             {lang === "en" ? "WHY LYFLINE?" : "MENGAPA LYFLINE?"}
           </span>
           <h2 className="text-primary text-3xl font-medium font-poppins">
             {lang === "en" ? "We are a Partner in Care" : "Kami adalah Mitra dalam Perawatan"}
           </h2>
-        </div>
+        </motion.div>
 
         {/* 2-Column Benefits Layout */}
         <div className="self-stretch flex flex-col md:flex-row justify-start items-start gap-4">
 
           {/* Column 1 (No Hidden Fees, End-to-End Guided Care) */}
-          <div className="flex-1 flex flex-col justify-start items-start gap-4 w-full">
+          <motion.div
+            className="flex-1 flex flex-col justify-start items-start gap-4 w-full"
+            variants={colLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
 
             {/* Card 1: No Hidden Fees (Hover/Highlighted State) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              viewport={{ once: true }}
+            <div
               className="self-stretch p-6 bg-primary rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
               {/* White Icon container */}
@@ -107,14 +130,10 @@ export const WhyUsSection: React.FC = () => {
                   {benefits[0].description}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* Card 2: End-to-End Guided Care (Default State) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              viewport={{ once: true }}
+            <div
               className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
             >
               {/* Default Slate Icon container */}
@@ -136,19 +155,21 @@ export const WhyUsSection: React.FC = () => {
                   {benefits[1].description}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-          </div>
+          </motion.div>
 
           {/* Column 2 (Flexible Treatment Packages, Transparent Procedures & Info) */}
-          <div className="flex-1 flex flex-col justify-start items-start gap-4 w-full">
+          <motion.div
+            className="flex-1 flex flex-col justify-start items-start gap-4 w-full"
+            variants={colRight}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+          >
 
             {/* Card 3: Flexible Treatment Packages (Default State) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-              viewport={{ once: true }}
+            <div
               className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
             >
               {/* Default Slate Icon container */}
@@ -170,14 +191,10 @@ export const WhyUsSection: React.FC = () => {
                   {benefits[2].description}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* Card 4: Transparent Procedures & Info (Default State) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-              viewport={{ once: true }}
+            <div
               className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
             >
               {/* Default Slate Icon container */}
@@ -199,9 +216,9 @@ export const WhyUsSection: React.FC = () => {
                   {benefits[3].description}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
-          </div>
+          </motion.div>
 
         </div>
 

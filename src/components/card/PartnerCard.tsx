@@ -22,7 +22,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
     href = "#",
 }) => {
     return (
-        <div className="w-64 bg-white rounded-3xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline -outline-offset-2 outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+        <div className="w-full min-w-[254px] max-w-[288px] bg-white rounded-3xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline -outline-offset-2 outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
 
             {/* Partner Logo Container */}
             <div className="self-stretch h-36 relative bg-linear-to-b from-blue-800/0 to-blue-800/10 rounded-3xl outline -outline-offset-2 outline-gray-200 overflow-hidden flex items-center justify-center">
@@ -30,10 +30,8 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
                     <Image
                         src={logoUrl}
                         alt={`${name} Logo`}
-                        width={224}
-                        height={56}
-                        unoptimized
-                        className="w-56 h-14 object-contain"
+                        fill
+                        className="object-contain p-4"
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary font-poppins text-lg font-semibold px-4 text-center">

@@ -21,7 +21,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="max-w-[1440px] mx-auto px-6 md:px-36 py-8">
+    <div className="max-w-[1440px] mx-auto px-6 md:px-16 lg:px-24 xl:px-36 py-8">
       <div className="flex items-center justify-between w-full h-12">
         {/* Previous Button */}
         <button

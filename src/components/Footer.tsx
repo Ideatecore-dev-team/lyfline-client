@@ -13,14 +13,14 @@ export const Footer: React.FC = () => {
   return (
     <footer
       id="footer"
-      className="w-full bg-gradient-to-r from-[#3F71B7] to-[#3365AC] py-12 flex flex-col justify-start items-center relative gap-2.5 overflow-hidden"
+      className="w-full bg-gradient-to-r from-[#3F71B7] to-[#3365AC] pt-12 pb-28 min-[630px]:pb-12 flex flex-col justify-start items-center relative gap-2.5 overflow-hidden"
     >
-      <div className="w-full max-w-[1153px] px-6 md:px-0 flex flex-col justify-start items-start gap-6">
-        <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-6">
+      <div className="w-full max-w-[1153px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-start gap-6">
+        <div className="self-stretch flex flex-col md:flex-row flex-wrap xl:flex-nowrap justify-between items-start gap-12 md:gap-6 xl:gap-6">
 
           {/* GET IN TRACK (Contact Details) */}
-          <div className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-8">
-            <div className="w-full lg:w-[500px] flex flex-col justify-start items-start gap-6">
+          <div className="w-full md:w-[340px] lg:w-[480px] xl:w-[564px] flex flex-col justify-start items-start gap-8">
+            <div className="w-full lg:w-[440px] xl:w-[500px] flex flex-col justify-start items-start gap-6">
               <div className="text-white/70 text-sm font-normal font-poppins">GET IN TRACK</div>
 
               <div className="self-stretch flex flex-col justify-start items-start gap-6">

@@ -22,11 +22,11 @@ export const HeroSection: React.FC = () => {
       <div className="absolute inset-0 backdrop-blur-[2px] z-0" style={{ backgroundColor: "#345E98CC" }} />
 
       {/* Decorative premium glows */}
-      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#3F71B7]/10 blur-3xl z-0 animate-pulse" />
+      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-3xl z-0 animate-pulse" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-white/5 blur-3xl z-0" />
 
       {/* Content wrapper */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto min-h-[580px] px-6 md:px-36 py-16 md:py-24 flex flex-col lg:flex-row justify-between items-center gap-12 lg:gap-0">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto min-h-[580px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 md:py-24 flex flex-col-reverse min-[1100px]:flex-row justify-between items-start min-[1100px]:items-center gap-12 min-[1100px]:gap-0">
 
         {/* Left Column (Text & Action Buttons) */}
         <motion.div
@@ -49,7 +49,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
               {/* Main Headline */}
-              <h1 className="w-full max-w-80 justify-start text-white text-5xl font-medium font-poppins leading-tight tracking-tight">
+              <h1 className="w-full max-w-md justify-start text-white text-3xl sm:text-4xl lg:text-5xl font-medium font-poppins leading-tight tracking-tight">
                 {lang === "en" ? "Your Reliable Medical Care" : "Perawatan Medis Terpercaya Anda"}
               </h1>
 
@@ -68,7 +68,7 @@ export const HeroSection: React.FC = () => {
               variant="primary"
               text={lang === "en" ? "Find a Doctor" : "Cari Dokter"}
               rightIcon="Right 1"
-              className="shadow-lg active:scale-98 !bg-[#E02828] !bg-none !text-white hover:!bg-[#E02828]/90"
+              className="shadow-lg active:scale-98 bg-accent! bg-none! text-white! hover:bg-accent/90!"
             />
             <Button
               variant="outline-white"

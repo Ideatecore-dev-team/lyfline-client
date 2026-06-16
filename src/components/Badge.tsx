@@ -17,6 +17,7 @@ export interface BadgeProps {
   className?: string;
   showDot?: boolean;
   children?: React.ReactNode;
+  customColor?: string;
 }
 
 const variantClasses: Record<BadgeVariant, { container: string; dot: string; text: string }> = {
@@ -78,16 +79,43 @@ export function Badge({
   className = "",
   showDot = true,
   children,
+  customColor,
 }: BadgeProps) {
-  const resolvedVariant = mapVariant(variant);
+  let resolvedVariant = mapVariant(variant);
+  let resolvedCustomColor = customColor;
+
+  if (resolvedCustomColor) {
+    const lowerColor = resolvedCustomColor.toLowerCase().trim();
+    if (lowerColor in variantClasses) {
+      resolvedVariant = lowerColor as BadgeVariant;
+      resolvedCustomColor = undefined;
+    }
+  }
+
   const selected = variantClasses[resolvedVariant] || variantClasses.green;
+
+  const style: React.CSSProperties = resolvedCustomColor
+    ? {
+        backgroundColor: resolvedCustomColor.startsWith("#") ? `${resolvedCustomColor}12` : resolvedCustomColor,
+        borderColor: resolvedCustomColor.startsWith("#") ? `${resolvedCustomColor}26` : resolvedCustomColor,
+        color: resolvedCustomColor,
+        borderWidth: "1px",
+        borderStyle: "solid",
+      }
+    : {};
 
   return (
     <div
-      className={`px-2.5 py-1.5 ${selected.container} rounded-[16px] inline-flex justify-center items-center gap-2 transition-all ${className}`}
+      style={style}
+      className={`px-2.5 py-1.5 ${resolvedCustomColor ? "" : selected.container} rounded-[16px] inline-flex justify-center items-center gap-2 transition-all ${className}`}
     >
-      {showDot && <div className={`size-1.5 ${selected.dot} rounded-full`} />}
-      <div className={`justify-start ${selected.text} text-sm font-normal font-sans`}>
+      {showDot && (
+        <div
+          style={resolvedCustomColor ? { backgroundColor: resolvedCustomColor } : {}}
+          className={`size-1.5 ${resolvedCustomColor ? "" : selected.dot} rounded-full`}
+        />
+      )}
+      <div className={`justify-start ${resolvedCustomColor ? "" : selected.text} text-sm font-normal font-sans`}>
         {text !== undefined ? text : children}
       </div>
     </div>

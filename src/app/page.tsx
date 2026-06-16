@@ -58,7 +58,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Critical path widgets (Rendered immediately) */}
       <NavBar />
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden bg-[#ECF1F8]">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden bg-primary-light">
         <HeroSection />
         <AboutUsSection />
 

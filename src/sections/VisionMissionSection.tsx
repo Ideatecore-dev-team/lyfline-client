@@ -3,8 +3,28 @@
 import React from "react";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
+
+const headerScaleIn: Variants = {
+  hidden: { opacity: 0, scale: 0.92, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.65, ease: [0.34, 1.56, 0.64, 1] } },
+};
+
+const visionBannerSlide: Variants = {
+  hidden: { opacity: 0, x: -70 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const missionCardContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.13, delayChildren: 0.1 } },
+};
+
+const missionCardItem: Variants = {
+  hidden: { opacity: 0, y: 50, scale: 0.9 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.34, 1.56, 0.64, 1] } },
+};
 
 export const VisionMissionSection: React.FC = () => {
   const { lang } = useLanguage();
@@ -12,10 +32,16 @@ export const VisionMissionSection: React.FC = () => {
   return (
     <section id="vision-mission" className="w-full bg-primary/10 flex justify-center py-16 border-b border-gray-100 relative overflow-hidden">
       <NoiseTexture noiseOpacity={0.05} />
-      <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-center gap-6 relative z-10">
+      <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-center gap-6 relative z-10">
 
         {/* Header Section */}
-        <div className="flex flex-col justify-start items-center gap-1 text-center">
+        <motion.div
+          className="flex flex-col justify-start items-center gap-1 text-center"
+          variants={headerScaleIn}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
           <span className="self-stretch text-primary/50 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "OUR VISION & MISSION" : "VISI & MISI KAMI"}
           </span>
@@ -33,13 +59,14 @@ export const VisionMissionSection: React.FC = () => {
               {lang === "en" ? "Dedicated to Your Health" : "Didedikasikan untuk Kesehatan Anda"}
             </h2>
           </div>
-        </div>
+        </motion.div>
 
         {/* Vision Statement Banner */}
         <motion.div
           className="w-full bg-white rounded-[32px] p-6 md:p-8 flex flex-col justify-center items-center border border-gray-100"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={visionBannerSlide}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
@@ -53,20 +80,21 @@ export const VisionMissionSection: React.FC = () => {
         </motion.div>
 
         {/* 4 Cards Row */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+        <motion.div
+          className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative"
+          variants={missionCardContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+        >
 
           {/* Connecting Line (Desktop) */}
           <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-[2px] bg-white z-0 pointer-events-none" />
 
-          {/* Connecting Line (Mobile/Tablet Stacked) */}
-          <div className="block lg:hidden absolute left-1/2 -translate-x-1/2 top-[130px] bottom-[130px] w-[2px] bg-white z-0 pointer-events-none" />
-
           {/* Card 1: Professional Excellence */}
           <motion.div
-            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group min-h-[260px] cursor-pointer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group lg:min-h-[260px] cursor-pointer"
+            variants={missionCardItem}
             whileHover={{
               y: -10,
               rotateX: 8,
@@ -113,10 +141,8 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 2: Trusted Partnerships */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            variants={missionCardItem}
             whileHover={{
               y: -10,
               rotateX: 8,
@@ -163,10 +189,8 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 3: Patient-Centered Service */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            variants={missionCardItem}
             whileHover={{
               y: -10,
               rotateX: 8,
@@ -213,10 +237,8 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 4: Seamless Coordination */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group min-h-[260px] cursor-pointer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            variants={missionCardItem}
             whileHover={{
               y: -10,
               rotateX: 8,
@@ -261,7 +283,7 @@ export const VisionMissionSection: React.FC = () => {
             />
           </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );

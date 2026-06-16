@@ -12,14 +12,20 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.12,
     },
   },
 };
 
+// Cards fan in from alternating sides for variety
 const cardVariants: Variants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 40, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] } },
+};
+
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: -30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 const getLocalizedService = (id: string, defaultTitle: string, defaultDesc: string, lang: string) => {
@@ -101,7 +107,13 @@ export const ServicesSection: React.FC = () => {
       <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-start gap-12 z-10">
 
         {/* Header Block */}
-        <div className="flex flex-col justify-start items-start gap-1">
+        <motion.div
+          className="flex flex-col justify-start items-start gap-1"
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
           <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "WHAT WE DO" : "APA YANG KAMI LAKUKAN"}
           </div>
@@ -118,11 +130,11 @@ export const ServicesSection: React.FC = () => {
               {lang === "en" ? "Your Gateway to International Healthcare" : "Gerbang Anda Menuju Layanan Kesehatan Internasional"}
             </h2>
           </div>
-        </div>
+        </motion.div>
 
         {/* Cards Grid Container */}
         <motion.div
-          className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center"
+          className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-6 justify-items-center"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -134,7 +146,7 @@ export const ServicesSection: React.FC = () => {
               <motion.div
                 key={service.id}
                 variants={cardVariants}
-                className="w-full flex justify-center"
+                className="w-full max-w-96 flex justify-center"
               >
                 <Link href={`/services?service=${service.id}`} className="w-full flex justify-center">
                   <ServiceCard

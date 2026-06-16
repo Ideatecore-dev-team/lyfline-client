@@ -9,14 +9,20 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.18,
     },
   },
 };
 
+// Flip-up entrance — distinctly different from other sections' y-slide
 const stepVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { opacity: 0, rotateX: -25, y: 40, transformOrigin: "top" },
+  visible: { opacity: 1, rotateX: 0, y: 0, transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] } },
+};
+
+const headerSlideRight: Variants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } },
 };
 
 export const StepsSection: React.FC = () => {
@@ -71,12 +77,18 @@ export const StepsSection: React.FC = () => {
           maskImage: 'url("/icons/assets/lyflineHeart.svg")',
           WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
         }}
-        className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
         aria-hidden="true"
       />
 
       {/* Header Container */}
-      <div className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 flex flex-col justify-start items-start gap-12 z-10">
+      <motion.div
+        className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-start gap-12 z-10"
+        variants={headerSlideRight}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+      >
         <div className="flex flex-col justify-start items-start gap-0">
           <div className="text-white/60 text-sm font-normal font-poppins tracking-wider">
             {lang === "en" ? "HOW WE WORK" : "BAGAIMANA KAMI BEKERJA"}
@@ -85,11 +97,11 @@ export const StepsSection: React.FC = () => {
             {lang === "en" ? "Simple Steps to Your Recovery" : "Langkah Mudah Menuju Pemulihan Anda"}
           </h2>
         </div>
-      </div>
+      </motion.div>
 
       {/* Steps Container */}
       <motion.div
-        className="w-full max-w-[1152px] px-6 md:px-12 lg:px-0 relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 items-start gap-12 lg:gap-6 z-10"
+        className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 items-start gap-12 lg:gap-6 z-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -105,7 +117,7 @@ export const StepsSection: React.FC = () => {
             <div className="relative w-full flex items-center">
               <div
                 className={`size-16 p-4 rounded-2xl flex justify-center items-center backdrop-blur-lg border shadow-lg transition-transform duration-300 group-hover:scale-105 ${step.isRed
-                  ? "bg-[#E02828]/35 border-[#E02828]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+                  ? "bg-accent/35 border-accent/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
                   : "bg-white/10 border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
                   }`}
               >
@@ -117,7 +129,7 @@ export const StepsSection: React.FC = () => {
               {/* Connecting line to the next step (Desktop Only, not for the last step) */}
               {idx < 3 && (
                 <div
-                  className="hidden lg:block absolute left-16 h-[1px] bg-indigo-300/30 pointer-events-none"
+                  className="hidden lg:block absolute left-16 h-px bg-indigo-300/30 pointer-events-none"
                   style={{ width: "calc(100% - 64px + 24px)" }} // 100% of column width minus badge size (64px) plus column gap (24px)
                 />
               )}
@@ -130,7 +142,7 @@ export const StepsSection: React.FC = () => {
               </h3>
 
               {/* Divider Line */}
-              <div className="self-stretch h-[1px] bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
+              <div className="self-stretch h-px bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
 
               <p className="self-stretch justify-start text-white/80 text-sm font-normal font-poppins leading-relaxed whitespace-pre-line">
                 {step.description}

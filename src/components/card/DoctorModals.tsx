@@ -88,7 +88,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 15 }}
                         transition={{ type: "spring", duration: 0.4 }}
-                        className="w-full max-w-[800px] p-6 bg-white rounded-[32px] outline-1 outline-offset-[-1px] outline-gray-200 flex flex-col justify-start items-start gap-6 relative z-10 shadow-2xl"
+                        className="w-full max-w-[800px] p-6 bg-white rounded-[32px] outline-1 -outline-offset-1 outline-gray-200 flex flex-col justify-start items-start gap-6 relative z-10 shadow-2xl"
                     >
                         {/* Header */}
                         <div className="self-stretch inline-flex justify-between items-center w-full">
@@ -147,7 +147,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                             sizes="(max-width: 768px) 100vw, 256px"
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-gradient-to-b from-indigo-100 to-indigo-50" />
+                                        <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
                                     )}
                                 </div>
 
@@ -227,7 +227,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
                                         Hospital
                                     </span>
-                                    <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline-1 outline-offset-[-1px] outline-gray-200 inline-flex justify-center items-center gap-2">
+                                    <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
                                         {flagUrl ? (
                                             <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                                                 <Image

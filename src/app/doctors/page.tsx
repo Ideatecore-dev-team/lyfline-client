@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
@@ -10,6 +11,74 @@ import Dropdown from "@/components/Dropdown";
 import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
 import { Doctor, DOCTORS } from "@/data/mockData";
+
+// ─── Animation Variants ───────────────────────────────────────────────────────
+
+// Hero banner: rises from below on page load
+const bannerVariants: Variants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+  },
+};
+
+// Doctor illustration: same rise-from-below as the banner (unified entrance)
+const illustrationVariants: Variants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+  },
+};
+
+// Filter label: slides from left
+const filterLabelVariants: Variants = {
+  hidden: { opacity: 0, x: -40 },
+  visible: {
+    opacity: 1, x: 0,
+    transition: { duration: 0.55, ease: "easeOut" },
+  },
+};
+
+// Filter dropdowns: stagger up from below
+const filterContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const filterItemVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+// Results status label: simple fade
+const resultsLabelVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.4 } },
+};
+
+// Doctor cards: stagger scale-up from below
+const cardGridVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const cardItemVariants: Variants = {
+  hidden: { opacity: 0, y: 35, scale: 0.96 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] },
+  },
+};
+
+// Pagination: fades + slides up
+const paginationVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function DoctorsPage() {
   const [searchVal, setSearchVal] = useState("");
@@ -100,11 +169,17 @@ export default function DoctorsPage() {
 
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Main centered container */}
-        <section className="w-full max-w-[1440px] px-6 md:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
-          {/* Banner segment with search layout */}
+          {/* ── Banner segment with search layout: rises from below ── */}
           <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
-            <div className="w-full p-6 md:p-6 bg-gradient-to-r from-[#3F71B7] to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative">
+            <motion.div
+              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative"
+              variants={bannerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {/* Banner header text */}
               <div className="self-stretch inline-flex justify-between items-end relative z-10">
                 <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
                   <div className="justify-start text-indigo-200 text-sm font-poppins tracking-wider">OUR DOCTORS</div>
@@ -112,26 +187,32 @@ export default function DoctorsPage() {
                 </div>
               </div>
 
-              <div className="w-full flex flex-col md:flex-row justify-start items-end gap-3 relative z-10">
+              {/* Search bar */}
+              <div className="w-full flex flex-col md:flex-row justify-start items-stretch md:items-end gap-3 relative z-10">
                 <InputBox
                   label={<span className="text-white text-sm font-normal font-poppins">Search Doctor Name</span>}
                   placeholder="Dr. Abraham.."
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  containerClassName="w-full md:w-[466px]"
+                  containerClassName="w-full xl:w-[466px]"
                 />
                 <Button
                   variant="outline-white"
                   text="Search"
                   leftIcon="Search 1"
-                  className="h-12 px-6 font-poppins text-base font-semibold"
+                  className="w-full md:w-auto h-12 px-6 font-poppins text-base font-semibold"
                   onClick={handleSearch}
                 />
               </div>
 
-              {/* Doctor Illustration (3D overlap illusion) */}
-              <div className="hidden md:block absolute bottom-[-1] right-8 ml-6 w-[406px] h-[258px] pointer-events-none z-0">
+              {/* Doctor Illustration: slides from right */}
+              <motion.div
+                className="hidden xl:block absolute bottom-[-1] right-8 ml-6 w-[406px] h-[258px] pointer-events-none z-0"
+                variants={illustrationVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 <Image
                   src="/Illustration/DoctorIllustration.png"
                   alt="Doctor Illustration"
@@ -139,88 +220,152 @@ export default function DoctorsPage() {
                   height={258}
                   className="object-contain object-bottom"
                 />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Filter segments using dropdown.tsx */}
+            {/* ── Filter segments: label slides from left, dropdowns stagger up ── */}
             <div className="self-stretch flex flex-col justify-start items-start gap-2 mt-4 w-full">
-              <span className="text-primary/50 text-sm font-poppins tracking-wider">FILTER DOCTOR</span>
-              <div className="self-stretch grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2">
-                <Dropdown
-                  label="Region"
-                  placeholder="Pick a Region"
-                  options={regionOptions}
-                  value={filters.region}
-                  onChange={(val) => handleFilterChange("region", val)}
-                  containerClassName="w-full"
-                />
-                <Dropdown
-                  label="Hospital Name"
-                  placeholder="Pick a Hospital"
-                  options={hospitalOptions}
-                  value={filters.hospital}
-                  onChange={(val) => handleFilterChange("hospital", val)}
-                  containerClassName="w-full"
-                />
-                <Dropdown
-                  label="Specialty"
-                  placeholder="Pick a Specialty"
-                  options={specialtyOptions}
-                  value={filters.specialty}
-                  onChange={(val) => handleFilterChange("specialty", val)}
-                  containerClassName="w-full"
-                />
-              </div>
+              <motion.span
+                className="text-primary/50 text-sm font-poppins tracking-wider"
+                variants={filterLabelVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                FILTER DOCTOR
+              </motion.span>
+
+              <motion.div
+                className="self-stretch grid grid-cols-1 lg:grid-cols-3 gap-6 w-full mt-2"
+                variants={filterContainerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <motion.div variants={filterItemVariants}>
+                  <Dropdown
+                    label="Region"
+                    placeholder="Pick a Region"
+                    options={regionOptions}
+                    value={filters.region}
+                    onChange={(val) => handleFilterChange("region", val)}
+                    containerClassName="w-full"
+                  />
+                </motion.div>
+                <motion.div variants={filterItemVariants}>
+                  <Dropdown
+                    label="Hospital Name"
+                    placeholder="Pick a Hospital"
+                    options={hospitalOptions}
+                    value={filters.hospital}
+                    onChange={(val) => handleFilterChange("hospital", val)}
+                    containerClassName="w-full"
+                  />
+                </motion.div>
+                <motion.div variants={filterItemVariants}>
+                  <Dropdown
+                    label="Specialty"
+                    placeholder="Pick a Specialty"
+                    options={specialtyOptions}
+                    value={filters.specialty}
+                    onChange={(val) => handleFilterChange("specialty", val)}
+                    containerClassName="w-full"
+                  />
+                </motion.div>
+              </motion.div>
             </div>
           </div>
 
           {/* Divider line */}
           <hr className="w-full border-t border-gray-200 my-4 z-10" />
 
-          {/* Results grid and pagination */}
+          {/* ── Results grid and pagination ── */}
           <div className="w-full flex flex-col justify-start items-start gap-6 relative z-10">
-            <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
-              {searchQuery || filters.region || filters.hospital || filters.specialty ? "Showing Filtered Results" : "Showing All Doctors"}
-            </div>
 
-            {paginatedDoctors.length > 0 ? (
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
-                {paginatedDoctors.map((doc) => (
-                  <DoctorCard
-                    key={doc.id}
-                    name={doc.name}
-                    specialty={doc.specialty}
-                    hospital={doc.hospital}
-                    imageUrl={doc.imageUrl}
-                    onViewDetails={() => {
-                      setSelectedDoctor(doc);
-                      setIsModalOpen(true);
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="py-12 text-center text-slate-400 font-poppins text-base w-full">
-                No doctors match your search or filters.
-              </div>
-            )}
+            {/* Results status label: fades in */}
+            <motion.div
+              className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins"
+              variants={resultsLabelVariants}
+              initial="hidden"
+              animate="visible"
+              key={`${searchQuery}-${filters.region}-${filters.hospital}-${filters.specialty}`}
+            >
+              {searchQuery || filters.region || filters.hospital || filters.specialty ? (
+                <span>
+                  Showing results for{" "}
+                  <span className="">
+                    {[
+                      searchQuery ? `"${searchQuery}"` : "",
+                      filters.specialty,
+                      filters.hospital,
+                      filters.region,
+                    ]
+                      .filter(Boolean)
+                      .join(" - ")}
+                  </span>
+                </span>
+              ) : (
+                "Showing All Doctors"
+              )}
+            </motion.div>
 
-            {/* Dynamic Pagination Controls */}
+            {/* Doctor cards grid: stagger scale-up */}
+            <AnimatePresence mode="wait">
+              {paginatedDoctors.length > 0 ? (
+                <motion.div
+                  key={`page-${currentPage}-${searchQuery}-${filters.region}-${filters.hospital}-${filters.specialty}`}
+                  className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center"
+                  variants={cardGridVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                >
+                  {paginatedDoctors.map((doc) => (
+                    <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-[270px] flex justify-center">
+                      <DoctorCard
+                        name={doc.name}
+                        specialty={doc.specialty}
+                        hospital={doc.hospital}
+                        imageUrl={doc.imageUrl}
+                        onViewDetails={() => {
+                          setSelectedDoctor(doc);
+                          setIsModalOpen(true);
+                        }}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty"
+                  className="py-12 text-center text-slate-400 font-poppins text-base w-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  No doctors match your search or filters.
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ── Pagination Controls: fades + slides up ── */}
             {totalPages > 1 && (
-              <div className="self-stretch flex justify-between items-center mt-6 w-full">
-
+              <motion.div
+                className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6 w-full"
+                variants={paginationVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 {/* Previous Button */}
                 <Button
                   variant="outline-primary"
                   text="Previous"
                   leftIcon="Left 1"
-                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 />
 
-                {/* Page numbers list */}
-                <div className="flex justify-start items-center gap-4">
+                {/* Page numbers */}
+                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
                     const isCurrent = currentPage === page;
                     return (
@@ -243,12 +388,11 @@ export default function DoctorsPage() {
                   variant="primary"
                   text="Next"
                   rightIcon="Right 1"
-                  className="w-32 h-12 px-4 py-3 font-poppins text-base font-semibold"
+                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 />
-
-              </div>
+              </motion.div>
             )}
           </div>
 
@@ -260,7 +404,7 @@ export default function DoctorsPage() {
 
         </section>
 
-        {/* Decorative Brand Watermark */}
+        {/* Decorative Brand Watermarks */}
         <span
           style={{
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
@@ -275,7 +419,7 @@ export default function DoctorsPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-180 md:size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
       </main>

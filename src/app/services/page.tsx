@@ -3,12 +3,99 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { motion, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { CtaSection } from "@/sections/CtaSection";
 import { Footer } from "@/components/Footer";
 import { ServiceDetailCard } from "@/components/card/ServiceDetailCard";
 import { SERVICES } from "@/data/mockData";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
+
+// ─── Animation Variants ───────────────────────────────────────────────────────
+
+// Header: scales up from 94% with a soft spring bounce
+const headerVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.94, y: -20 },
+  visible: {
+    opacity: 1, scale: 1, y: 0,
+    transition: { duration: 0.7, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] },
+  },
+};
+
+// Masonry columns — each direction is unique
+const colVariants: Record<number, Variants> = {
+  0: { hidden: { opacity: 0, x: -70 }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } } },
+  1: { hidden: { opacity: 0, y: 80 },  visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } } },
+  2: { hidden: { opacity: 0, y: -80 }, visible: { opacity: 1, y: 0,  transition: { duration: 0.7, ease: "easeOut", delay: 0.05 } } },
+  3: { hidden: { opacity: 0, y: 80 },  visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: "easeOut", delay: 0.15 } } },
+  4: { hidden: { opacity: 0, x: 70 },  visible: { opacity: 1, x: 0,  transition: { duration: 0.7, ease: "easeOut", delay: 0.1 } } },
+};
+
+// Image items within a column (stagger from below)
+const imgItemVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.96, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+};
+
+// Accordion cards stagger container
+const accordionContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const accordionItemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+// Section label slides from left
+const labelSlideLeft: Variants = {
+  hidden: { opacity: 0, x: -40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: "easeOut" } },
+};
+
+// Ticker columns representing the images at their original/desktop sizes
+const TickerColumns = () => (
+  <>
+    {/* Col 1 */}
+    <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6">
+      <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+        <Image src="/Illustration/services/1.png" alt="Partner in Care" fill className="object-cover" sizes="200px" />
+      </div>
+      <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+        <Image src="/Illustration/services/2.png" alt="Insurance Buddy" fill className="object-cover" sizes="200px" />
+      </div>
+    </div>
+
+    {/* Col 2 */}
+    <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+      <Image src="/Illustration/services/3.png" alt="Doctor Matching" fill className="object-cover" sizes="200px" />
+    </div>
+
+    {/* Col 3 */}
+    <div className="w-[200px] shrink-0 h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+      <Image src="/Illustration/services/4.png" alt="Travel Support" fill className="object-cover" sizes="200px" />
+    </div>
+
+    {/* Col 4 */}
+    <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+      <Image src="/Illustration/services/5.png" alt="Monitor Ready" fill className="object-cover" sizes="200px" />
+    </div>
+
+    {/* Col 5 */}
+    <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6 mr-24">
+      <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+        <Image src="/Illustration/services/6.png" alt="Guided Care" fill className="object-cover" sizes="200px" />
+      </div>
+      <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+        <Image src="/Illustration/services/7.png" alt="Medical Treatment" fill className="object-cover" sizes="200px" />
+      </div>
+    </div>
+  </>
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 
 function ServicesPageContent() {
   // First services card is open by default (index 0)
@@ -30,7 +117,6 @@ function ServicesPageContent() {
 
   useEffect(() => {
     if (serviceParam) {
-      // Allow DOM layout and hydration to complete before calculating position
       const timer = setTimeout(() => {
         const element = document.getElementById(`service-detail-${serviceParam}`);
         if (element) {
@@ -46,15 +132,22 @@ function ServicesPageContent() {
       <NavBar />
 
       <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
-        {/* Combined Services Section: Full-width wrapper with bg-primary/10 and rounded bottom corners */}
-        <section className="w-full py-16 bg-primary/10 flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-[32px] rounded-br-[32px] outline outline-offset-[-1px] outline-gray-200">
+        {/* Combined Services Section */}
+        <section className="w-full py-16 bg-primary/10 flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-[32px] rounded-br-[32px] outline -outline-offset-1 outline-gray-200">
           <NoiseTexture />
 
-          {/* Centered content container keeping the same max-width and paddings */}
-          <div className="w-full max-w-[1440px] px-6 md:px-36 flex flex-col justify-start items-start gap-8 relative z-10">
+          {/* Header & Desktop Grid (inside padded container) */}
+          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10">
 
             <div className="self-stretch flex flex-col justify-start items-start gap-6 z-10 w-full">
-              <div className="self-stretch inline-flex justify-between items-end w-full">
+
+              {/* ── Page Header: scales up from center ── */}
+              <motion.div
+                className="self-stretch inline-flex justify-between items-end w-full"
+                variants={headerVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 <div className="flex-1 inline-flex flex-col justify-start items-center gap-1 w-full text-center">
                   <div className="inline-flex justify-center items-center gap-3">
                     <span
@@ -73,108 +166,144 @@ function ServicesPageContent() {
                     OUR SERVICES
                   </span>
                 </div>
-              </div>
+              </motion.div>
 
-              {/* Waver Wave Masonry Grid */}
-              <div className="self-stretch inline-flex flex-col md:flex-row justify-center items-end gap-6 overflow-hidden w-full mt-4">
+              {/* ── Masonry Grid: visible only on desktop (xl and above) ── */}
+              <div className="hidden xl:inline-flex self-stretch flex-row justify-center items-end gap-6 overflow-hidden w-full mt-4">
 
-                {/* Column 1 */}
-                <div className="flex-1 inline-flex flex-col justify-end items-start gap-6 w-full">
-                  {/* Partner in Care */}
-                  <div className="self-stretch h-60 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                    <Image
-                      src="/Illustration/services/1.png"
-                      alt="Partner in Care"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 250px"
-                    />
-                  </div>
+                {/* Col 1 → slides from LEFT */}
+                <motion.div
+                  className="flex-1 inline-flex flex-col justify-end items-start gap-6 w-full"
+                  variants={colVariants[0]}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div
+                    className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    variants={imgItemVariants}
+                  >
+                    <Image src="/Illustration/services/1.png" alt="Partner in Care" fill className="object-cover" sizes="250px" />
+                  </motion.div>
+                  <motion.div
+                    className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    variants={imgItemVariants}
+                  >
+                    <Image src="/Illustration/services/2.png" alt="Insurance Buddy" fill className="object-cover" sizes="250px" />
+                  </motion.div>
+                </motion.div>
 
-                  {/* Insurance Buddy */}
-                  <div className="self-stretch h-44 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                    <Image
-                      src="/Illustration/services/2.png"
-                      alt="Insurance Buddy"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 250px"
-                    />
-                  </div>
-                </div>
+                {/* Col 2 → rises from BOTTOM */}
+                <motion.div
+                  className="flex-1 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  variants={colVariants[1]}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Image src="/Illustration/services/3.png" alt="Doctor Matching" fill className="object-cover" sizes="250px" />
+                </motion.div>
 
-                {/* Column 2: Doctor Matching */}
-                <div className="flex-1 h-80 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                  <Image
-                    src="/Illustration/services/3.png"
-                    alt="Doctor Matching"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 250px"
-                  />
-                </div>
+                {/* Col 3 → drops from TOP */}
+                <motion.div
+                  className="flex-1 h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  variants={colVariants[2]}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Image src="/Illustration/services/4.png" alt="Travel Support" fill className="object-cover" sizes="250px" />
+                </motion.div>
 
-                {/* Column 3: Travel Support */}
-                <div className="flex-1 h-60 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                  <Image
-                    src="/Illustration/services/4.png"
-                    alt="Travel Support"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 250px"
-                  />
-                </div>
+                {/* Col 4 → rises from BOTTOM */}
+                <motion.div
+                  className="flex-1 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  variants={colVariants[3]}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Image src="/Illustration/services/5.png" alt="Monitor Ready" fill className="object-cover" sizes="250px" />
+                </motion.div>
 
-                {/* Column 4: Monitor Ready */}
-                <div className="flex-1 h-80 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                  <Image
-                    src="/Illustration/services/5.png"
-                    alt="Monitor Ready"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 250px"
-                  />
-                </div>
-
-                {/* Column 5 */}
-                <div className="flex-1 inline-flex flex-col justify-end items-start gap-6 w-full">
-                  {/* Guided Care */}
-                  <div className="self-stretch h-60 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                    <Image
-                      src="/Illustration/services/6.png"
-                      alt="Guided Care"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 250px"
-                    />
-                  </div>
-
-                  {/* Medical Treatment */}
-                  <div className="self-stretch h-44 relative rounded-[32px] outline-1 outline-offset-[-1px] outline-zinc-200 overflow-hidden w-full bg-slate-100">
-                    <Image
-                      src="/Illustration/services/7.png"
-                      alt="Medical Treatment"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 250px"
-                    />
-                  </div>
-                </div>
+                {/* Col 5 → slides from RIGHT */}
+                <motion.div
+                  className="flex-1 inline-flex flex-col justify-end items-start gap-6 w-full"
+                  variants={colVariants[4]}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div
+                    className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    variants={imgItemVariants}
+                  >
+                    <Image src="/Illustration/services/6.png" alt="Guided Care" fill className="object-cover" sizes="250px" />
+                  </motion.div>
+                  <motion.div
+                    className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    variants={imgItemVariants}
+                  >
+                    <Image src="/Illustration/services/7.png" alt="Medical Treatment" fill className="object-cover" sizes="250px" />
+                  </motion.div>
+                </motion.div>
 
               </div>
             </div>
+          </div>
 
-            {/* Divider line */}
+          {/* ── Sliding Ticker Marquee: visible only on tablet and mobile (under xl) ── */}
+          <div className="xl:hidden w-full overflow-hidden py-4 relative mt-4 z-10">
+            {/* Gradient fades on left and right edges for a premium seamless look */}
+            <div className="absolute top-0 bottom-0 left-0 w-16 bg-linear-to-r from-primary/10 to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-0 bottom-0 right-0 w-16 bg-linear-to-l from-primary/10 to-transparent z-10 pointer-events-none" />
+
+            <motion.div
+              className="flex items-end gap-6 w-max"
+              animate={{
+                x: [0, -1216], // Loops seamlessly over the 5 columns (5 * 200px + 4 * 24px gap + 1 * 120px gap = 1216px)
+              }}
+              transition={{
+                ease: "linear",
+                duration: 25,
+                repeat: Infinity,
+              }}
+            >
+              <TickerColumns />
+              <TickerColumns />
+            </motion.div>
+          </div>
+
+          {/* Details Accordion (inside another padded container) */}
+          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10 mt-8">
+
+            {/* Divider */}
             <hr className="w-full border-t border-primary/20 my-4" />
 
-            {/* Services Details Accordion Section */}
+            {/* ── Services Details Accordion ── */}
             <div className="self-stretch flex flex-col justify-start items-start gap-4 w-full">
-              <span className="text-primary/50 text-sm font-poppins tracking-wider uppercase">
+
+              {/* Label: slides from left */}
+              <motion.span
+                className="text-primary/50 text-sm font-poppins tracking-wider uppercase"
+                variants={labelSlideLeft}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+              >
                 SERVICES DETAILS
-              </span>
-              <div className="self-stretch flex flex-col justify-start items-start gap-8 w-full">
+              </motion.span>
+
+              {/* Accordion cards: stagger up */}
+              <motion.div
+                className="self-stretch flex flex-col justify-start items-start gap-8 w-full"
+                variants={accordionContainerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-60px" }}
+              >
                 {SERVICES.map((service, index) => (
-                  <div key={service.id} id={`service-detail-${service.id}`} className="w-full">
+                  <motion.div
+                    key={service.id}
+                    id={`service-detail-${service.id}`}
+                    className="w-full"
+                    variants={accordionItemVariants}
+                  >
                     <ServiceDetailCard
                       icon={service.iconName}
                       title={service.title}
@@ -183,9 +312,9 @@ function ServicesPageContent() {
                       isOpen={openCardIdx === index}
                       onToggle={() => setOpenCardIdx(openCardIdx === index ? null : index)}
                     />
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
 

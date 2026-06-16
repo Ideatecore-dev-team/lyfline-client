@@ -10,6 +10,7 @@ interface ArticleCardProps {
   date: string;
   category: string;
   categoryVariant?: BadgeVariant;
+  customColor?: string;
   imageUrl?: string;
   href?: string;
 }
@@ -19,6 +20,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   date,
   category,
   categoryVariant = "green",
+  customColor,
   imageUrl,
   href = "#",
 }) => {
@@ -28,15 +30,19 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       {/* Article Image Container */}
       <div className="self-stretch h-52 relative overflow-hidden border-b-2 border-gray-200 rounded-t-[32px] rounded-b-3xl">
         {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          <>
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            {/* Brand suit gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-800/0 to-blue-800/30 pointer-events-none mix-blend-multiply" />
+          </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-b from-blue-800/0 to-blue-800/30" />
+          <div className="w-full h-full bg-gradient-to-b from-blue-800/20 to-blue-800/40" />
         )}
       </div>
 
@@ -44,7 +50,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden">
 
         {/* Metadata row */}
-        <div className="self-stretch inline-flex justify-between items-center">
+        <div className="self-stretch flex flex-wrap justify-between items-center gap-3">
           {/* Date Badge */}
           <div className="px-2.5 py-1.5 bg-primary/10 rounded-[64px] flex justify-center items-center gap-2">
             <span
@@ -62,6 +68,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           <Badge
             text={category}
             variant={categoryVariant}
+            customColor={customColor}
             showDot={true}
           />
         </div>
