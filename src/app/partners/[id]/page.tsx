@@ -80,6 +80,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
   // Fetch doctors for this hospital by hospital_id
   useEffect(() => {
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDoctorsLoading(true);
     fetchDoctors({ hospital_id: id })
       .then((data) => {

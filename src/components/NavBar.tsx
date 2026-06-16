@@ -74,11 +74,13 @@ export const NavBar: React.FC = () => {
 
         {/* DESKTOP CTA (matching Figma styles via Button component) */}
         <div className="hidden lg:flex items-center">
-          <Button
-            variant="primary"
-            text={t("nav.appointment")}
-            className="h-12 px-4 py-3 font-poppins text-base font-semibold"
-          />
+          <Link href="https://wa.me/6281291578559" target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="primary"
+              text={t("nav.appointment")}
+              className="h-12 px-4 py-3 font-poppins text-base font-semibold"
+            />
+          </Link>
         </div>
 
         {/* MOBILE MENU TRIGGER */}
@@ -195,12 +197,19 @@ export const NavBar: React.FC = () => {
                   </button>
                 </div>
 
-                <Button
-                  variant="primary"
-                  text={t("nav.appointment")}
-                  className="w-full font-poppins text-base font-semibold py-3"
+                <Link
+                  href="https://wa.me/6281291578559"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full"
                   onClick={() => setIsMobileMenuOpen(false)}
-                />
+                >
+                  <Button
+                    variant="primary"
+                    text={t("nav.appointment")}
+                    className="w-full font-poppins text-base font-semibold py-3"
+                  />
+                </Link>
               </div>
             </motion.div>
           </>

@@ -258,7 +258,13 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                 </div>
 
                                 {/* CTA Button */}
-                                <a href="#appointment" onClick={onClose} className="w-full mt-2">
+                                <a 
+                                    href={`https://wa.me/6281291578559?text=${encodeURIComponent(`Halo Lyfline,\n\nSaya ingin appointment dengan ${doctor.name}`)}`} 
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={onClose} 
+                                    className="w-full mt-2"
+                                >
                                     <Button
                                         variant="primary"
                                         text="Make an Appointment"
