@@ -69,6 +69,18 @@ body {
 /* Rich text editor content formatting */
 .article-rich-content {
   width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.article-rich-content * {
+  max-width: 100%;
+}
+.article-rich-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
 }
 .article-rich-content h1 {
   font-size: 2.25rem; /* text-3xl */
@@ -144,6 +156,8 @@ body {
   text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 .article-rich-content a:hover {
   color: var(--color-primary-hover);
