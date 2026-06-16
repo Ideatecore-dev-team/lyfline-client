@@ -9,6 +9,7 @@ import InputBox from "@/components/inputbox";
 import { ArticleCard } from "@/components/card/ArticleCard";
 import { fetchArticles } from "@/api/articles";
 import { type Article } from "@/data/articlesData";
+import { slugify } from "@/lib/utils";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -264,7 +265,7 @@ export default function ArticlesPage() {
                         categoryVariant={article.categoryVariant}
                         customColor={article.customColor}
                         imageUrl={article.imageUrl}
-                        href={`/articles/${article.id}`}
+                        href={`/articles/${slugify(article.title)}-${article.id}`}
                       />
                     </motion.div>
                   ))}
