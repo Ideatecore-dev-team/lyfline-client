@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
@@ -10,7 +10,8 @@ import InputBox from "@/components/inputbox";
 import Dropdown from "@/components/Dropdown";
 import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
-import { Doctor, DOCTORS } from "@/data/mockData";
+import { type Doctor } from "@/data/doctorsData";
+import { fetchDoctors } from "@/api/doctors";
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -91,36 +92,54 @@ export default function DoctorsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Exactly 9 dummy data items to demonstrate pagination (8 per page)
-  const DUMMY_DOCTORS = useMemo(() => {
-    return DOCTORS.slice(0, 9);
+  useEffect(() => {
+    let active = true;
+    fetchDoctors()
+      .then((data) => {
+        if (active) {
+          setDoctors(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching doctors:", err);
+        if (active) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+    return () => { active = false; };
   }, []);
 
-  // Filter options dynamically extracted from the dummy doctor list
+  // Filter options dynamically extracted from live doctor list
   const regionOptions = useMemo(() => {
-    const uniqueRegions = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.region))).sort();
+    const unique = Array.from(new Set(doctors.map((d) => d.region).filter(Boolean))).sort() as string[];
     return [
       { value: "", label: "Pick a Region" },
-      ...uniqueRegions.map((r) => ({ value: r, label: r })),
+      ...unique.map((r) => ({ value: r, label: r })),
     ];
-  }, [DUMMY_DOCTORS]);
+  }, [doctors]);
 
   const hospitalOptions = useMemo(() => {
-    const uniqueHospitals = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.hospital))).sort();
+    const unique = Array.from(new Set(doctors.map((d) => d.hospital).filter(Boolean))).sort() as string[];
     return [
       { value: "", label: "Pick a Hospital" },
-      ...uniqueHospitals.map((h) => ({ value: h, label: h })),
+      ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [DUMMY_DOCTORS]);
+  }, [doctors]);
 
   const specialtyOptions = useMemo(() => {
-    const uniqueSpecialties = Array.from(new Set(DUMMY_DOCTORS.map((d) => d.specialty))).sort();
+    const all = doctors.flatMap((d) => d.specialty || []);
+    const unique = Array.from(new Set(all)).sort();
     return [
       { value: "", label: "Pick a Specialty" },
-      ...uniqueSpecialties.map((s) => ({ value: s, label: s })),
+      ...unique.map((s) => ({ value: s, label: s })),
     ];
-  }, [DUMMY_DOCTORS]);
+  }, [doctors]);
 
   const handleSearch = () => {
     setSearchQuery(searchVal);
@@ -140,19 +159,20 @@ export default function DoctorsPage() {
 
   // Filtered doctors list based on search and selected options
   const filteredDoctors = useMemo(() => {
-    return DUMMY_DOCTORS.filter((doc) => {
+    return doctors.filter((doc) => {
       const matchesSearch =
         searchQuery.trim() === "" ||
         doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.specialty.toLowerCase().includes(searchQuery.toLowerCase());
+        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.specialty.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchesRegion = filters.region === "" || doc.region === filters.region;
       const matchesHospital = filters.hospital === "" || doc.hospital === filters.hospital;
-      const matchesSpecialty = filters.specialty === "" || doc.specialty === filters.specialty;
+      const matchesSpecialty = filters.specialty === "" || doc.specialty.includes(filters.specialty);
 
       return matchesSearch && matchesRegion && matchesHospital && matchesSpecialty;
     });
-  }, [DUMMY_DOCTORS, searchQuery, filters]);
+  }, [doctors, searchQuery, filters]);
 
   // Pagination bounds (8 doctors per page)
   const doctorsPerPage = 8;
@@ -309,7 +329,17 @@ export default function DoctorsPage() {
 
             {/* Doctor cards grid: stagger scale-up */}
             <AnimatePresence mode="wait">
-              {paginatedDoctors.length > 0 ? (
+              {loading ? (
+                <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <DoctorCard key={`skeleton-${i}`} isLoading={true} />
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
+                  Failed to load doctors: {error}
+                </div>
+              ) : paginatedDoctors.length > 0 ? (
                 <motion.div
                   key={`page-${currentPage}-${searchQuery}-${filters.region}-${filters.hospital}-${filters.specialty}`}
                   className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center"
@@ -322,7 +352,7 @@ export default function DoctorsPage() {
                     <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-[270px] flex justify-center">
                       <DoctorCard
                         name={doc.name}
-                        specialty={doc.specialty}
+                        title={doc.title}
                         hospital={doc.hospital}
                         imageUrl={doc.imageUrl}
                         onViewDetails={() => {

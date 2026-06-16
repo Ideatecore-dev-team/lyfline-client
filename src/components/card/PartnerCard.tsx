@@ -27,12 +27,16 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
             {/* Partner Logo Container */}
             <div className="self-stretch h-36 relative bg-linear-to-b from-blue-800/0 to-blue-800/10 rounded-3xl outline -outline-offset-2 outline-gray-200 overflow-hidden flex items-center justify-center">
                 {logoUrl ? (
-                    <Image
-                        src={logoUrl}
-                        alt={`${name} Logo`}
-                        fill
-                        className="object-contain p-4"
-                    />
+                    <>
+                        <Image
+                            src={logoUrl}
+                            alt={`${name} Logo`}
+                            fill
+                            className="object-cover"
+                        />
+                        {/* Brand gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-blue-800/0 to-blue-800/10 pointer-events-none mix-blend-multiply" />
+                    </>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary font-poppins text-lg font-semibold px-4 text-center">
                         {name}

@@ -1,13 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
+import { fetchPromoImage } from "@/api/promo";
 
 export const HeroSection: React.FC = () => {
   const { lang } = useLanguage();
+  const [promoImageUrl, setPromoImageUrl] = useState<string | null>(null);
+  const [promoLoading, setPromoLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPromoImage()
+      .then((url) => setPromoImageUrl(url))
+      .catch(() => setPromoImageUrl(null))
+      .finally(() => setPromoLoading(false));
+  }, []);
 
   return (
     <section className="relative w-full overflow-hidden bg-[#0C3D49]">
@@ -56,7 +66,7 @@ export const HeroSection: React.FC = () => {
               {/* Description */}
               <p className="self-stretch justify-start text-white text-base font-normal font-poppins opacity-90 leading-relaxed">
                 {lang === "en"
-                  ? "We connects Indonesians with the world’s most reputable international hospitals, from consultation to travel, we handle every steps of your medical journey."
+                  ? "We connects Indonesians with the world's most reputable international hospitals, from consultation to travel, we handle every steps of your medical journey."
                   : "Kami menghubungkan masyarakat Indonesia dengan rumah sakit internasional paling terkemuka di dunia, mulai dari konsultasi hingga perjalanan, kami menangani setiap langkah perjalanan medis Anda."}
               </p>
             </div>
@@ -102,8 +112,24 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* Glassmorphic inner promo box container */}
-            <div className="self-stretch flex-1 relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 p-5 flex flex-col justify-start overflow-hidden">
-
+            <div className="self-stretch flex-1 relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 overflow-hidden">
+              {promoLoading ? (
+                /* Skeleton shimmer */
+                <div className="w-full h-full animate-pulse bg-white/10" />
+              ) : promoImageUrl ? (
+                <Image
+                  src={promoImageUrl}
+                  alt="Special Promo"
+                  fill
+                  className="object-cover"
+                  sizes="384px"
+                />
+              ) : (
+                /* No image uploaded yet */
+                <div className="w-full h-full flex items-center justify-center text-white/40 text-sm font-poppins text-center px-4">
+                  {lang === "en" ? "No promo available" : "Belum ada promo"}
+                </div>
+              )}
             </div>
           </div>
         </motion.div>

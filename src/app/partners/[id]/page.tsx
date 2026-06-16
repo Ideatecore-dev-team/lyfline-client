@@ -7,7 +7,8 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
 import { motion, AnimatePresence } from "framer-motion";
-import { DOCTORS } from "@/data/mockData";
+import { fetchDoctors } from "@/api/doctors";
+import { type Doctor } from "@/data/doctorsData";
 import { DoctorCard } from "@/components/card/DoctorCard";
 import GooglaMapsPreviewModal from "@/components/googleMapsPreview";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
@@ -49,6 +50,8 @@ export default function PartnerDetailPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [doctorsLoading, setDoctorsLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
@@ -73,6 +76,23 @@ export default function PartnerDetailPage({ params }: PageProps) {
     };
   }, [id]);
 
+  // Fetch doctors for this hospital by hospital_id
+  useEffect(() => {
+    let active = true;
+    setDoctorsLoading(true);
+    fetchDoctors({ hospital_id: id })
+      .then((data) => {
+        if (active) {
+          setDoctors(data);
+          setDoctorsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (active) setDoctorsLoading(false);
+      });
+    return () => { active = false; };
+  }, [id]);
+
   const partnerImages = useMemo(() => {
     if (partner && partner.images && partner.images.length > 0) {
       return partner.images;
@@ -92,25 +112,6 @@ export default function PartnerDetailPage({ params }: PageProps) {
 
   const flagUrl = partner ? getFlagUrl(partner.country) : null;
 
-  // Filter available doctors for this specific hospital
-  const hospitalDoctors = useMemo(() => {
-    if (!partner) return [];
-    return DOCTORS.filter(
-      (d) => d.hospital.toLowerCase().includes(partner.name.toLowerCase()) ||
-        partner.name.toLowerCase().includes(d.hospital.toLowerCase())
-    );
-  }, [partner]);
-
-  // Fallback to first 4 doctors in mockData if no matches are found, overriding their hospital name to match
-  const displayDoctors = useMemo(() => {
-    if (!partner) return [];
-    return hospitalDoctors.length > 0
-      ? hospitalDoctors
-      : DOCTORS.slice(0, 4).map((d) => ({
-        ...d,
-        hospital: partner.name,
-      }));
-  }, [hospitalDoctors, partner]);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -402,15 +403,25 @@ export default function PartnerDetailPage({ params }: PageProps) {
 
                   {/* Grid of Doctor Cards */}
                   <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center">
-                    {displayDoctors.map((doc) => (
-                      <DoctorCard
-                        key={doc.id}
-                        name={doc.name}
-                        specialty={doc.specialty}
-                        hospital={doc.hospital}
-                        imageUrl={doc.imageUrl}
-                      />
-                    ))}
+                    {doctorsLoading ? (
+                      Array.from({ length: 4 }).map((_, i) => (
+                        <DoctorCard key={`skeleton-${i}`} isLoading={true} />
+                      ))
+                    ) : doctors.length > 0 ? (
+                      doctors.map((doc) => (
+                        <DoctorCard
+                          key={doc.id}
+                          name={doc.name}
+                          title={doc.title}
+                          hospital={doc.hospital}
+                          imageUrl={doc.imageUrl}
+                        />
+                      ))
+                    ) : (
+                      <p className="col-span-4 text-center text-slate-400 font-poppins text-sm py-8">
+                        No doctors listed for this hospital yet.
+                      </p>
+                    )}
                   </div>
 
                 </div>
