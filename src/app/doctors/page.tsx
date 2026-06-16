@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
@@ -15,7 +15,7 @@ import { Doctor, DOCTORS } from "@/data/mockData";
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
 // Hero banner: rises from below on page load
-const bannerVariants = {
+const bannerVariants: Variants = {
   hidden: { opacity: 0, y: 60 },
   visible: {
     opacity: 1, y: 0,
@@ -24,7 +24,7 @@ const bannerVariants = {
 };
 
 // Doctor illustration: same rise-from-below as the banner (unified entrance)
-const illustrationVariants = {
+const illustrationVariants: Variants = {
   hidden: { opacity: 0, y: 60 },
   visible: {
     opacity: 1, y: 0,
@@ -33,7 +33,7 @@ const illustrationVariants = {
 };
 
 // Filter label: slides from left
-const filterLabelVariants = {
+const filterLabelVariants: Variants = {
   hidden: { opacity: 0, x: -40 },
   visible: {
     opacity: 1, x: 0,
@@ -42,29 +42,29 @@ const filterLabelVariants = {
 };
 
 // Filter dropdowns: stagger up from below
-const filterContainerVariants = {
+const filterContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 
-const filterItemVariants = {
+const filterItemVariants: Variants = {
   hidden: { opacity: 0, y: 25 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
 // Results status label: simple fade
-const resultsLabelVariants = {
+const resultsLabelVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.4 } },
 };
 
 // Doctor cards: stagger scale-up from below
-const cardGridVariants = {
+const cardGridVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 
-const cardItemVariants = {
+const cardItemVariants: Variants = {
   hidden: { opacity: 0, y: 35, scale: 0.96 },
   visible: {
     opacity: 1, y: 0, scale: 1,
@@ -73,7 +73,7 @@ const cardItemVariants = {
 };
 
 // Pagination: fades + slides up
-const paginationVariants = {
+const paginationVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
@@ -174,7 +174,7 @@ export default function DoctorsPage() {
           {/* ── Banner segment with search layout: rises from below ── */}
           <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
             <motion.div
-              className="w-full p-6 md:p-6 bg-gradient-to-r from-[#3F71B7] to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative"
+              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative"
               variants={bannerVariants}
               initial="hidden"
               animate="visible"

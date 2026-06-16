@@ -1,20 +1,20 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
-const headerDropDown = {
+const headerDropDown: Variants = {
   hidden: { opacity: 0, y: -40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const colLeft = {
+const colLeft: Variants = {
   hidden: { opacity: 0, x: -50 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } },
 };
 
-const colRight = {
+const colRight: Variants = {
   hidden: { opacity: 0, x: 50 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } },
 };

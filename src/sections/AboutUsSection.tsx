@@ -1,21 +1,21 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
 
-const slideFromLeft = {
+const slideFromLeft: Variants = {
   hidden: { opacity: 0, x: -60 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
-const slideFromRight = {
+const slideFromRight: Variants = {
   hidden: { opacity: 0, x: 60 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.15 } },
 };
 
-const statCardVariants = {
+const statCardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
@@ -36,7 +36,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
   return (
     <section id="about-us" className="w-full bg-transparent flex justify-center">
       <div className={`w-full py-12 relative bg-white flex flex-col justify-start items-center gap-2.5 overflow-hidden ${
-        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline outline-offset-[-1px] outline-gray-200"
+        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline -outline-offset-1 outline-gray-200"
       }`}>
 
         {/* Decorative Watermarks */}
@@ -242,7 +242,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-start items-center relative z-10">

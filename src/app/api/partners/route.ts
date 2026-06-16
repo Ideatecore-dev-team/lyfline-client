@@ -58,7 +58,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const formattedPartners = (partners || []).map((p: any) => mapDbPartnerToPartner(p as DbPartner));
+    const formattedPartners = (partners || []).map((p: unknown) => mapDbPartnerToPartner(p as DbPartner));
 
     return NextResponse.json(formattedPartners);
   } catch (error: unknown) {
