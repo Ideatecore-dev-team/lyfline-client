@@ -177,7 +177,7 @@ export const NavBar: React.FC = () => {
                   <span className="text-sm text-primary">{t("nav.select_language")}</span>
                   <button
                     onClick={toggleLang}
-                    className="flex items-center gap-2.5 hover:opacity-95 transition-opacity bg-[#ECF1F8] hover:bg-[#D9E6F5] px-4 py-2.5 rounded-3xl border border-[#3F71B7]/25 shadow-sm cursor-pointer select-none active:scale-98"
+                    className="flex items-center gap-2.5 hover:opacity-95 transition-opacity bg-primary-light hover:bg-[#D9E6F5] px-4 py-2.5 rounded-3xl border border-primary/25 shadow-sm cursor-pointer select-none active:scale-98"
                     title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
                   >
                     <div className="w-5 h-3.5 relative overflow-hidden rounded-[2px] outline-1 outline-black">

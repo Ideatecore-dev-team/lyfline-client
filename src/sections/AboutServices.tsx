@@ -28,7 +28,7 @@ export const AboutServices: React.FC = () => {
 
         {/* Banner container styled exactly like CtaSection */}
         <motion.div
-          className="w-full max-w-[1152px] p-6 md:p-6 bg-gradient-to-r from-[#3F71B7] to-[#3365AC] rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
+          className="w-full max-w-[1152px] p-6 md:p-6 bg-linear-to-r from-primary to-primary-hover rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
           initial={{ opacity: 0, x: 80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}

@@ -101,7 +101,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
                 transition={{ duration: 0.5, delay: idx * 0.06, ease: "easeOut" }}
                 viewport={{ once: true, margin: "-40px" }}
               >
-                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-gray-200 overflow-hidden">
+                <div className="size-20 relative bg-white rounded-full shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-gray-200 overflow-hidden">
                   <Image
                     src={country.flagSrc}
                     alt={country.name}
@@ -118,14 +118,14 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           </div>
 
           {/* Divider Line */}
-          <div className="w-full h-[1px] bg-gray-200 pointer-events-none" />
+          <div className="w-full h-px bg-gray-200 pointer-events-none" />
 
           {/* Logo Cards Grid */}
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 justify-items-center">
             {logos.map((logo, idx) => (
               <motion.div
                 key={idx}
-                className="w-full h-24 relative bg-white rounded-xl outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-center items-center shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group overflow-hidden"
+                className="w-full h-24 relative bg-white rounded-xl outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-center items-center shadow-xs transition-all duration-300 hover:shadow-md hover:border-gray-300 group overflow-hidden"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.45, delay: idx * 0.05, ease: [0.34, 1.56, 0.64, 1] }}

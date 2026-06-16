@@ -55,6 +55,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
 
   useEffect(() => {
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
     fetchPartnerById(id)
@@ -117,7 +118,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="flex-grow pt-[80px] w-full flex flex-col justify-start items-center">
+      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
         {loading ? (
           /* Premium Shimmer Loading Screen */
           <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 bg-white flex flex-col justify-start items-start gap-8 animate-pulse">
@@ -148,7 +149,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
           /* Dynamic Content View */
           <>
             {/* Full-width section with background styling and rounded corners */}
-            <div className="w-full py-16 bg-white flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-[32px] rounded-br-[32px] outline outline-offset-[-1px] outline-gray-200">
+            <div className="w-full py-16 bg-white flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-[32px] rounded-br-[32px] outline -outline-offset-1 outline-gray-200">
 
               {/* Decorative background shapes positioned relative to full-width wrapper */}
               <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
@@ -185,7 +186,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
                     <div className="self-stretch flex flex-col justify-start items-center gap-6">
 
                       {/* Active Image View */}
-                      <div className="w-full h-72 relative bg-gradient-to-b from-blue-800/0 to-blue-800/20 rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
+                      <div className="w-full h-72 relative bg-linear-to-b from-blue-800/0 to-blue-800/20 rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
                         {partnerImages.length > 0 ? (
                           <>
                             <AnimatePresence mode="wait">
@@ -208,7 +209,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
                               </motion.div>
                             </AnimatePresence>
                             {/* Brand alignment gradient overlay in front of the image */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-primary/25 pointer-events-none z-10" />
+                            <div className="absolute inset-0 bg-linear-to-b from-primary/5 to-primary/25 pointer-events-none z-10" />
                           </>
                         ) : (
                           <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-poppins">
@@ -268,7 +269,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
                     <div className="self-stretch flex flex-col justify-start items-start gap-2">
 
                       {/* Dynamic Country Badge */}
-                      <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline outline-offset-[-1px] outline-gray-200 inline-flex justify-center items-center gap-2">
+                      <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
                         {flagUrl ? (
                           <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                             <Image
@@ -443,7 +444,7 @@ export default function PartnerDetailPage({ params }: PageProps) {
                   maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                   WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                 }}
-                className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-[#3F71B7]/50 mask-contain mask-no-repeat mask-center shrink-0"
+                className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-primary/50 mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
               />
             </section>

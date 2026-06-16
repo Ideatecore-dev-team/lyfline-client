@@ -77,7 +77,7 @@ export const StepsSection: React.FC = () => {
           maskImage: 'url("/icons/assets/lyflineHeart.svg")',
           WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
         }}
-        className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
         aria-hidden="true"
       />
 
@@ -117,7 +117,7 @@ export const StepsSection: React.FC = () => {
             <div className="relative w-full flex items-center">
               <div
                 className={`size-16 p-4 rounded-2xl flex justify-center items-center backdrop-blur-lg border shadow-lg transition-transform duration-300 group-hover:scale-105 ${step.isRed
-                  ? "bg-[#E02828]/35 border-[#E02828]/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+                  ? "bg-accent/35 border-accent/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
                   : "bg-white/10 border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
                   }`}
               >
@@ -129,7 +129,7 @@ export const StepsSection: React.FC = () => {
               {/* Connecting line to the next step (Desktop Only, not for the last step) */}
               {idx < 3 && (
                 <div
-                  className="hidden lg:block absolute left-16 h-[1px] bg-indigo-300/30 pointer-events-none"
+                  className="hidden lg:block absolute left-16 h-px bg-indigo-300/30 pointer-events-none"
                   style={{ width: "calc(100% - 64px + 24px)" }} // 100% of column width minus badge size (64px) plus column gap (24px)
                 />
               )}
@@ -142,7 +142,7 @@ export const StepsSection: React.FC = () => {
               </h3>
 
               {/* Divider Line */}
-              <div className="self-stretch h-[1px] bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
+              <div className="self-stretch h-px bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
 
               <p className="self-stretch justify-start text-white/80 text-sm font-normal font-poppins leading-relaxed whitespace-pre-line">
                 {step.description}

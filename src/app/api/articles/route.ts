@@ -40,7 +40,7 @@ function formatDate(dateString: string): string {
   }
 }
 
-export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: any[]): Article {
+export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: string }[]): Article {
   let htmlContent: string | undefined = undefined;
   let intro: string[] = [];
   let sections: ArticleSection[] = [];
