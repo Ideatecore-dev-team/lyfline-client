@@ -11,7 +11,7 @@ export const CtaSection: React.FC = () => {
     <section className="w-full flex justify-center items-center py-16 bg-white z-10 relative">
       <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 inline-flex flex-col justify-start items-center gap-2.5">
         <motion.div
-          className="w-full max-w-[1152px] p-6 md:p-6 bg-gradient-to-r from-[#3F71B7] to-[#3365AC] rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
+          className="w-full max-w-[1152px] p-6 md:p-6 bg-linear-to-r from-primary to-primary-hover rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
           initial={{ opacity: 0, scale: 0.9, y: 50 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.65, ease: [0.34, 1.56, 0.64, 1] }}

@@ -53,7 +53,7 @@ export const TestimonialsSection: React.FC = () => {
   const tripleTestimonials = [...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS];
 
   return (
-    <section className="w-full py-16 bg-gradient-to-b from-[#E23737] to-[#E02828] text-white relative overflow-hidden flex flex-col justify-start items-center gap-0">
+    <section className="w-full py-16 bg-linear-to-b from-[#E23737] to-accent text-white relative overflow-hidden flex flex-col justify-start items-center gap-0">
 
       {/* Noise Texture Background */}
       <NoiseTexture noiseOpacity={0.2} />
