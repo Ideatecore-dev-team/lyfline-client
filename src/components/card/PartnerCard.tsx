@@ -35,7 +35,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
                             className="object-cover"
                         />
                         {/* Brand gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-blue-800/0 to-blue-800/10 pointer-events-none mix-blend-multiply" />
+                        <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/10 pointer-events-none mix-blend-multiply" />
                     </>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary font-poppins text-lg font-semibold px-4 text-center">
