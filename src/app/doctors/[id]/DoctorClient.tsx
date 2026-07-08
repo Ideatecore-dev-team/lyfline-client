@@ -79,7 +79,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
         })
         .catch((err) => {
           console.error("Error translating doctor description:", err);
-          setTranslatedDesc(doctor.description);
+          setTranslatedDesc(doctor.description || "");
           setIsTranslating(false);
         });
     } else {

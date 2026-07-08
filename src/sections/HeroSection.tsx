@@ -6,18 +6,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
-import { fetchPromoImage } from "@/api/promo";
+import { fetchPromoData } from "@/api/promo";
 import { WHATSAPP_HREF } from "@/lib/constants";
 
 export const HeroSection: React.FC = () => {
   const { lang } = useLanguage();
   const [promoImageUrl, setPromoImageUrl] = useState<string | null>(null);
+  const [promoDestinationLink, setPromoDestinationLink] = useState<string | null>(null);
   const [promoLoading, setPromoLoading] = useState(true);
 
   useEffect(() => {
-    fetchPromoImage()
-      .then((url) => setPromoImageUrl(url))
-      .catch(() => setPromoImageUrl(null))
+    fetchPromoData()
+      .then((data) => {
+        setPromoImageUrl(data.imageUrl);
+        setPromoDestinationLink(data.destinationLink);
+      })
+      .catch(() => {
+        setPromoImageUrl(null);
+        setPromoDestinationLink(null);
+      })
       .finally(() => setPromoLoading(false));
   }, []);
 
@@ -124,13 +131,30 @@ export const HeroSection: React.FC = () => {
                 /* Skeleton shimmer */
                 <div className="w-full h-full animate-pulse bg-white/10" />
               ) : promoImageUrl ? (
-                <Image
-                  src={promoImageUrl}
-                  alt="Special Promo"
-                  fill
-                  className="object-cover"
-                  sizes="384px"
-                />
+                promoDestinationLink ? (
+                  <Link
+                    href={promoDestinationLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full h-full relative"
+                  >
+                    <Image
+                      src={promoImageUrl}
+                      alt="Special Promo"
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      sizes="384px"
+                    />
+                  </Link>
+                ) : (
+                  <Image
+                    src={promoImageUrl}
+                    alt="Special Promo"
+                    fill
+                    className="object-cover"
+                    sizes="384px"
+                  />
+                )
               ) : (
                 /* No image uploaded yet */
                 <div className="w-full h-full flex items-center justify-center text-white/40 text-sm font-poppins text-center px-4">
