@@ -7,7 +7,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/Button";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export const AboutServices: React.FC = () => {
+  const { lang } = useLanguage();
   return (
     <section className="w-full flex justify-center items-center pt-16 bg-white z-10 relative overflow-hidden">
       {/* Decorative Section Watermark */}
@@ -23,7 +26,7 @@ export const AboutServices: React.FC = () => {
 
         {/* Section Heading Subtitle */}
         <span className="text-sm text-[#95B0D7] tracking-widest uppercase block text-left font-poppins w-full max-w-[1152px] mx-auto mb-3">
-          OUR SERVICES
+          {lang === "en" ? "OUR SERVICES" : "LAYANAN KAMI"}
         </span>
 
         {/* Banner container styled exactly like CtaSection */}
@@ -70,14 +73,14 @@ export const AboutServices: React.FC = () => {
 
           {/* Header Text */}
           <h2 className="w-full max-w-[662px] justify-start text-white text-3xl font-medium font-poppins leading-tight z-10">
-            We Serve You Seamless End-to-End Healthcare Support
+            {lang === "en" ? "Discover Our End-to-End Integrated Healthcare Services" : "Temukan Layanan Kesehatan Terintegrasi End-to-End Kami"}
           </h2>
 
           {/* CTA Button */}
           <Link href="/services" className="z-10">
             <Button
               variant="outline-white"
-              text="View Our Service"
+              text={lang === "en" ? "Read More" : "Baca Selengkapnya"}
               rightIcon="Right 1"
               className="cursor-pointer"
             />

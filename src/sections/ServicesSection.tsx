@@ -32,62 +32,62 @@ const getLocalizedService = (id: string, defaultTitle: string, defaultDesc: stri
   const translations: Record<string, { en: { title: string; desc: string }; id: { title: string; desc: string } }> = {
     "1": {
       en: {
-        title: "Medical Appointment Assistance",
-        desc: "We help schedule your consultations and treatments with trusted medical providers."
+        title: "Medical Tourism",
+        desc: "Access to global healthcare. We connect you to 120+ hospitals and clinics in 9 countries."
       },
       id: {
-        title: "Bantuan Janji Temu Medis",
+        title: "Wisata Medis",
         desc: "Kami membantu menjadwalkan konsultasi dan perawatan Anda dengan penyedia medis tepercaya."
       }
     },
     "2": {
       en: {
-        title: "Your Personalized Home Care",
-        desc: "Get medical care from the comfort of your home, including lab tests, IV therapy, home visits, and more."
+        title: "Medical Concierge",
+        desc: "We streamline your medical journey by managing end-to-end services, ensuring every detail is meticulously handled."
       },
       id: {
-        title: "Perawatan Rumah Pribadi Anda",
-        desc: "Dapatkan perawatan medis dari kenyamanan rumah Anda, termasuk tes laboratorium, terapi IV, kunjungan rumah, dan banyak lagi."
+        title: "Konsergi Medis",
+        desc: "Kami menyederhanakan perjalanan medis Anda dengan mengelola layanan ujung ke ujung, memastikan setiap detail ditangani dengan cermat."
       }
     },
     "3": {
       en: {
-        title: "Medical Evacuation",
-        desc: "Safe and reliable transportation to your preferred medical provider."
+        title: "Medical Consultant",
+        desc: "Empowering your decisions with clarity. We provide deep insights into specialist expertise, facility capabilities, and cost transparency."
       },
       id: {
-        title: "Evakuasi Medis",
-        desc: "Transportasi yang aman dan andal ke penyedia medis pilihan Anda."
+        title: "Konsultan Medis",
+        desc: "Memberdayakan keputusan Anda dengan kejelasan. Kami menyediakan wawasan mendalam tentang keahlian spesialis, kemampuan fasilitas, dan transparansi biaya."
       }
     },
     "4": {
       en: {
-        title: "Patient–Doctor Matching",
-        desc: "We carefully match patients with suitable doctors based on medical needs and background analysis."
+        title: "Customized Medical Check-Up (MCU)",
+        desc: "We offer customized health screening packages tailored to your personal healthcare needs and/ or corporate budget."
       },
       id: {
-        title: "Pencocokan Pasien-Dokter",
-        desc: "Kami mencocokkan pasien dengan dokter yang sesuai berdasarkan kebutuhan medis dan analisis latar belakang secara cermat."
+        title: "Pemeriksaan Kesehatan Terpadu (MCU)",
+        desc: "Kami menawarkan paket pemeriksaan kesehatan yang disesuaikan dengan kebutuhan kesehatan pribadi Anda dan/atau anggaran korporat."
       }
     },
     "5": {
       en: {
-        title: "Travel & Accommodation Support",
-        desc: "We assist with flights, accommodation, transport, visas, and travel arrangements for your medical journey."
+        title: "Homecare Services",
+        desc: "Bringing hospital-quality medical care straight to your home. Handled by professionals and backed by strict safety protocols."
       },
       id: {
-        title: "Dukungan Perjalanan & Akomodasi",
-        desc: "Kami membantu penerbangan, akomodasi, transportasi, visa, dan pengaturan perjalanan untuk perjalanan medis Anda."
+        title: "Layanan Perawatan di Rumah",
+        desc: "Memberikan perawatan medis berkualitas rumah sakit langsung ke rumah Anda. Ditangani oleh para profesional dan didukung oleh protokol keselamatan yang ketat."
       }
     },
     "6": {
       en: {
-        title: "Guided Care",
-        desc: "Your treatment journey is carefully monitored to ensure the right care for your medical needs."
+        title: "Emergency Medical Evacuation",
+        desc: "Critical care transport by land or air ambulance. We ensure patients are safely and securely transferred to and from the hospital."
       },
       id: {
-        title: "Perawatan Terpandu",
-        desc: "Perjalanan perawatan Anda dipantau secara cermat untuk memastikan perawatan yang tepat untuk kebutuhan medis Anda."
+        title: "Evakuasi Medis Darurat",
+        desc: "Transportasi perawatan kritis dengan ambulans darat atau udara. Kami memastikan pasien dipindahkan dengan aman dan terjamin ke dan dari rumah sakit."
       }
     }
   };
@@ -115,7 +115,7 @@ export const ServicesSection: React.FC = () => {
           viewport={{ once: true, margin: "-60px" }}
         >
           <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider">
-            {lang === "en" ? "WHAT WE DO" : "APA YANG KAMI LAKUKAN"}
+            {lang === "en" ? "OUR SERVICES" : "LAYANAN KAMI"}
           </div>
           <div className="inline-flex justify-start items-center gap-3 mt-2">
             <span
@@ -127,7 +127,7 @@ export const ServicesSection: React.FC = () => {
               aria-hidden="true"
             />
             <h2 className="text-black text-3xl font-medium font-poppins">
-              {lang === "en" ? "Your Gateway to International Healthcare" : "Gerbang Anda Menuju Layanan Kesehatan Internasional"}
+              {lang === "en" ? "End-to-End Integrated Healthcare Services" : "Layanan Kesehatan Terintegrasi Menyeluruh"}
             </h2>
           </div>
         </motion.div>

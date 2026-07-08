@@ -81,10 +81,10 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           viewport={{ once: true, margin: "-60px" }}
         >
           <div className="text-primary/50 text-sm font-normal font-poppins tracking-wider uppercase">
-            {lang === "en" ? "EXPERTISE ACROSS THE WORLD" : "KEAHLIAN DI SELURUH DUNIA"}
+            {lang === "en" ? "WORLD CLASS NETWORK" : "JARINGAN KELAS DUNIA"}
           </div>
           <h2 className="text-primary text-3xl font-medium font-sans mt-1">
-            {lang === "en" ? "40+ Partners Across These Countries" : "40+ Mitra di Negara-Negara Ini"}
+            {lang === "en" ? "Access to 120+ Hospitals & Clinics in 9 Countries" : "Akses ke 120+ Rumah Sakit & Klinik di 9 Negara"}
           </h2>
         </motion.div>
 

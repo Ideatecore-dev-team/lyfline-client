@@ -10,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { ServiceDetailCard } from "@/components/card/ServiceDetailCard";
 import { SERVICES } from "@/data/mockData";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
+import { useLanguage } from "@/context/LanguageContext";
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -25,10 +26,10 @@ const headerVariants: Variants = {
 // Masonry columns — each direction is unique
 const colVariants: Record<number, Variants> = {
   0: { hidden: { opacity: 0, x: -70 }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } } },
-  1: { hidden: { opacity: 0, y: 80 },  visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } } },
-  2: { hidden: { opacity: 0, y: -80 }, visible: { opacity: 1, y: 0,  transition: { duration: 0.7, ease: "easeOut", delay: 0.05 } } },
-  3: { hidden: { opacity: 0, y: 80 },  visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: "easeOut", delay: 0.15 } } },
-  4: { hidden: { opacity: 0, x: 70 },  visible: { opacity: 1, x: 0,  transition: { duration: 0.7, ease: "easeOut", delay: 0.1 } } },
+  1: { hidden: { opacity: 0, y: 80 }, visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } } },
+  2: { hidden: { opacity: 0, y: -80 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.05 } } },
+  3: { hidden: { opacity: 0, y: 80 }, visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.15 } } },
+  4: { hidden: { opacity: 0, x: 70 }, visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut", delay: 0.1 } } },
 };
 
 // Image items within a column (stagger from below)
@@ -98,6 +99,7 @@ const TickerColumns = () => (
 
 
 function ServicesPageContent() {
+  const { lang } = useLanguage();
   // First services card is open by default (index 0)
   const [openCardIdx, setOpenCardIdx] = useState<number | null>(0);
   const searchParams = useSearchParams();
@@ -159,11 +161,11 @@ function ServicesPageContent() {
                       aria-hidden="true"
                     />
                     <h1 className="justify-start text-primary text-3xl font-semibold font-sans">
-                      Gateway to International Healthcare
+                      {lang === "en" ? "Healthcare Beyond Borders" : "Layanan Kesehatan Lintas Batas"}
                     </h1>
                   </div>
                   <span className="justify-start text-primary/50 text-sm font-normal font-poppins">
-                    OUR SERVICES
+                    {lang === "en" ? "OUR SERVICES" : "LAYANAN KAMI"}
                   </span>
                 </div>
               </motion.div>
@@ -286,7 +288,7 @@ function ServicesPageContent() {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-40px" }}
               >
-                SERVICES DETAILS
+                {lang === "en" ? "SERVICES DETAILS" : "DETAIL LAYANAN"}
               </motion.span>
 
               {/* Accordion cards: stagger up */}
@@ -306,9 +308,9 @@ function ServicesPageContent() {
                   >
                     <ServiceDetailCard
                       icon={service.iconName}
-                      title={service.title}
-                      description={service.description}
-                      bullets={service.bullets}
+                      title={lang === "en" ? service.title : (service.title_id || service.title)}
+                      description={lang === "en" ? service.description : (service.description_id || service.description)}
+                      bullets={lang === "en" ? service.bullets : (service.bullets_id || service.bullets)}
                       isOpen={openCardIdx === index}
                       onToggle={() => setOpenCardIdx(openCardIdx === index ? null : index)}
                     />

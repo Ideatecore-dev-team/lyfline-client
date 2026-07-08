@@ -9,6 +9,7 @@ import { PartnerCard } from "@/components/card/PartnerCard";
 import { fetchPartners } from "@/api/partners";
 import { type Partner } from "@/data/partnersData";
 import { slugify } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -26,11 +27,12 @@ const cardVariants: Variants = {
 };
 
 export default function PartnersPage() {
+  const { lang } = useLanguage();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [selectedCountry, setSelectedCountry] = useState("All Country");
+  const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [currentPage, setCurrentPage] = useState(1);
   const [partnersPerPage, setPartnersPerPage] = useState(8);
 
@@ -73,7 +75,7 @@ export default function PartnersPage() {
 
   // Compute dynamic countries list from fetched partners
   const countriesList = useMemo(() => {
-    const list = ["All Country"];
+    const list = ["All Countries"];
     partners.forEach((p) => {
       if (p.country && !list.includes(p.country)) {
         list.push(p.country);
@@ -85,7 +87,7 @@ export default function PartnersPage() {
   // Filter partners based on country
   const filteredPartners = useMemo(() => {
     return partners.filter((partner) => {
-      return selectedCountry === "All Country" || partner.country === selectedCountry;
+      return selectedCountry === "All Countries" || partner.country === selectedCountry;
     });
   }, [partners, selectedCountry]);
 
@@ -116,7 +118,9 @@ export default function PartnersPage() {
             {/* Header */}
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
               <div>
-                <span className="text-primary/50 text-sm font-poppins">OUR PARTNERS</span>
+                <span className="text-primary/50 text-sm font-poppins">
+                  {lang === "en" ? "WORLD CLASS NETWORK" : "JARINGAN KELAS DUNIA"}
+                </span>
               </div>
               <div className="self-stretch inline-flex justify-start items-center gap-3">
                 <span
@@ -128,7 +132,7 @@ export default function PartnersPage() {
                   aria-hidden="true"
                 />
                 <h1 className="justify-start text-primary text-3xl font-semibold font-poppins">
-                  Well Reputable and Accredited Partners
+                  {lang === "en" ? "Access to 120+ Hospitals & Clinics in 9 Countries" : "Akses ke 120+ Rumah Sakit & Klinik di 9 Negara"}
                 </h1>
               </div>
             </div>
@@ -146,7 +150,7 @@ export default function PartnersPage() {
                       : "rounded-[48px] text-black hover:text-red-600"
                       }`}
                   >
-                    {country}
+                    {country === "All Countries" ? (lang === "en" ? "All Countries" : "Semua Negara") : country}
                   </button>
                 );
               })}
@@ -160,7 +164,11 @@ export default function PartnersPage() {
           {/* Partner Cards Grid */}
           <div className="self-stretch flex flex-col justify-center items-center gap-8">
             <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
-              Showing {selectedCountry === "All Country" ? "All" : selectedCountry} Partner
+              {lang === "en" ? (
+                `Showing ${selectedCountry === "All Countries" ? "All" : selectedCountry} Partners`
+              ) : (
+                `Menampilkan ${selectedCountry === "All Countries" ? "Semua" : `Mitra di ${selectedCountry}`}`
+              )}
             </div>
 
             <AnimatePresence mode="wait">
@@ -175,7 +183,7 @@ export default function PartnersPage() {
                 </div>
               ) : error ? (
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
-                  Failed to load partners: {error}
+                  {lang === "en" ? "Failed to load partners: " : "Gagal memuat data mitra: "}{error}
                 </div>
               ) : paginatedPartners.length > 0 ? (
                 <motion.div
@@ -211,7 +219,7 @@ export default function PartnersPage() {
                   exit={{ opacity: 0 }}
                   className="py-12 text-center text-slate-400 font-poppins text-base w-full"
                 >
-                  No partners found in this country.
+                  {lang === "en" ? "No partners found in this country." : "Tidak ada mitra yang ditemukan di negara ini."}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -223,7 +231,7 @@ export default function PartnersPage() {
                 {/* Previous Button */}
                 <Button
                   variant="outline-primary"
-                  text="Previous"
+                  text={lang === "en" ? "Previous" : "Sebelumnya"}
                   leftIcon="Left 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
                   disabled={activePage === 1}
@@ -252,7 +260,7 @@ export default function PartnersPage() {
                 {/* Next Button */}
                 <Button
                   variant="primary"
-                  text="Next"
+                  text={lang === "en" ? "Next" : "Berikutnya"}
                   rightIcon="Right 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
                   disabled={activePage === totalPages}
