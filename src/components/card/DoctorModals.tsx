@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface DoctorModalsProps {
     isOpen: boolean;
@@ -61,6 +62,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
     doctor,
     onClose,
 }) => {
+    const { lang } = useLanguage();
     if (!doctor) return null;
 
     const flagUrl = getFlagUrl(doctor.region || "");
@@ -91,7 +93,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                         {/* Header */}
                         <div className="self-stretch inline-flex justify-between items-center w-full">
                             <span className="justify-start text-primary/50 text-sm font-poppins tracking-wider">
-                                DOCTOR DETAILS
+                                {lang === "en" ? "DOCTOR DETAILS" : "DETAIL DOKTER"}
                             </span>
                             <button
                                 onClick={onClose}
@@ -168,7 +170,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                 {/* Specialties */}
                                 <div className="self-stretch flex flex-col justify-start items-start gap-1">
                                     <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                        Speciality
+                                        {lang === "en" ? "Speciality" : "Spesialisasi"}
                                     </span>
                                     <div className="flex flex-wrap gap-1.5">
                                         {(doctor.specialty || []).map((s, idx) => (
@@ -183,7 +185,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     {/* Qualifications Stack */}
                                     <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
                                         <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                            Qualifications
+                                            {lang === "en" ? "Qualifications" : "Kualifikasi"}
                                         </span>
                                         <div className="flex flex-col gap-1.5 items-start w-full">
                                             {qualifications.map((q: string, idx: number) => (
@@ -202,7 +204,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                     {/* Languages Stack */}
                                     <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
                                         <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                            Languages
+                                            {lang === "en" ? "Languages" : "Bahasa"}
                                         </span>
                                         <div className="flex flex-col gap-1.5 items-start w-full">
                                             {languages.map((l: string, idx: number) => (
@@ -223,14 +225,14 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                 {/* Hospital details */}
                                 <div className="self-stretch h-14 flex flex-col justify-start items-start gap-1">
                                     <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                        Hospital
+                                        {lang === "en" ? "Hospital" : "Rumah Sakit"}
                                     </span>
                                     <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
                                         {flagUrl ? (
                                             <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                                                 <Image
                                                     src={flagUrl}
-                                                    alt={`${doctor.region} flag`}
+                                                    alt={lang === "en" ? `${doctor.region} flag` : `Bendera ${doctor.region}`}
                                                     fill
                                                     className="object-contain"
                                                     unoptimized
@@ -251,7 +253,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                             </Link>
                                         ) : (
                                             <span className="justify-start text-primary text-sm font-normal font-poppins">
-                                                Unknown Hospital
+                                                {lang === "en" ? "Unknown Hospital" : "Rumah Sakit Tidak Diketahui"}
                                             </span>
                                         )}
                                     </div>
@@ -259,7 +261,11 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
 
                                 {/* CTA Button */}
                                 <a 
-                                    href={`https://wa.me/6281291578559?text=${encodeURIComponent(`Halo Lyfline,\n\nSaya ingin appointment dengan ${doctor.name}`)}`} 
+                                    href={`https://wa.me/6281291578559?text=${encodeURIComponent(
+                                        lang === "en" 
+                                            ? `Hello Lyfline,\n\nI would like to make an appointment with ${doctor.name}`
+                                            : `Halo Lyfline,\n\nSaya ingin membuat janji temu dengan ${doctor.name}`
+                                    )}`} 
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={onClose} 
@@ -267,7 +273,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                 >
                                     <Button
                                         variant="primary"
-                                        text="Make an Appointment"
+                                        text={lang === "en" ? "Make an Appointment" : "Buat Janji Temu"}
                                         className="w-full font-poppins text-base font-semibold"
                                     />
                                 </a>

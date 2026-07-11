@@ -11,6 +11,8 @@ import { DoctorCard } from "@/components/card/DoctorCard";
 import GooglaMapsPreviewModal from "@/components/googleMapsPreview";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 import { type Partner } from "@/data/partnersData";
+import { useLanguage } from "@/context/LanguageContext";
+import { slugify } from "@/lib/utils";
 
 interface PartnerClientProps {
   partner: Partner;
@@ -41,10 +43,43 @@ const FALLBACK_PARTNER_IMAGES = [
 ];
 
 export default function PartnerClient({ partner }: PartnerClientProps) {
+  const { lang } = useLanguage();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [doctorsLoading, setDoctorsLoading] = useState(true);
+
+  const [translatedDesc, setTranslatedDesc] = useState(partner.description || "");
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  useEffect(() => {
+    if (lang === "id" && partner.description) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsTranslating(true);
+      fetch(
+        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+          partner.description
+        )}&langpair=en|id`
+      )
+        .then((res) => {
+          if (!res.ok) throw new Error("Translation failed");
+          return res.json();
+        })
+        .then((data) => {
+          setTranslatedDesc(
+            data.responseData?.translatedText || partner.description
+          );
+          setIsTranslating(false);
+        })
+        .catch((err) => {
+          console.error("Error translating partner description:", err);
+          setTranslatedDesc(partner.description);
+          setIsTranslating(false);
+        });
+    } else {
+      setTranslatedDesc(partner.description || "");
+    }
+  }, [lang, partner.description]);
 
   // Fetch doctors for this hospital by hospital_id
   useEffect(() => {
@@ -101,7 +136,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
           <Link href="/partners">
             <Button
               variant="ghost-black"
-              text="Back to Partners"
+              text={lang === "en" ? "Back to Partners" : "Kembali ke Mitra"}
               leftIcon="Left 1"
               className="font-poppins text-base font-medium mb-8"
             />
@@ -112,7 +147,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
             <div className="self-stretch inline-flex justify-between items-end">
               <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
                 <span className="justify-start text-primary/50 text-sm font-normal font-poppins tracking-wider">
-                  HOSPITAL DETAILS
+                  {lang === "en" ? "HOSPITAL INFORMATION" : "INFORMASI RUMAH SAKIT"}
                 </span>
               </div>
             </div>
@@ -153,7 +188,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                     </>
                   ) : (
                     <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-poppins">
-                      No image available
+                      {lang === "en" ? "No image available" : "Gambar tidak tersedia"}
                     </div>
                   )}
                 </div>
@@ -194,7 +229,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
               {partner.mapsUrl && (
                 <Button
                   variant="outline-primary"
-                  text="Google Maps View"
+                  text={lang === "en" ? "Google Maps View" : "Lihat Google Maps"}
                   leftIcon="maps"
                   className="w-full md:w-auto font-poppins text-base font-medium"
                   onClick={() => setIsMapOpen(true)}
@@ -214,7 +249,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                     <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
                       <Image
                         src={flagUrl}
-                        alt={`${partner.country} flag`}
+                        alt={lang === "en" ? `${partner.country} flag` : `Bendera ${partner.country}`}
                         fill
                         className="object-contain"
                         unoptimized
@@ -238,7 +273,11 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
 
                 {/* Partner Description */}
                 <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify">
-                  {partner.description}
+                  {isTranslating ? (
+                    <span className="text-slate-400 italic">Menerjemahkan deskripsi...</span>
+                  ) : (
+                    translatedDesc
+                  )}
                 </p>
               </div>
 
@@ -248,7 +287,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
               {/* Contact Info Stack */}
               <div className="self-stretch flex flex-col justify-start items-start gap-3">
                 <span className="justify-start text-primary/50 text-sm font-normal font-poppins">
-                  Hospital Information
+                  {lang === "en" ? "Hospital Information" : "Informasi Rumah Sakit"}
                 </span>
 
                 <div className="self-stretch flex flex-col justify-start items-start gap-3">
@@ -334,10 +373,10 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
             <div className="self-stretch inline-flex justify-between items-end">
               <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
                 <span className="justify-start text-primary/50 text-sm font-normal font-poppins tracking-wider">
-                  THE SPECIALIST
+                  {lang === "en" ? "THE SPECIALIST" : "SPESIALIS"}
                 </span>
                 <h2 className="justify-start text-primary text-3xl font-medium font-poppins">
-                  Hospital Available Doctors
+                  {lang === "en" ? `Doctors Available at ${partner.name}` : `Dokter yang Tersedia di ${partner.name}`}
                 </h2>
               </div>
             </div>
@@ -356,11 +395,12 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                     title={doc.title}
                     hospital={doc.hospital}
                     imageUrl={doc.imageUrl}
+                    href={`/doctors/${slugify(doc.name)}-${doc.id}`}
                   />
                 ))
               ) : (
                 <p className="col-span-4 text-center text-slate-400 font-poppins text-sm py-8">
-                  No doctors listed for this hospital yet.
+                  {lang === "en" ? "No doctors listed for this hospital yet." : "Belum ada dokter yang terdaftar untuk rumah sakit ini."}
                 </p>
               )}
             </div>
@@ -370,7 +410,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
           {/* View All Doctor CTA Button */}
           <Button
             variant="outline-primary"
-            text="View All Doctor"
+            text={lang === "en" ? "View All Doctors" : "Lihat Semua Dokter"}
             rightIcon="Stethoscope"
             disabled
             className="font-poppins text-base font-medium cursor-not-allowed"

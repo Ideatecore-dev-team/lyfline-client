@@ -38,12 +38,12 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Doctors Section
     "doctors.hero.subtitle": "OUR DOCTORS",
-    "doctors.hero.title": "Wide Range of Medical Specialists",
+    "doctors.hero.title": "Match with The Right Specialists",
     "doctors.hero.search_placeholder": "Dr. Abraham...",
     "doctors.hero.search_btn": "Search",
     "doctors.hero.consult_btn": "Consult Now!",
     "doctors.filter.label": "FILTER DOCTOR",
-    "doctors.filter.region": "Pick a Region",
+    "doctors.filter.country": "Pick a Country",
     "doctors.filter.hospital": "Pick a Hospital",
     "doctors.filter.specialty": "Pick a Specialty",
     "doctors.grid.showing_all": "Showing All Doctors",
@@ -83,12 +83,12 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Doctors Section
     "doctors.hero.subtitle": "DOKTER KAMI",
-    "doctors.hero.title": "Berbagai Spesialis Medis",
+    "doctors.hero.title": "Cocokkan dengan Spesialis yang Tepat",
     "doctors.hero.search_placeholder": "Nama dokter...",
     "doctors.hero.search_btn": "Cari",
     "doctors.hero.consult_btn": "Konsultasi Sekarang!",
     "doctors.filter.label": "FILTER DOKTER",
-    "doctors.filter.region": "Pilih Wilayah",
+    "doctors.filter.country": "Pilih Negara",
     "doctors.filter.hospital": "Pilih Rumah Sakit",
     "doctors.filter.specialty": "Pilih Spesialisasi",
     "doctors.grid.showing_all": "Menampilkan Semua Dokter",

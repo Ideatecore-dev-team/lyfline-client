@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
-import { type Article } from "@/data/articlesData";
+import { type Article, type ArticleSection } from "@/data/articlesData";
 import DOMPurify from "dompurify";
 import { slugify } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ArticleClientProps {
   article: Article;
@@ -15,14 +16,115 @@ interface ArticleClientProps {
 }
 
 export default function ArticleClient({ article, otherArticles }: ArticleClientProps) {
-  const [sanitizedHtml, setSanitizedHtml] = React.useState(article.htmlContent);
+  const { lang } = useLanguage();
 
-  React.useEffect(() => {
-    if (article.htmlContent) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSanitizedHtml(DOMPurify.sanitize(article.htmlContent));
+  const [translatedTitle, setTranslatedTitle] = useState(article.title || "");
+  const [translatedCategory, setTranslatedCategory] = useState(article.category || "");
+  const [translatedIntro, setTranslatedIntro] = useState<string[]>(article.intro || []);
+  const [translatedSections, setTranslatedSections] = useState<ArticleSection[]>(article.sections || []);
+  const [translatedHtml, setTranslatedHtml] = useState(article.htmlContent || "");
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  const sanitizedHtml = useMemo(() => {
+    const htmlToSanitize = translatedHtml || article.htmlContent || "";
+    if (typeof window !== "undefined") {
+      return DOMPurify.sanitize(htmlToSanitize);
     }
-  }, [article.htmlContent]);
+    return htmlToSanitize;
+  }, [translatedHtml, article.htmlContent]);
+
+  useEffect(() => {
+    if (lang === "id") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsTranslating(true);
+      
+      const translateText = async (text: string): Promise<string> => {
+        if (!text || !text.trim()) return "";
+        try {
+          const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|id`);
+          if (!res.ok) return text;
+          const data = await res.json();
+          return data.responseData?.translatedText || text;
+        } catch {
+          return text;
+        }
+      };
+
+      const runTranslation = async () => {
+        try {
+          // 1. Translate Title
+          const titleT = await translateText(article.title);
+          setTranslatedTitle(titleT);
+
+          // 2. Translate Category
+          const catT = await translateText(article.category);
+          setTranslatedCategory(catT);
+
+          // 3. Translate HTML content if exists
+          if (article.htmlContent) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(article.htmlContent, "text/html");
+            const textNodes: { node: Node; text: string }[] = [];
+            const walk = (node: Node) => {
+              if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.trim()) {
+                textNodes.push({ node, text: node.nodeValue });
+              } else {
+                for (let i = 0; i < node.childNodes.length; i++) {
+                  walk(node.childNodes[i]);
+                }
+              }
+            };
+            walk(doc.body);
+
+            // Translate text nodes
+            for (const item of textNodes) {
+              const trans = await translateText(item.text);
+              item.node.nodeValue = trans;
+            }
+            setTranslatedHtml(doc.body.innerHTML);
+          } else {
+            // 4. Translate Intro paragraphs
+            if (article.intro && article.intro.length > 0) {
+              const introT = await Promise.all(article.intro.map(p => translateText(p)));
+              setTranslatedIntro(introT);
+            }
+            // 5. Translate Sections
+            if (article.sections && article.sections.length > 0) {
+              const sectionsT = await Promise.all(
+                article.sections.map(async (sec) => {
+                  const headingT = sec.heading ? await translateText(sec.heading) : undefined;
+                  const paragraphsT = await Promise.all(sec.paragraphs.map(p => translateText(p)));
+                  const bulletPointsT = sec.bulletPoints 
+                    ? await Promise.all(sec.bulletPoints.map(bp => translateText(bp))) 
+                    : undefined;
+                  return {
+                    heading: headingT,
+                    paragraphs: paragraphsT,
+                    bulletPoints: bulletPointsT
+                  };
+                })
+              );
+              setTranslatedSections(sectionsT);
+            }
+          }
+        } catch (error) {
+          console.error("Translation run error:", error);
+        } finally {
+          setIsTranslating(false);
+        }
+      };
+
+      runTranslation();
+    } else {
+      // Revert to English
+      setTranslatedTitle(article.title || "");
+      setTranslatedCategory(article.category || "");
+      setTranslatedIntro(article.intro || []);
+      setTranslatedSections(article.sections || []);
+      setTranslatedHtml(article.htmlContent || "");
+      setIsTranslating(false);
+    }
+  }, [lang, article]);
 
   return (
     <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative">
@@ -32,7 +134,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
         <Link href="/articles">
           <Button
             variant="ghost-black"
-            text="Back to Articles"
+            text={lang === "en" ? "Back to Articles" : "Kembali ke Artikel"}
             leftIcon="Left 1"
             className="font-poppins text-base font-medium"
           />
@@ -43,7 +145,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
           {/* Title and Metadata */}
           <div className="w-full flex flex-col justify-start items-start gap-3">
             <h1 className="self-stretch justify-start text-primary text-2xl md:text-3xl font-semibold font-poppins leading-tight">
-              {article.title}
+              {isTranslating ? "Menerjemahkan..." : translatedTitle}
             </h1>
             <div className="flex justify-start items-center gap-3">
               {/* Date Badge */}
@@ -61,7 +163,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
 
               {/* Category Badge */}
               <Badge 
-                text={article.category} 
+                text={isTranslating ? "..." : translatedCategory} 
                 variant={article.categoryVariant} 
                 customColor={article.customColor}
                 showDot={true} 
@@ -81,7 +183,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                   <>
                     <Image
                       src={article.imageUrl}
-                      alt={article.title}
+                      alt={isTranslating ? "Article cover" : translatedTitle}
                       fill
                       className="object-cover animate-fade-in"
                       sizes="(max-width: 1024px) 100vw, 800px"
@@ -99,7 +201,11 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
 
               {/* Formatted Article Body */}
               <div className="self-stretch flex flex-col gap-6 text-neutral-900 text-base font-normal font-poppins text-justify leading-relaxed">
-                {article.htmlContent ? (
+                {isTranslating ? (
+                  <div className="py-12 text-center text-slate-400 font-poppins text-base w-full italic">
+                    Menerjemahkan artikel ke Bahasa Indonesia...
+                  </div>
+                ) : article.htmlContent ? (
                   <div 
                     className="article-rich-content" 
                     dangerouslySetInnerHTML={{
@@ -108,11 +214,11 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                   />
                 ) : (
                   <>
-                    {article.intro && article.intro.map((p, i) => (
+                    {translatedIntro && translatedIntro.map((p, i) => (
                       <p key={`intro-${i}`}>{p}</p>
                     ))}
 
-                    {article.sections && article.sections.map((section, idx) => (
+                    {translatedSections && translatedSections.map((section, idx) => (
                       <div key={`section-${idx}`} className="flex flex-col gap-3 w-full">
                         {section.heading && (
                           <h2 className="text-[slate-800] text-lg md:text-xl font-semibold font-poppins mt-4 mb-1">
@@ -135,7 +241,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                     {article.references && article.references.length > 0 && (
                       <div className="flex flex-col gap-3 w-full mt-8 border-t border-gray-100 pt-6">
                         <h3 className="text-slate-800 text-base font-semibold font-poppins mb-1">
-                          References
+                          {lang === "en" ? "References" : "Referensi"}
                         </h3>
                         <ul className="list-decimal pl-6 text-xs text-neutral-500 flex flex-col gap-1.5 break-all">
                           {article.references.map((ref, idx) => (
@@ -160,7 +266,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
             {/* Sidebar - Other Newest Articles */}
             <div className="w-full lg:w-[384px] p-6 bg-primary rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden shadow-lg shrink-0 relative lg:sticky lg:top-[104px]">
               <div className="justify-start text-white text-sm font-poppins tracking-wider">
-                OTHER NEWEST ARTICLE
+                {lang === "en" ? "OTHER NEWEST ARTICLE" : "ARTIKEL TERBARU LAINNYA"}
               </div>
 
               <span
@@ -207,7 +313,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                   ))
                 ) : (
                   <div className="text-white/70 text-sm font-poppins py-4">
-                    No other articles found.
+                    {lang === "en" ? "No other articles found." : "Artikel lain tidak ditemukan."}
                   </div>
                 )}
               </div>
@@ -216,7 +322,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
               <Link href="/articles" className="w-full mt-2 z-10">
                 <Button
                   variant="outline-white"
-                  text="View All Articles"
+                  text={lang === "en" ? "View All Articles" : "Lihat Semua Artikel"}
                   rightIcon="Right 1"
                   className="text-base font-semibold font-poppins border-white hover:bg-white/10 active:scale-95 transition-all text-white w-full"
                 />

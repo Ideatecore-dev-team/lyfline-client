@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { type Doctor } from "@/data/doctorsData";
 
-interface DbDoctor {
+export interface DbDoctor {
   id: string;
   hospital_id: string;
   doctor_name: string;
@@ -10,6 +10,7 @@ interface DbDoctor {
   doctor_specialty: string[];
   doctor_qualification: string[];
   doctor_language: string[];
+  description?: string;
   created_at: string;
   updated_at: string;
   partners: {
@@ -18,7 +19,7 @@ interface DbDoctor {
   } | null;
 }
 
-function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]): Doctor {
+export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]): Doctor {
   let imageUrl: string | undefined = undefined;
 
   // Find doctor photo in Supabase storage: "Doctors/<id>_photo_<timestamp>.ext"
@@ -43,6 +44,7 @@ function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]):
     hospital: dbDoctor.partners?.hospital_name ?? undefined,
     region: dbDoctor.partners?.country ?? undefined,
     imageUrl,
+    description: dbDoctor.description || "",
   };
 }
 

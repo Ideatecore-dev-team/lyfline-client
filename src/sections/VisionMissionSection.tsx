@@ -56,7 +56,7 @@ export const VisionMissionSection: React.FC = () => {
               />
             </div>
             <h2 className="text-accent text-3xl font-sans">
-              {lang === "en" ? "Dedicated to Your Health" : "Didedikasikan untuk Kesehatan Anda"}
+              {lang === "en" ? "Built on Trust, Driven with Care" : "Dibangun dari Kepercayaan, Digerakkan dengan Kepedulian"}
             </h2>
           </div>
         </motion.div>
@@ -72,9 +72,9 @@ export const VisionMissionSection: React.FC = () => {
         >
           <p className="text-center text-black text-base font-normal font-poppins max-w-4xl leading-relaxed">
             {lang === "en" ? (
-              "Our Vision is to become a prominent company in the medical society, known for delivering reliable medical consultancy services, with good value for money and trustworthy networks."
+              "Our Mission is to become the leading and most trusted medical facilitator and concierge service provider in Indonesia that brings ease and convenience to medical travel."
             ) : (
-              "Visi kami adalah menjadi perusahaan terkemuka di masyarakat medis, yang dikenal dalam memberikan layanan konsultasi medis yang andal, dengan nilai uang yang baik dan jaringan yang tepercaya."
+              "Misi Kami adalah menjadi perusahaan fasilitator medis dan layanan concierge terdepan dan paling terpercaya di Indonesia yang memberikan kemudahan dan kenyamanan dalam perjalanan medis."
             )}
           </p>
         </motion.div>
@@ -91,9 +91,9 @@ export const VisionMissionSection: React.FC = () => {
           {/* Connecting Line (Desktop) */}
           <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[12.5%] right-[12.5%] h-[2px] bg-white z-0 pointer-events-none" />
 
-          {/* Card 1: Professional Excellence */}
+          {/* Card 1: Client-Centred Solutions */}
           <motion.div
-            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -107,8 +107,8 @@ export const VisionMissionSection: React.FC = () => {
             <div className="p-4 bg-[#ECF1F8] rounded-2xl outline outline-offset-[-1px] outline-[#4D7CBC] inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
-                  maskImage: 'url("/icons/Star 1.svg")',
-                  WebkitMaskImage: 'url("/icons/Star 1.svg")',
+                  maskImage: 'url("/icons/Location Add.svg")',
+                  WebkitMaskImage: 'url("/icons/Location Add.svg")',
                 }}
                 className="size-6 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
@@ -116,14 +116,11 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-white text-2xl font-medium font-poppins">
-                {lang === "en" ? "Professional Excellence" : "Keunggulan Profesional"}
-              </h3>
               <p className="text-white/90 text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
-                  "Continuously enhancing our knowledge and skills to keep pace with advancements in healthcare."
+                  "To deliver personalised, client-centred healthcare solutions tailored to individual needs."
                 ) : (
-                  "Terus meningkatkan pengetahuan dan keterampilan kami untuk mengimbangi kemajuan dalam layanan kesehatan."
+                  "Memberikan solusi perawatan kesehatan yang dipersonalisasi dan berpusat pada klien, disesuaikan dengan kebutuhan individu."
                 )}
               </p>
             </div>
@@ -139,9 +136,9 @@ export const VisionMissionSection: React.FC = () => {
             />
           </motion.div>
 
-          {/* Card 2: Trusted Partnerships */}
+          {/* Card 2: Trusted Medical Info */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -155,8 +152,8 @@ export const VisionMissionSection: React.FC = () => {
             <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
-                  maskImage: 'url("/icons/Like 1.svg")',
-                  WebkitMaskImage: 'url("/icons/Like 1.svg")',
+                  maskImage: 'url("/icons/Star 1.svg")',
+                  WebkitMaskImage: 'url("/icons/Star 1.svg")',
                 }}
                 className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
@@ -164,14 +161,11 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Trusted Partnerships" : "Kemitraan Tepercaya"}
-              </h3>
               <p className="text-black text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
-                  "Ensuring a reliable and trustworthy network of doctors and healthcare providers."
+                  "To provide accurate, reliable, and up-to-date medical information clients can trust."
                 ) : (
-                  "Memastikan jaringan dokter dan penyedia layanan kesehatan yang andal dan tepercaya."
+                  "Menyediakan informasi medis yang akurat, andal, dan terkini yang dapat dipercayai oleh klien."
                 )}
               </p>
             </div>
@@ -187,57 +181,9 @@ export const VisionMissionSection: React.FC = () => {
             />
           </motion.div>
 
-          {/* Card 3: Patient-Centered Service */}
+          {/* Card 3: Seamless Journey */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
-            variants={missionCardItem}
-            whileHover={{
-              y: -10,
-              rotateX: 8,
-              rotateY: -8,
-              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
-          >
-            <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
-              <span
-                style={{
-                  maskImage: 'url("/icons/Happy 2.svg")',
-                  WebkitMaskImage: 'url("/icons/Happy 2.svg")',
-                }}
-                className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
-                aria-hidden="true"
-              />
-            </div>
-
-            <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Patient-Centered Service" : "Layanan Berpusat pada Pasien"}
-              </h3>
-              <p className="text-black text-sm font-normal font-poppins leading-relaxed">
-                {lang === "en" ? (
-                  "Delivering a valuable and supportive experience for clients throughout their healthcare journey."
-                ) : (
-                  "Memberikan pengalaman yang berharga dan mendukung bagi klien di sepanjang perjalanan layanan kesehatan mereka."
-                )}
-              </p>
-            </div>
-
-            {/* Background Decorative Quarter Circle */}
-            <span
-              style={{
-                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
-                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
-              }}
-              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
-              aria-hidden="true"
-            />
-          </motion.div>
-
-          {/* Card 4: Seamless Coordination */}
-          <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -260,14 +206,56 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Seamless Coordination" : "Koordinasi Mulus"}
-              </h3>
               <p className="text-black text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
-                  "Managing all administrative, scheduling, and logistical details so you can focus entirely on recovery."
+                  "To ensure a seamless medical journey by managing every aspect of the medical travel experience holistically."
                 ) : (
-                  "Mengelola semua detail administratif, penjadwalan, dan logistik sehingga Anda dapat fokus sepenuhnya pada pemulihan."
+                  "Memastikan perjalanan medis yang mulus dengan mengelola setiap aspek pengalaman perjalanan secara holistik."
+                )}
+              </p>
+            </div>
+
+            {/* Background Decorative Quarter Circle */}
+            <span
+              style={{
+                maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+                WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+              }}
+              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-transform duration-500"
+              aria-hidden="true"
+            />
+          </motion.div>
+
+          {/* Card 4: Global Medical Tourism */}
+          <motion.div
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
+            variants={missionCardItem}
+            whileHover={{
+              y: -10,
+              rotateX: 8,
+              rotateY: -8,
+              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
+          >
+            <div className="p-4 bg-accent rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
+              <span
+                style={{
+                  maskImage: 'url("/icons/Like 1.svg")',
+                  WebkitMaskImage: 'url("/icons/Like 1.svg")',
+                }}
+                className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
+                aria-hidden="true"
+              />
+            </div>
+
+            <div className="flex flex-col justify-start items-start gap-2 z-10">
+              <p className="text-black text-sm font-normal font-poppins leading-relaxed">
+                {lang === "en" ? (
+                  "To position Indonesia as a favorable destination on the global medical travel map."
+                ) : (
+                  "Memposisikan Indonesia sebagai destinasi pilihan dalam peta perjalanan medis global."
                 )}
               </p>
             </div>

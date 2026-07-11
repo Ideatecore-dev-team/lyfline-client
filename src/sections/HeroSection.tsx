@@ -3,19 +3,28 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
-import { fetchPromoImage } from "@/api/promo";
+import { fetchPromoData } from "@/api/promo";
+import { WHATSAPP_HREF } from "@/lib/constants";
 
 export const HeroSection: React.FC = () => {
   const { lang } = useLanguage();
   const [promoImageUrl, setPromoImageUrl] = useState<string | null>(null);
+  const [promoDestinationLink, setPromoDestinationLink] = useState<string | null>(null);
   const [promoLoading, setPromoLoading] = useState(true);
 
   useEffect(() => {
-    fetchPromoImage()
-      .then((url) => setPromoImageUrl(url))
-      .catch(() => setPromoImageUrl(null))
+    fetchPromoData()
+      .then((data) => {
+        setPromoImageUrl(data.imageUrl);
+        setPromoDestinationLink(data.destinationLink);
+      })
+      .catch(() => {
+        setPromoImageUrl(null);
+        setPromoDestinationLink(null);
+      })
       .finally(() => setPromoLoading(false));
   }, []);
 
@@ -59,31 +68,36 @@ export const HeroSection: React.FC = () => {
               </div>
 
               {/* Main Headline */}
-              <h1 className="w-full max-w-md justify-start text-white text-3xl sm:text-4xl lg:text-5xl font-medium font-poppins leading-tight tracking-tight">
-                {lang === "en" ? "Your Reliable Medical Care" : "Perawatan Medis Terpercaya Anda"}
+              <h1 className="w-full max-w-md justify-start text-white text-3xl sm:text-4xl lg:text-4xl font-medium font-poppins leading-tight tracking-tight">
+                {lang === "en" ? "Medical Tourism & Concierge Service Provider" : "Penyedia Layanan Turisme Medis & Concierge"}
               </h1>
 
               {/* Description */}
               <p className="self-stretch justify-start text-white text-base font-normal font-poppins opacity-90 leading-relaxed">
                 {lang === "en"
-                  ? "We connects Indonesians with the world's most reputable international hospitals, from consultation to travel, we handle every steps of your medical journey."
-                  : "Kami menghubungkan masyarakat Indonesia dengan rumah sakit internasional paling terkemuka di dunia, mulai dari konsultasi hingga perjalanan, kami menangani setiap langkah perjalanan medis Anda."}
+                  ? "LYFLINE simplifies your healthcare journey by providing seamless access to world-class hospitals locally & globally."
+                  : "LYFLINE menyederhanakan perjalanan kesehatan Anda dengan menyediakan akses mudah ke rumah sakit kelas dunia secara lokal & global."}
               </p>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="self-stretch flex flex-row flex-wrap justify-start items-center gap-3">
-            <Button
-              variant="primary"
-              text={lang === "en" ? "Find a Doctor" : "Cari Dokter"}
-              rightIcon="Right 1"
-              className="shadow-lg active:scale-98 bg-accent! bg-none! text-white! hover:bg-accent/90!"
-            />
-            <Button
-              variant="outline-white"
-              text={lang === "en" ? "Learn More" : "Pelajari Lebih Lanjut"}
-            />
+            <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="primary"
+                text={lang === "en" ? "Consult Now" : "Konsultasi Sekarang"}
+                rightIcon="Right 1"
+                className="shadow-lg active:scale-98 bg-accent! bg-none! text-white! hover:bg-accent/90! cursor-pointer"
+              />
+            </Link>
+            <Link href="/doctors">
+              <Button
+                variant="outline-white"
+                text={lang === "en" ? "Find a Doctor" : "Cari Dokter"}
+                className="cursor-pointer"
+              />
+            </Link>
           </div>
         </motion.div>
 
@@ -108,7 +122,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             <div className="self-stretch justify-start text-white text-base font-medium font-poppins">
-              {lang === "en" ? "Special Promo" : "Promo Spesial"}
+              {lang === "en" ? "Special Announcement" : "Pengumuman Spesial"}
             </div>
 
             {/* Glassmorphic inner promo box container */}
@@ -117,13 +131,30 @@ export const HeroSection: React.FC = () => {
                 /* Skeleton shimmer */
                 <div className="w-full h-full animate-pulse bg-white/10" />
               ) : promoImageUrl ? (
-                <Image
-                  src={promoImageUrl}
-                  alt="Special Promo"
-                  fill
-                  className="object-cover"
-                  sizes="384px"
-                />
+                promoDestinationLink ? (
+                  <Link
+                    href={promoDestinationLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full h-full relative"
+                  >
+                    <Image
+                      src={promoImageUrl}
+                      alt="Special Promo"
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      sizes="384px"
+                    />
+                  </Link>
+                ) : (
+                  <Image
+                    src={promoImageUrl}
+                    alt="Special Promo"
+                    fill
+                    className="object-cover"
+                    sizes="384px"
+                  />
+                )
               ) : (
                 /* No image uploaded yet */
                 <div className="w-full h-full flex items-center justify-center text-white/40 text-sm font-poppins text-center px-4">

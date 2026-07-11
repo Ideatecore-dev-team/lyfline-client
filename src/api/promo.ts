@@ -1,8 +1,12 @@
-export async function fetchPromoImage(): Promise<string | null> {
+export interface PromoResponse {
+  imageUrl: string | null;
+  destinationLink: string | null;
+}
+
+export async function fetchPromoData(): Promise<PromoResponse> {
   const res = await fetch("/api/promo");
   if (!res.ok) {
-    throw new Error(`Failed to fetch promo image: ${res.statusText}`);
+    throw new Error(`Failed to fetch promo data: ${res.statusText}`);
   }
-  const data = await res.json();
-  return data.imageUrl ?? null;
+  return res.json();
 }

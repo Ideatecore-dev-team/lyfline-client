@@ -9,4 +9,5 @@ export interface Doctor {
   hospital?: string;    // Joined from partners table
   region?: string;      // Joined from partners table (country)
   imageUrl?: string;    // Resolved from Supabase storage
+  description?: string; // Optional description from database
 }

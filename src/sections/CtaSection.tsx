@@ -6,7 +6,12 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/Button";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 
+import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
+import { WHATSAPP_HREF } from "@/lib/constants";
+
 export const CtaSection: React.FC = () => {
+  const { lang } = useLanguage();
   return (
     <section className="w-full flex justify-center items-center py-16 bg-white z-10 relative">
       <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 inline-flex flex-col justify-start items-center gap-2.5">
@@ -52,15 +57,21 @@ export const CtaSection: React.FC = () => {
           </div>
 
           <h2 className="w-full max-w-[662px] justify-start text-white text-3xl font-medium font-poppins leading-tight z-10">
-            Ready to start your international<br className="hidden sm:inline" /> health journey?
+            {lang === "en" ? (
+              <>Ready to start your medical journey<br className="hidden sm:inline" /> with LYFLINE?</>
+            ) : (
+              <>Siap untuk memulai perjalanan medis Anda<br className="hidden sm:inline" /> bersama LYFLINE?</>
+            )}
           </h2>
 
-          <Button
-            variant="outline-white"
-            text="Book an Appointment"
-            rightIcon="Right 1"
-            className="z-10 cursor-pointer"
-          />
+          <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" className="z-10">
+            <Button
+              variant="outline-white"
+              text={lang === "en" ? "Book Your Appointment" : "Jadwalkan Janji Temu Anda"}
+              rightIcon="Right 1"
+              className="cursor-pointer"
+            />
+          </Link>
 
         </motion.div>
       </div>

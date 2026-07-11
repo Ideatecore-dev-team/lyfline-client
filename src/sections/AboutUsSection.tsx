@@ -4,6 +4,7 @@ import React from "react";
 import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
+import Link from "next/link";
 
 const slideFromLeft: Variants = {
   hidden: { opacity: 0, x: -60 },
@@ -35,9 +36,8 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
   return (
     <section id="about-us" className="w-full bg-transparent flex justify-center">
-      <div className={`w-full py-12 relative bg-white flex flex-col justify-start items-center gap-2.5 overflow-hidden ${
-        isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline -outline-offset-1 outline-gray-200"
-      }`}>
+      <div className={`w-full py-12 relative bg-white flex flex-col justify-start items-center gap-2.5 overflow-hidden ${isAboutPage ? "" : "rounded-bl-[48px] rounded-br-[48px] outline -outline-offset-1 outline-gray-200"
+        }`}>
 
         {/* Decorative Watermarks */}
         <span
@@ -76,7 +76,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     {lang === "en" ? "WHO WE ARE" : "SIAPA KAMI"}
                   </div>
                   <h2 className="text-primary text-3xl font-medium font-poppins leading-tight">
-                    {lang === "en" ? "Build on Trust, Driven with Care" : "Dibangun di Atas Kepercayaan, Didorong dengan Kepedulian"}
+                    {lang === "en" ? "Healthcare Beyond Borders" : "Perawatan Kesehatan Lintas Batas"}
                   </h2>
                 </div>
 
@@ -84,36 +84,38 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                   {lang === "en" ? (
                     <>
                       <p>
-                        As your trusted medical care facilitator, we take care of every step of your healthcare journey — from initial consultation to treatment support and travel arrangements. Simply reach out to LYFLINE and share your medical history with us.
+                        As your trusted medical partner, we take care of every step of your healthcare journey — from initial consultation to treatment support and travel arrangements.
                       </p>
                       <p>
-                        Our team will help you explore the best treatment options, recommended doctors, hospitals or clinics, preferred destinations, travel arrangements, and more — all tailored to your needs.
+                        Simply reach out to LYFLINE and share your medical history with us. Our team will help you explore the most suitable recommended doctors, hospitals or clinics, preferred destinations, treatment options, travel arrangements, and more — all tailored to your needs and wants.
                       </p>
                       <p>
-                        With LYFLINE, there are no hidden fees and no complicated payment schemes. You only pay for the services you receive.
+                        With LYFLINE, there are <span className="font-medium text-primary">no hidden fees, no admin fees and no service fees.</span>
                       </p>
                     </>
                   ) : (
                     <>
                       <p>
-                        Sebagai fasilitator perawatan medis tepercaya Anda, kami mengurus setiap langkah perjalanan perawatan kesehatan Anda — mulai dari konsultasi awal hingga dukungan perawatan dan pengaturan perjalanan. Cukup hubungi LYFLINE dan bagikan riwayat medis Anda kepada kami.
+                        Sebagai mitra medis terpercaya Anda, kami mengurus setiap langkah perjalanan kesehatan Anda — mulai dari konsultasi awal hingga dukungan perawatan dan pengaturan perjalanan.
                       </p>
                       <p>
-                        Tim kami akan membantu Anda menjelajahi pilihan perawatan terbaik, dokter yang direkomendasikan, rumah sakit atau klinik, tujuan pilihan, pengaturan perjalanan, dan banyak lagi — semuanya disesuaikan dengan kebutuhan Anda.
+                        Cukup hubungi LYFLINE dan bagikan riwayat kesehatan Anda. Tim kami akan membantu Anda menjelajahi pilihan dokter yang direkomendasikan, rumah sakit atau klinik, tujuan pilihan, opsi perawatan, pengaturan perjalanan, dan banyak lagi — semuanya disesuaikan dengan kebutuhan dan keinginan Anda.
                       </p>
                       <p>
-                        Dengan LYFLINE, tidak ada biaya tersembunyi dan tidak ada skema pembayaran yang rumit. Anda hanya membayar untuk layanan yang Anda terima.
+                        Dengan LYFLINE, tidak ada biaya tersembunyi, tidak ada biaya administrasi, dan tidak ada biaya layanan.
                       </p>
                     </>
                   )}
                 </div>
 
                 {showButton && (
-                  <Button
-                    variant="primary"
-                    text={lang === "en" ? "Get to know more!" : "Pelajari lebih lanjut!"}
-                    className=" text-white font-medium shadow-md transition-all duration-300"
-                  />
+                  <Link href="/about">
+                    <Button
+                      variant="primary"
+                      text={lang === "en" ? "Learn more!" : "Pelajari lebih lanjut!"}
+                      className="text-white font-medium shadow-md transition-all duration-300 cursor-pointer"
+                    />
+                  </Link>
                 )}
               </div>
             </motion.div>
@@ -133,7 +135,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
               <div className="w-full grid grid-cols-2 gap-4">
                 {/* Stat 1: 30+ Hospitals Partners */}
                 <motion.div
-                  className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden group transition-all duration-300"
                   custom={0}
                   variants={statCardVariants}
                   initial="hidden"
@@ -149,15 +151,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#E83C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">30+</div>
+                      <div className="text-center justify-center text-white text-3xl font-medium font-poppins">120+</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>Hospitals Partners<br />Worldwide</>
+                        <>Hospitals & Clinic<br />Clinic Partner</>
                       ) : (
-                        <>Mitra Rumah Sakit<br />di Seluruh Dunia</>
+                        <>Rumah Sakit & Klinik<br />Mitra Klinik</>
                       )}
                     </div>
                   </div>
@@ -165,7 +167,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 2: 7 Countries */}
                 <motion.div
-                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden border border-gray-100 group transition-all duration-300"
                   custom={1}
                   variants={statCardVariants}
                   initial="hidden"
@@ -181,15 +183,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">7</div>
+                      <div className="text-center justify-center text-primary text-3xl font-medium font-poppins">9</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>Countries in<br />Our Network</>
+                        <>Countries <br />World-Class Network</>
                       ) : (
-                        <>Negara dalam<br />Jaringan Kami</>
+                        <>Negara <br />Jaringan Kelas Dunia</>
                       )}
                     </div>
                   </div>
@@ -197,7 +199,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 3: 100% End-to-End Service Coverage */}
                 <motion.div
-                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden border border-gray-100 group transition-all duration-300"
                   custom={2}
                   variants={statCardVariants}
                   initial="hidden"
@@ -213,15 +215,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">100%</div>
+                      <div className="text-center justify-center text-primary text-3xl font-medium font-poppins">100%</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>End-to-End<br />Service Coverage</>
+                        <>End-to-End<br />Service</>
                       ) : (
-                        <>Cakupan Layanan<br />Ujung-ke-Ujung</>
+                        <>Cakupan<br />Layanan</>
                       )}
                     </div>
                   </div>
@@ -229,7 +231,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 4: 95% Satisfaction Rate */}
                 <motion.div
-                  className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden group transition-all duration-300"
                   custom={3}
                   variants={statCardVariants}
                   initial="hidden"
@@ -245,15 +247,15 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">95%</div>
+                      <div className="text-center justify-center text-white text-3xl font-medium font-poppins">24/7</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>Satisfaction<br />Rate</>
+                        <>Customer<br />Support</>
                       ) : (
-                        <>Tingkat<br />Kepuasan</>
+                        <>Dukungan<br />Pelanggan</>
                       )}
                     </div>
                   </div>

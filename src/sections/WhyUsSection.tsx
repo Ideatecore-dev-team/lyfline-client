@@ -32,34 +32,34 @@ export const WhyUsSection: React.FC = () => {
   const benefits: Benefit[] = [
     {
       id: "1",
-      title: lang === "en" ? "No Hidden Fees" : "Tanpa Biaya Tersembunyi",
+      title: lang === "en" ? "Fast Response" : "Tanggapan Cepat",
       description: lang === "en"
-        ? "Transparent pricing with no unexpected charges or complicated payment schemes."
-        : "Harga transparan tanpa biaya tak terduga atau skema pembayaran yang rumit.",
-      iconName: "Dollar Circle",
+        ? "We are available 24/7 to provide instant medical aid in every critical moment.s"
+        : "Kami tersedia 24/7 untuk memberikan bantuan medis instan di setiap momen kritis.",
+      iconName: "Message 18",
     },
     {
       id: "2",
-      title: lang === "en" ? "End-to-End Guided Care" : "Perawatan Terpandu Ujung-ke-Ujung",
+      title: lang === "en" ? "Seamless Experience" : "Pengalaman Tanpa Hambatan",
       description: lang === "en"
-        ? "We support and guide you throughout your entire medical journey, from consultation to recovery."
-        : "Kami mendukung dan membimbing Anda sepanjang perjalanan medis Anda, dari konsultasi hingga pemulihan.",
+        ? "Enjoy a smooth, practical, and hassle-free journey from the moment you contact us."
+        : "Nikmati perjalanan yang mulus, praktis, dan bebas repot sejak Anda menghubungi kami.",
       iconName: "Profile Accepted 2",
     },
     {
       id: "3",
-      title: lang === "en" ? "Flexible Treatment Packages" : "Paket Perawatan Fleksibel",
+      title: lang === "en" ? "Cost Transparency" : "Transparansi Biaya",
       description: lang === "en"
-        ? "Choose from a variety of care and treatment options tailored to your medical needs."
-        : "Pilih dari berbagai pilihan perawatan dan pengobatan yang disesuaikan dengan kebutuhan medis Anda.",
-      iconName: "Activity 1",
+        ? "Our services are 100% free of charge. No hidden fees. You only pay your hospital bill directly to the healthcare facility."
+        : "Layanan kami 100% gratis. Tanpa biaya tersembunyi. Anda hanya membayar tagihan rumah sakit langsung ke fasilitas kesehatan.",
+      iconName: "Dollar Circle",
     },
     {
       id: "4",
-      title: lang === "en" ? "Transparent Procedures & Information" : "Prosedur & Informasi Transparan",
+      title: lang === "en" ? "Personalized Service" : "Layanan Personal",
       description: lang === "en"
-        ? "Clear communication and honest medical information at every stage of your care."
-        : "Komunikasi yang jelas dan informasi medis yang jujur di setiap tahap perawatan Anda.",
+        ? "Get custom-tailored treatment plans according to your health needs."
+        : "Dapatkan rencana perawatan yang disesuaikan dengan kebutuhan kesehatan Anda.",
       iconName: "Shield Tick",
     },
   ];
@@ -91,7 +91,7 @@ export const WhyUsSection: React.FC = () => {
             {lang === "en" ? "WHY LYFLINE?" : "MENGAPA LYFLINE?"}
           </span>
           <h2 className="text-primary text-3xl font-medium font-poppins">
-            {lang === "en" ? "We are a Partner in Care" : "Kami adalah Mitra dalam Perawatan"}
+            {lang === "en" ? "Built on Trust, Driven with Care" : "Dibangun di Atas Kepercayaan, Didorong dengan Kepedulian"}
           </h2>
         </motion.div>
 

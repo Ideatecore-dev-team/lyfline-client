@@ -28,7 +28,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start group transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
 
       {/* Article Image Container */}
-      <div className="self-stretch h-52 relative overflow-hidden border-b-2 border-gray-200 rounded-t-[32px] rounded-b-3xl">
+      <Link
+        href={href}
+        className="self-stretch h-52 relative block overflow-hidden border-b-2 border-gray-200 rounded-t-[32px] rounded-b-3xl cursor-pointer z-10"
+      >
         {imageUrl ? (
           <>
             <Image
@@ -44,7 +47,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         ) : (
           <div className="w-full h-full bg-gradient-to-b from-blue-800/20 to-blue-800/40" />
         )}
-      </div>
+      </Link>
 
       {/* Content Area */}
       <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden">

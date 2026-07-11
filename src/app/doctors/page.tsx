@@ -12,6 +12,8 @@ import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
 import { type Doctor } from "@/data/doctorsData";
 import { fetchDoctors } from "@/api/doctors";
+import { useLanguage } from "@/context/LanguageContext";
+import { slugify } from "@/lib/utils";
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -82,6 +84,7 @@ const paginationVariants: Variants = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function DoctorsPage() {
+  const { lang } = useLanguage();
   const [searchVal, setSearchVal] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({
@@ -90,6 +93,7 @@ export default function DoctorsPage() {
     specialty: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -116,30 +120,30 @@ export default function DoctorsPage() {
   }, []);
 
   // Filter options dynamically extracted from live doctor list
-  const regionOptions = useMemo(() => {
+  const countryOptions = useMemo(() => {
     const unique = Array.from(new Set(doctors.map((d) => d.region).filter(Boolean))).sort() as string[];
     return [
-      { value: "", label: "Pick a Region" },
+      { value: "", label: lang === "en" ? "Pick a Country" : "Pilih Negara" },
       ...unique.map((r) => ({ value: r, label: r })),
     ];
-  }, [doctors]);
+  }, [doctors, lang]);
 
   const hospitalOptions = useMemo(() => {
     const unique = Array.from(new Set(doctors.map((d) => d.hospital).filter(Boolean))).sort() as string[];
     return [
-      { value: "", label: "Pick a Hospital" },
+      { value: "", label: lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit" },
       ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [doctors]);
+  }, [doctors, lang]);
 
   const specialtyOptions = useMemo(() => {
     const all = doctors.flatMap((d) => d.specialty || []);
     const unique = Array.from(new Set(all)).sort();
     return [
-      { value: "", label: "Pick a Specialty" },
+      { value: "", label: lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi" },
       ...unique.map((s) => ({ value: s, label: s })),
     ];
-  }, [doctors]);
+  }, [doctors, lang]);
 
   const handleSearch = () => {
     setSearchQuery(searchVal);
@@ -202,16 +206,20 @@ export default function DoctorsPage() {
               {/* Banner header text */}
               <div className="self-stretch inline-flex justify-between items-end relative z-10">
                 <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                  <div className="justify-start text-indigo-200 text-sm font-poppins tracking-wider">OUR DOCTORS</div>
-                  <h1 className="justify-start text-white text-3xl font-semibold font-sans">Wide Range of Medical Specialists</h1>
+                  <div className="justify-start text-indigo-200 text-sm font-poppins tracking-wider">
+                    {lang === "en" ? "OUR DOCTORS" : "DOKTER KAMI"}
+                  </div>
+                  <h1 className="justify-start text-white text-3xl font-semibold font-sans">
+                    {lang === "en" ? "Match with The Right Specialists" : "Cocokkan dengan Spesialis yang Tepat"}
+                  </h1>
                 </div>
               </div>
 
               {/* Search bar */}
               <div className="w-full flex flex-col md:flex-row justify-start items-stretch md:items-end gap-3 relative z-10">
                 <InputBox
-                  label={<span className="text-white text-sm font-normal font-poppins">Search Doctor Name</span>}
-                  placeholder="Dr. Abraham.."
+                  label={<span className="text-white text-sm font-normal font-poppins">{lang === "en" ? "Search Doctor Name" : "Cari Nama Dokter"}</span>}
+                  placeholder={lang === "en" ? "Dr. Abraham.." : "Dr. Abraham.."}
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
                   onKeyDown={handleKeyPress}
@@ -219,7 +227,7 @@ export default function DoctorsPage() {
                 />
                 <Button
                   variant="outline-white"
-                  text="Search"
+                  text={lang === "en" ? "Search" : "Cari"}
                   leftIcon="Search 1"
                   className="w-full md:w-auto h-12 px-6 font-poppins text-base font-semibold"
                   onClick={handleSearch}
@@ -251,7 +259,7 @@ export default function DoctorsPage() {
                 initial="hidden"
                 animate="visible"
               >
-                FILTER DOCTOR
+                {lang === "en" ? "FILTER DOCTOR" : "FILTER DOKTER"}
               </motion.span>
 
               <motion.div
@@ -262,9 +270,9 @@ export default function DoctorsPage() {
               >
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
-                    label="Region"
-                    placeholder="Pick a Region"
-                    options={regionOptions}
+                    label={lang === "en" ? "Country" : "Negara"}
+                    placeholder={lang === "en" ? "Pick a Country" : "Pilih Negara"}
+                    options={countryOptions}
                     value={filters.region}
                     onChange={(val) => handleFilterChange("region", val)}
                     containerClassName="w-full"
@@ -272,8 +280,8 @@ export default function DoctorsPage() {
                 </motion.div>
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
-                    label="Hospital Name"
-                    placeholder="Pick a Hospital"
+                    label={lang === "en" ? "Hospital Name" : "Nama Rumah Sakit"}
+                    placeholder={lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit"}
                     options={hospitalOptions}
                     value={filters.hospital}
                     onChange={(val) => handleFilterChange("hospital", val)}
@@ -282,8 +290,8 @@ export default function DoctorsPage() {
                 </motion.div>
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
-                    label="Specialty"
-                    placeholder="Pick a Specialty"
+                    label={lang === "en" ? "Specialty" : "Spesialisasi"}
+                    placeholder={lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi"}
                     options={specialtyOptions}
                     value={filters.specialty}
                     onChange={(val) => handleFilterChange("specialty", val)}
@@ -310,7 +318,7 @@ export default function DoctorsPage() {
             >
               {searchQuery || filters.region || filters.hospital || filters.specialty ? (
                 <span>
-                  Showing results for{" "}
+                  {lang === "en" ? "Showing results for " : "Menampilkan hasil untuk "}
                   <span className="">
                     {[
                       searchQuery ? `"${searchQuery}"` : "",
@@ -323,7 +331,7 @@ export default function DoctorsPage() {
                   </span>
                 </span>
               ) : (
-                "Showing All Doctors"
+                lang === "en" ? "Showing All Doctors" : "Menampilkan Semua Dokter"
               )}
             </motion.div>
 
@@ -337,7 +345,7 @@ export default function DoctorsPage() {
                 </div>
               ) : error ? (
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
-                  Failed to load doctors: {error}
+                  {lang === "en" ? "Failed to load doctors: " : "Gagal memuat data dokter: "}{error}
                 </div>
               ) : paginatedDoctors.length > 0 ? (
                 <motion.div
@@ -355,10 +363,7 @@ export default function DoctorsPage() {
                         title={doc.title}
                         hospital={doc.hospital}
                         imageUrl={doc.imageUrl}
-                        onViewDetails={() => {
-                          setSelectedDoctor(doc);
-                          setIsModalOpen(true);
-                        }}
+                        href={`/doctors/${slugify(doc.name)}-${doc.id}`}
                       />
                     </motion.div>
                   ))}
@@ -371,7 +376,7 @@ export default function DoctorsPage() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  No doctors match your search or filters.
+                  {lang === "en" ? "No doctors match your search or filters." : "Tidak ada dokter yang cocok dengan pencarian atau filter Anda."}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -387,7 +392,7 @@ export default function DoctorsPage() {
                 {/* Previous Button */}
                 <Button
                   variant="outline-primary"
-                  text="Previous"
+                  text={lang === "en" ? "Previous" : "Sebelumnya"}
                   leftIcon="Left 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
                   disabled={currentPage === 1}
@@ -416,7 +421,7 @@ export default function DoctorsPage() {
                 {/* Next Button */}
                 <Button
                   variant="primary"
-                  text="Next"
+                  text={lang === "en" ? "Next" : "Berikutnya"}
                   rightIcon="Right 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
                   disabled={currentPage === totalPages}

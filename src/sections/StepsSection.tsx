@@ -34,32 +34,32 @@ export const StepsSection: React.FC = () => {
       isRed: true,
       title: lang === "en" ? "Initial Consultation" : "Konsultasi Awal",
       description: lang === "en"
-        ? "No Hidden Fees\nTransparent pricing with no unexpected charges or complicated payment schemes."
-        : "Tanpa Biaya Tersembunyi\nHarga transparan tanpa biaya tak terduga atau skema pembayaran yang rumit."
+        ? "Contact us on Whatsapp to schedule an appointment. Please prepare your medical history, medical profile, preferences and expectations."
+        : "Hubungi kami di Whatsapp untuk menjadwalkan janji temu. Siapkan riwayat medis, profil medis, preferensi dan ekspektasi Anda."
     },
     {
       number: "02",
       isRed: false,
       title: lang === "en" ? "Doctor & Hospital Match" : "Kecocokan Dokter & Rumah Sakit",
       description: lang === "en"
-        ? "We shortlist the right specialists from our verified global network and coordinate with the chosen hospital."
-        : "Kami menyeleksi spesialis yang tepat dari jaringan global kami yang terverifikasi dan berkoordinasi dengan rumah sakit yang dipilih."
+        ? "Based on the information provided, we will recommend a set of doctors, specialists and healthcare facilities that best suits the patient."
+        : "Berdasarkan informasi yang diberikan, kami akan merekomendasikan dokter, spesialis, dan fasilitas kesehatan yang paling sesuai untuk pasien."
     },
     {
       number: "03",
       isRed: true,
       title: lang === "en" ? "Travel Arrangements" : "Pengaturan Perjalanan",
       description: lang === "en"
-        ? "From flights and visas to hotel bookings — every logistics detail is managed so you can travel stress-free."
-        : "Mulai dari penerbangan dan visa hingga pemesanan hotel — setiap detail logistik dikelola sehingga Anda dapat bepergian tanpa stres."
+        ? "Upon agreement, we handle your medical appointment, flights, accommodation, and everything else you need."
+        : "Setelah ada kesepakatan, kami akan mengurus janji temu medis, penerbangan, akomodasi, dan semua kebutuhan Anda."
     },
     {
       number: "04",
       isRed: false,
       title: lang === "en" ? "Treatment & Follow-up" : "Perawatan & Tindak Lanjut",
       description: lang === "en"
-        ? "We stay with you through your treatment and coordinate aftercare, ensuring a smooth and safe recovery journey."
-        : "Kami tetap bersama Anda selama perawatan Anda dan mengoordinasikan perawatan lanjutan, memastikan perjalanan pemulihan yang lancar dan aman."
+        ? "Whilst you undergo your treatment, we are in touch with your doctor and the healthcare facility to ensure a comfortable medical experience."
+        : "Selama menjalani perawatan, kami akan berkoordinasi dengan dokter dan fasilitas kesehatan untuk memastikan kenyamanan Anda."
     }
   ];
 
@@ -136,14 +136,7 @@ export const StepsSection: React.FC = () => {
             </div>
 
             {/* Step Content */}
-            <div className="self-stretch flex flex-col justify-start items-start gap-3">
-              <h3 className="self-stretch justify-start text-white text-base font-medium font-poppins">
-                {step.title}
-              </h3>
-
-              {/* Divider Line */}
-              <div className="self-stretch h-px bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
-
+            <div className="self-stretch flex flex-col justify-start items-start">
               <p className="self-stretch justify-start text-white/80 text-sm font-normal font-poppins leading-relaxed whitespace-pre-line">
                 {step.description}
               </p>

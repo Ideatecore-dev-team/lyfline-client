@@ -23,3 +23,11 @@ export async function fetchDoctors(options: FetchDoctorsOptions = {}): Promise<D
   }
   return res.json();
 }
+
+export async function fetchDoctorById(id: string): Promise<Doctor> {
+  const res = await fetch(`/api/doctors/${id}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch doctor ${id}: ${res.statusText}`);
+  }
+  return res.json();
+}

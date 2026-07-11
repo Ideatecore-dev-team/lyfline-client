@@ -10,6 +10,7 @@ import { ArticleCard } from "@/components/card/ArticleCard";
 import { fetchArticles } from "@/api/articles";
 import { type Article } from "@/data/articlesData";
 import { slugify } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -27,13 +28,14 @@ const cardVariants: Variants = {
 };
 
 export default function ArticlesPage() {
+  const { lang } = useLanguage();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Category");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [currentPage, setCurrentPage] = useState(1);
   const [articlesPerPage, setArticlesPerPage] = useState(9);
   const [isMobileSearch, setIsMobileSearch] = useState(false);
@@ -78,7 +80,7 @@ export default function ArticlesPage() {
   const filteredArticles = useMemo(() => {
     return articles.filter((article) => {
       const matchesCategory =
-        selectedCategory === "All Category" || article.category === selectedCategory;
+        selectedCategory === "All Categories" || article.category === selectedCategory;
       const matchesSearch = article.title
         .toLowerCase()
         .includes(appliedSearchQuery.toLowerCase());
@@ -89,9 +91,9 @@ export default function ArticlesPage() {
   // Dynamically compute category buttons from actual loaded articles
   const categoriesList = useMemo(() => {
     if (articles.length === 0) {
-      return ["All Category"];
+      return ["All Categories"];
     }
-    const list = ["All Category"];
+    const list = ["All Categories"];
     articles.forEach((a) => {
       if (a.category && !list.includes(a.category)) {
         list.push(a.category);
@@ -138,14 +140,12 @@ export default function ArticlesPage() {
             {/* Header */}
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
               <div>
-                <span className="text-primary/50 text-sm font-medium font-poppins">ARTICLES</span>
-                <span className="text-primary/50 text-sm font-normal font-poppins">
-                  {" "}
-                  - Stay updated with the latest in medical care here!
+                <span className="text-primary/50 text-sm font-medium font-poppins">
+                  {lang === "en" ? "ARTICLES & BLOGS" : "ARTIKEL & BLOG"}
                 </span>
               </div>
               <h1 className="justify-start text-primary text-3xl font-semibold font-poppins">
-                Healthcare Daily
+                {lang === "en" ? "Healthcare Daily" : "Info Kesehatan Harian"}
               </h1>
             </div>
 
@@ -154,10 +154,10 @@ export default function ArticlesPage() {
               <InputBox
                 label={
                   <span className="text-red-600 text-sm font-normal font-poppins">
-                    Search Article
+                    {lang === "en" ? "Search Article" : "Cari Artikel"}
                   </span>
                 }
-                placeholder="Tips untuk.."
+                placeholder={lang === "en" ? "Search here..." : "Tips untuk..."}
                 value={searchQuery}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -172,7 +172,7 @@ export default function ArticlesPage() {
               />
               <Button
                 variant="outline-primary"
-                text="Search"
+                text={lang === "en" ? "Search" : "Cari"}
                 leftIcon="Search 1"
                 className="hidden md:inline-flex w-full md:w-auto h-12 px-4 py-3 font-poppins text-base font-semibold"
                 onClick={handleSearch}
@@ -195,7 +195,7 @@ export default function ArticlesPage() {
                       : "rounded-[48px] text-black hover:text-red-600"
                       }`}
                   >
-                    {category}
+                    {category === "All Categories" ? (lang === "en" ? "All Categories" : "Semua Kategori") : category}
                   </button>
                 );
               })}
@@ -207,16 +207,16 @@ export default function ArticlesPage() {
           <div className="self-stretch flex flex-col justify-center items-center gap-6 mt-4 z-10">
 
             <div className="self-stretch text-center justify-start text-primary/50 text-sm font-normal font-poppins">
-              {appliedSearchQuery || selectedCategory !== "All Category" ? (
+              {appliedSearchQuery || selectedCategory !== "All Categories" ? (
                 <span>
-                  Showing results for{" "}
+                  {lang === "en" ? "Showing results for " : "Menampilkan hasil untuk "}
                   <span className="">
-                    {selectedCategory !== "All Category" ? selectedCategory : ""}
-                    {appliedSearchQuery ? `${selectedCategory !== "All Category" ? " and " : ""}"${appliedSearchQuery}"` : ""}
+                    {selectedCategory !== "All Categories" ? selectedCategory : ""}
+                    {appliedSearchQuery ? `${selectedCategory !== "All Categories" ? (lang === "en" ? " and " : " dan ") : ""}"${appliedSearchQuery}"` : ""}
                   </span>
                 </span>
               ) : (
-                "Showing Newest"
+                lang === "en" ? "Showing Newest" : "Menampilkan Terbaru"
               )}
             </div>
 
@@ -241,7 +241,7 @@ export default function ArticlesPage() {
                 </div>
               ) : error ? (
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
-                  Failed to load articles: {error}
+                  {lang === "en" ? "Failed to load articles: " : "Gagal memuat artikel: "}{error}
                 </div>
               ) : paginatedArticles.length > 0 ? (
                 <motion.div
@@ -278,7 +278,7 @@ export default function ArticlesPage() {
                   exit={{ opacity: 0 }}
                   className="py-12 text-center text-slate-400 font-poppins text-base w-full"
                 >
-                  No articles match your search.
+                  {lang === "en" ? "No articles match your search." : "Tidak ada artikel yang cocok dengan pencarian Anda."}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -290,7 +290,7 @@ export default function ArticlesPage() {
                 {/* Previous Button */}
                 <Button
                   variant="outline-primary"
-                  text="Previous"
+                  text={lang === "en" ? "Previous" : "Sebelumnya"}
                   leftIcon="Left 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
                   disabled={currentPage === 1}
@@ -319,7 +319,7 @@ export default function ArticlesPage() {
                 {/* Next Button */}
                 <Button
                   variant="primary"
-                  text="Next"
+                  text={lang === "en" ? "Next" : "Berikutnya"}
                   rightIcon="Right 1"
                   className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
                   disabled={currentPage === totalPages}
