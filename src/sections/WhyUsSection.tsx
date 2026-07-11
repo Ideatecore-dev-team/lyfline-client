@@ -36,7 +36,7 @@ export const WhyUsSection: React.FC = () => {
       description: lang === "en"
         ? "We are available 24/7 to provide instant medical aid in every critical moment.s"
         : "Kami tersedia 24/7 untuk memberikan bantuan medis instan di setiap momen kritis.",
-      iconName: "Dollar Circle",
+      iconName: "Message 18",
     },
     {
       id: "2",
@@ -52,7 +52,7 @@ export const WhyUsSection: React.FC = () => {
       description: lang === "en"
         ? "Our services are 100% free of charge. No hidden fees. You only pay your hospital bill directly to the healthcare facility."
         : "Layanan kami 100% gratis. Tanpa biaya tersembunyi. Anda hanya membayar tagihan rumah sakit langsung ke fasilitas kesehatan.",
-      iconName: "Activity 1",
+      iconName: "Dollar Circle",
     },
     {
       id: "4",

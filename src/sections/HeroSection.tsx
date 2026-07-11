@@ -122,7 +122,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             <div className="self-stretch justify-start text-white text-base font-medium font-poppins">
-              {lang === "en" ? "Special Promo" : "Promo Spesial"}
+              {lang === "en" ? "Special Announcement" : "Pengumuman Spesial"}
             </div>
 
             {/* Glassmorphic inner promo box container */}

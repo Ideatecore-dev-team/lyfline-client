@@ -135,7 +135,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
               <div className="w-full grid grid-cols-2 gap-4">
                 {/* Stat 1: 30+ Hospitals Partners */}
                 <motion.div
-                  className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-red-600 rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden group transition-all duration-300"
                   custom={0}
                   variants={statCardVariants}
                   initial="hidden"
@@ -151,9 +151,9 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#E83C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">120+</div>
+                      <div className="text-center justify-center text-white text-3xl font-medium font-poppins">120+</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
@@ -167,7 +167,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 2: 7 Countries */}
                 <motion.div
-                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden border border-gray-100 group transition-all duration-300"
                   custom={1}
                   variants={statCardVariants}
                   initial="hidden"
@@ -183,9 +183,9 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">9</div>
+                      <div className="text-center justify-center text-primary text-3xl font-medium font-poppins">9</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
@@ -199,7 +199,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 3: 100% End-to-End Service Coverage */}
                 <motion.div
-                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden border border-gray-100 group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden border border-gray-100 group transition-all duration-300"
                   custom={2}
                   variants={statCardVariants}
                   initial="hidden"
@@ -215,9 +215,9 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-primary text-3xl font-medium font-poppins">100%</div>
+                      <div className="text-center justify-center text-primary text-3xl font-medium font-poppins">100%</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-black text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
@@ -231,7 +231,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
                 {/* Stat 4: 95% Satisfaction Rate */}
                 <motion.div
-                  className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-start items-center gap-4 overflow-hidden group hover:shadow-md transition-all duration-300"
+                  className="w-full p-3 relative bg-primary rounded-3xl inline-flex flex-col justify-center items-center gap-4 overflow-hidden group transition-all duration-300"
                   custom={3}
                   variants={statCardVariants}
                   initial="hidden"
@@ -247,13 +247,13 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
-                  <div className="self-stretch flex flex-col justify-start items-center relative z-10">
+                  <div className="self-stretch flex flex-col justify-center items-center relative z-10">
                     <div className="self-stretch inline-flex justify-center items-center gap-3">
-                      <div className="text-center justify-start text-white text-3xl font-medium font-poppins">24/7</div>
+                      <div className="text-center justify-center text-white text-3xl font-medium font-poppins">24/7</div>
                     </div>
                     <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>Costumer<br />Support</>
+                        <>Customer<br />Support</>
                       ) : (
                         <>Dukungan<br />Pelanggan</>
                       )}

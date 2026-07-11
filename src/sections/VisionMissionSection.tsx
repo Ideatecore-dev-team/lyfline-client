@@ -93,7 +93,7 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 1: Client-Centred Solutions */}
           <motion.div
-            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -107,8 +107,8 @@ export const VisionMissionSection: React.FC = () => {
             <div className="p-4 bg-[#ECF1F8] rounded-2xl outline outline-offset-[-1px] outline-[#4D7CBC] inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
-                  maskImage: 'url("/icons/Happy 2.svg")',
-                  WebkitMaskImage: 'url("/icons/Happy 2.svg")',
+                  maskImage: 'url("/icons/Location Add.svg")',
+                  WebkitMaskImage: 'url("/icons/Location Add.svg")',
                 }}
                 className="size-6 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
@@ -116,9 +116,6 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-white text-2xl font-medium font-poppins">
-                {lang === "en" ? "Client-Centred Solutions" : "Solusi Berpusat pada Klien"}
-              </h3>
               <p className="text-white/90 text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
                   "To deliver personalised, client-centred healthcare solutions tailored to individual needs."
@@ -141,7 +138,7 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 2: Trusted Medical Info */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -164,9 +161,6 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Trusted Medical Info" : "Informasi Medis Terpercaya"}
-              </h3>
               <p className="text-black text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
                   "To provide accurate, reliable, and up-to-date medical information clients can trust."
@@ -189,7 +183,7 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 3: Seamless Journey */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -212,9 +206,6 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Seamless Journey" : "Perjalanan Medis Mulus"}
-              </h3>
               <p className="text-black text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
                   "To ensure a seamless medical journey by managing every aspect of the medical travel experience holistically."
@@ -237,7 +228,7 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 4: Global Medical Tourism */}
           <motion.div
-            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[260px] cursor-pointer"
+            className="w-full p-6 relative bg-white rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 group lg:min-h-[180px] cursor-pointer"
             variants={missionCardItem}
             whileHover={{
               y: -10,
@@ -260,9 +251,6 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <h3 className="text-accent text-2xl font-medium font-poppins">
-                {lang === "en" ? "Global Medical Tourism" : "Destinasi Medis Global"}
-              </h3>
               <p className="text-black text-sm font-normal font-poppins leading-relaxed">
                 {lang === "en" ? (
                   "To position Indonesia as a favorable destination on the global medical travel map."
