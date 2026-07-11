@@ -54,6 +54,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
 
   useEffect(() => {
     if (lang === "id" && partner.description) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsTranslating(true);
       fetch(
         `https://api.mymemory.translated.net/get?q=${encodeURIComponent(

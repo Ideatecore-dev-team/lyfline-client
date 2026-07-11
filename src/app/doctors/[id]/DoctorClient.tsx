@@ -61,6 +61,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
 
   useEffect(() => {
     if (lang === "id" && doctor.description) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsTranslating(true);
       fetch(
         `https://api.mymemory.translated.net/get?q=${encodeURIComponent(

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
@@ -25,15 +25,17 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
   const [translatedHtml, setTranslatedHtml] = useState(article.htmlContent || "");
   const [isTranslating, setIsTranslating] = useState(false);
 
-  const [sanitizedHtml, setSanitizedHtml] = useState(article.htmlContent || "");
-
-  useEffect(() => {
+  const sanitizedHtml = useMemo(() => {
     const htmlToSanitize = translatedHtml || article.htmlContent || "";
-    setSanitizedHtml(DOMPurify.sanitize(htmlToSanitize));
+    if (typeof window !== "undefined") {
+      return DOMPurify.sanitize(htmlToSanitize);
+    }
+    return htmlToSanitize;
   }, [translatedHtml, article.htmlContent]);
 
   useEffect(() => {
     if (lang === "id") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsTranslating(true);
       
       const translateText = async (text: string): Promise<string> => {

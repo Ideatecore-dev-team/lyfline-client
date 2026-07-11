@@ -93,6 +93,7 @@ export default function DoctorsPage() {
     specialty: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
