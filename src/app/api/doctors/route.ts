@@ -13,6 +13,7 @@ export interface DbDoctor {
   description?: string;
   created_at: string;
   updated_at: string;
+  avatarUrl?: string | null;
   partners: {
     hospital_name: string;
     country: string;
@@ -20,10 +21,10 @@ export interface DbDoctor {
 }
 
 export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]): Doctor {
-  let imageUrl: string | undefined = undefined;
+  let imageUrl: string | undefined = dbDoctor.avatarUrl || undefined;
 
-  // Find doctor photo in Supabase storage: "Doctors/<id>_photo_<timestamp>.ext"
-  if (fileList && fileList.length > 0) {
+  // Find doctor photo in Supabase storage: "Doctors/<id>_photo_<timestamp>.ext" (fallback for legacy doctors)
+  if (!imageUrl && fileList && fileList.length > 0) {
     const matchingFile = fileList.find((f) => f.name.startsWith(dbDoctor.id));
     if (matchingFile) {
       const { data } = supabase.storage

@@ -11,6 +11,7 @@ export interface DbArticle {
   article_content: string;
   created_at: string;
   updated_at: string;
+  imageUrl?: string | null;
 }
 
 function getNearestVariant(hex: string): BadgeVariant {
@@ -45,7 +46,7 @@ export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: s
   let intro: string[] = [];
   let sections: ArticleSection[] = [];
   let references: string[] = [];
-  let imageUrl = "";
+  let imageUrl = dbArticle.imageUrl || "";
   let readTime = "";
 
   const content = dbArticle.article_content || "";
@@ -55,7 +56,7 @@ export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: s
     intro = parsed.intro || [];
     sections = parsed.sections || [];
     references = parsed.references || [];
-    imageUrl = parsed.imageUrl || "";
+    imageUrl = parsed.imageUrl || imageUrl || "";
     readTime = parsed.readTime || "";
     if (parsed.html) {
       htmlContent = parsed.html;
@@ -76,8 +77,8 @@ export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: s
     readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
   }
 
-  // Find banner image in Supabase storage if fileList is provided
-  if (fileList && fileList.length > 0) {
+  // Find banner image in Supabase storage if fileList is provided (fallback for legacy articles)
+  if (!imageUrl && fileList && fileList.length > 0) {
     const matchingFile = fileList.find(f => f.name.startsWith(`${dbArticle.id}_banner_`));
     if (matchingFile) {
       const { data } = supabase.storage
