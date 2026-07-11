@@ -156,3 +156,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `pnpm build`: Performs TypeScript checks and builds an optimized production package.
 - `pnpm start`: Runs the compiled Next.js build.
 - `pnpm lint`: Validates the codebase style using ESLint.
+
+---
+
+## 🔒 Environment Variables & Deployment
+
+To deploy this project to hosting services like Netlify or Vercel, you must configure the following environment variables in your deployment dashboard settings. Do not commit `.env` files to git.
+
+### Environment Variables List
+| Variable Name | Description | Example Value |
+| :--- | :--- | :--- |
+| `NEXT_PUBLIC_SUPABASE_URL` | The public URL of your Supabase project | `https://bymxyrhvntbfyxhvpxek.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | The public anonymous key for Supabase API requests | `sb_publishable_...` |
+
+> [!IMPORTANT]
+> Since this application runs on Next.js, all Supabase environment variables must start with the `NEXT_PUBLIC_` prefix so that they are accessible in the client browser during execution.
