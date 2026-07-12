@@ -16,41 +16,36 @@ interface Testimonial {
 const LOCAL_TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
-    name: "User A",
-    role: "Manager at PT ABCD",
-    quote: "I have used LYFLINE many times, and I am truly satisfied with their service — fast responses, great pricing, and so much more.\n\nWe are very grateful to have LYFLINE as our support system.\n\nThank you so much!"
+    name: "Patient A",
+    role: "",
+    quote: "Hi drishti. My mother already finished surgery and going back to jakarta tomorrow. Thanks so much for your help ya 👍👍👍\n\nGreat service. I will recommend you to many friends"
   },
   {
     id: "2",
-    name: "User B",
-    role: "Graphic Designer",
-    quote: "The most efficient, reliable, fastest, and most responsive healthcare service in Jakarta!\n\nI will always trust LYFLINE to provide our medical needs and healthcare services."
+    name: "Patient B",
+    role: "",
+    quote: "Drish, I just got done. The nurse was very good - everything was so seamless. No pain at all when inserting the needle ☺️ I feel better than before too. Thank you so so much once again"
   },
   {
     id: "3",
-    name: "User C",
-    role: "Traveler",
-    quote: "Thank you will never be enough to express how grateful we are for the support, care, and assistance provided by LYFLINE in our home. Their attention to detail is something we truly value.\n\nThey were truly our lifesavers."
-  },
-  {
-    id: "4",
-    name: "User D",
-    role: "Traveler",
-    quote: "We truly appreciated the outstanding service we received during our family’s COVID situation. Thank you for being punctual, making everything easy and hassle-free for us, and always doing your best despite how busy things were every day.\n\nThank you once again, and we wish all the best for your entire team!"
-  },
-  {
-    id: "5",
-    name: "User E",
-    role: "Entrepreneur",
-    quote: "LYFLINE has been our partner in navigating international healthcare. Their team is extremely professional and made every step of the journey smooth and worry-free.\n\nHighly recommended!"
+    name: "Patient C",
+    role: "",
+    quote: "Hi Drishti, we got home a while back.\n\nOnce again, thanks a lot for all the help that you extended to us🙏🙏. It means a lot and I deeply appreciate it. Take care.😊"
   }
 ];
 
 export const TestimonialsSection: React.FC = () => {
   const { lang } = useLanguage();
 
-  // Triple duplicate for seamless infinite marquee loop on wider viewports
-  const tripleTestimonials = [...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS, ...LOCAL_TESTIMONIALS];
+  // Sextuple duplicate for seamless infinite marquee loop on wider viewports without gaps on the right
+  const repeatedTestimonials = [
+    ...LOCAL_TESTIMONIALS,
+    ...LOCAL_TESTIMONIALS,
+    ...LOCAL_TESTIMONIALS,
+    ...LOCAL_TESTIMONIALS,
+    ...LOCAL_TESTIMONIALS,
+    ...LOCAL_TESTIMONIALS,
+  ];
 
   return (
     <section className="w-full py-16 bg-linear-to-b from-[#E23737] to-accent text-white relative overflow-hidden flex flex-col justify-start items-center gap-0">
@@ -111,7 +106,7 @@ export const TestimonialsSection: React.FC = () => {
         <style>{`
           @keyframes marqueeLeftToRight {
             0% {
-              transform: translateX(-33.3333%);
+              transform: translateX(-16.6667%);
             }
             100% {
               transform: translateX(0%);
@@ -127,7 +122,7 @@ export const TestimonialsSection: React.FC = () => {
 
         {/* Ticker Track */}
         <div className="flex gap-6 w-max animate-marquee-ltr px-6">
-          {tripleTestimonials.map((testimonial, idx) => (
+          {repeatedTestimonials.map((testimonial, idx) => (
             <TestimonialCard
               key={`${testimonial.id}-${idx}`}
               quote={testimonial.quote}
