@@ -18,7 +18,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lyfline.id"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"),
   title: "LYFLINE | Build on Trust, Driven with Care - International Healthcare Facilitator",
   description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey. From consultations, doctor matching, travel arrangements to recovery support across 7 countries with zero hidden fees.",
   icons: {

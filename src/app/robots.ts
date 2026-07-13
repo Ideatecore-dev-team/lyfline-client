@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://lyfline.id";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id";
   return {
     rules: {
       userAgent: "*",

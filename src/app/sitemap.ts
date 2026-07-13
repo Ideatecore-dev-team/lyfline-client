@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { slugify } from "@/lib/utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://lyfline.id";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id";
   const staticRoutes = ["", "/about", "/services", "/doctors", "/partners", "/articles"];
   
   const routes: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
