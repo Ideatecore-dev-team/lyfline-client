@@ -146,18 +146,33 @@ export const Footer: React.FC = () => {
               <div className="inline-flex justify-start items-start gap-3">
 
                 {/* Instagram (using public/icons) */}
-                <a href="#" aria-label="Instagram">
+                <a
+                  href="https://www.instagram.com/lyfline.id?igsh=MnNraDVycnYwamU4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
                   <IconButton variant="primary-outline" icon="Instagram" />
                 </a>
 
                 {/* Facebook (using public/icons) */}
-                <a href="#" aria-label="Facebook">
+                <a
+                  href="https://www.facebook.com/lyfline.id/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                >
                   <IconButton variant="primary-outline" icon="facebook" />
                 </a>
 
-                {/* Youtube (using public/icons) */}
-                <a href="#" aria-label="Youtube">
-                  <IconButton variant="primary-outline" icon="youtube" />
+                {/* Tiktok (using public/icons) */}
+                <a
+                  href="https://www.tiktok.com/@lyfline.id?is_from_webapp=1&sender_device=pc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Tiktok"
+                >
+                  <IconButton variant="primary-outline" icon="tiktok" />
                 </a>
 
               </div>
