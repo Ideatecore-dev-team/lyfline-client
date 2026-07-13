@@ -163,7 +163,6 @@ export const TestimonialsSection: React.FC = () => {
               key={`${testimonial.id}-${idx}`}
               quote={testimonial.quote}
               name={testimonial.name}
-              role={testimonial.role}
             />
           ))}
         </div>
