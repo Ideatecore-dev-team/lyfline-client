@@ -14,7 +14,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const { data: articles } = await supabase.from("articles").select("id, article_title, updated_at");
+    const { data: articles } = await supabase
+      .from("articles")
+      .select("id, article_title, updated_at")
+      .eq("is_published", true);
     if (articles) {
       articles.forEach((article) => {
         const slug = slugify(article.article_title);
