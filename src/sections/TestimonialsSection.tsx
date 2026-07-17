@@ -31,6 +31,42 @@ const LOCAL_TESTIMONIALS: Testimonial[] = [
     name: "Patient C",
     role: "",
     quote: "Hi Drishti, we got home a while back.\n\nOnce again, thanks a lot for all the help that you extended to us🙏🙏. It means a lot and I deeply appreciate it. Take care.😊"
+  },
+  {
+    id: "4",
+    name: "Patient D",
+    role: "",
+    quote: "Thank you wouldn’t be sufficient to express just how grateful we are for the support, care and facilities provided to us by LYFLINE in the comfort of our home. The attention to detail and going above and beyond for their clients is something we appreciate from the bottom of our hearts.\n\nThey took care of all our needs, shouldered the stress on our behalf and got everything sorted out for us so seamlessly. Thank you so much for coming to our rescue, assuring us time and again that everything would be fine and being so professional. They were truly our lifelines."
+  },
+  {
+    id: "5",
+    name: "Patient E",
+    role: "",
+    quote: "I have used LYFLINE for so many times now and I am very satisfied with their services, prompt response, excellent price and more.\n\nReally so glad that I got LYFLINE as our lifeline support.\n\nThank you so much for your endless devotion towards your work!"
+  },
+  {
+    id: "6",
+    name: "Patient F",
+    role: "",
+    quote: "LYFLINE, turned & became my lifeline during my difficult & challenging time battling COVID19. When leaving home was not only impossible but dreadful, LYFLINE understood well my unspoken fear. Antigen test, PCR test, blood test, In-house doctor, oxygen tanks, whatever I asked for in short notice was made possible by LYFLINE.\n\nThank you always."
+  },
+  {
+    id: "7",
+    name: "Patient G",
+    role: "",
+    quote: "We totally appreciate the excellent service we received throughout our family’s COVID situation. Thank you for your promptness, for making it easy and hassle free for us, doing your best despite being so swamped every single day. At such situations, people need that comfort of knowing or contacting the right person you need, for their tests done, and for us its definitely LYFLINE. Thank you once again, wishing you guys all the very best!"
+  },
+  {
+    id: "8",
+    name: "Patient H",
+    role: "",
+    quote: "The most efficient, trusted, fastest and responsive healthcare service in Jakarta! Literally!\n\nWill always trust LYFLINE to provide our medical needs and services."
+  },
+  {
+    id: "9",
+    name: "Patient I",
+    role: "",
+    quote: "LYFLINE is amazing! My dad wanted to find a doctor in Japan, apparently hospital websites in Japan are not in English. We were having a hard time and thats how we got LYFLINE to help us. Within days information (certificate, biography, hospitals etc) of doctors were given. We finally made a choice for a specialist we are comfortable with and they helped us along every stage of the process. Even after my dad healed, they constantly check up on us if we needed anything else during recovery, this is something I believe other medical services lack. They made my family feel taken care off and comfortable. LYFLINE is truly a life saver!"
   }
 ];
 

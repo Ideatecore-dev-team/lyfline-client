@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LYFLINE | Build on Trust, Driven with Care",
     description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey.",
-    url: "https://lyfline.id",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
     siteName: "LYFLINE",
     locale: "en_US",
     type: "website",
