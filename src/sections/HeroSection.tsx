@@ -34,7 +34,7 @@ export const HeroSection: React.FC = () => {
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
-          backgroundImage: `url('/background-images/bg-hero-1.jpg')`
+          backgroundImage: `url('/background-images/bg-hero-1.webp')`
         }}
       />
       {/* Brand blue tint overlay for contrast and layout legibility */}

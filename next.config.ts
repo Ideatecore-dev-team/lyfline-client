@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "bymxyrhvntbfyxhvpxek.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "api.lyfline.id",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
     ],
   },
   async redirects() {

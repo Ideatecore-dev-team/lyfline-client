@@ -242,7 +242,7 @@ export default function DoctorsPage() {
                 animate="visible"
               >
                 <Image
-                  src="/Illustration/DoctorIllustration.png"
+                  src="/Illustration/DoctorIllustration.webp"
                   alt="Doctor Illustration"
                   width={406}
                   height={258}

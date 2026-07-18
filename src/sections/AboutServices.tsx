@@ -64,7 +64,7 @@ export const AboutServices: React.FC = () => {
           {/* Services Illustration */}
           <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 w-[192px] h-[144px] pointer-events-none z-0">
             <Image
-              src="/Illustration/ServicesIllustration.png"
+              src="/Illustration/ServicesIllustration.webp"
               alt="Services Illustration"
               fill
               className="object-contain"
