@@ -61,35 +61,35 @@ const TickerColumns = () => (
     {/* Col 1 */}
     <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6">
       <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-        <Image src="/Illustration/services/1.png" alt="Partner in Care" fill className="object-cover" sizes="200px" />
+        <Image src="/Illustration/services/1.webp" alt="Partner in Care" fill className="object-cover" sizes="200px" />
       </div>
       <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-        <Image src="/Illustration/services/2.png" alt="Insurance Buddy" fill className="object-cover" sizes="200px" />
+        <Image src="/Illustration/services/2.webp" alt="Insurance Buddy" fill className="object-cover" sizes="200px" />
       </div>
     </div>
 
     {/* Col 2 */}
     <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-      <Image src="/Illustration/services/3.png" alt="Doctor Matching" fill className="object-cover" sizes="200px" />
+      <Image src="/Illustration/services/3.webp" alt="Doctor Matching" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 3 */}
     <div className="w-[200px] shrink-0 h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-      <Image src="/Illustration/services/4.png" alt="Travel Support" fill className="object-cover" sizes="200px" />
+      <Image src="/Illustration/services/4.webp" alt="Travel Support" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 4 */}
     <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-      <Image src="/Illustration/services/5.png" alt="Monitor Ready" fill className="object-cover" sizes="200px" />
+      <Image src="/Illustration/services/5.webp" alt="Monitor Ready" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 5 */}
     <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6 mr-24">
       <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-        <Image src="/Illustration/services/6.png" alt="Guided Care" fill className="object-cover" sizes="200px" />
+        <Image src="/Illustration/services/6.webp" alt="Guided Care" fill className="object-cover" sizes="200px" />
       </div>
       <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
-        <Image src="/Illustration/services/7.png" alt="Medical Treatment" fill className="object-cover" sizes="200px" />
+        <Image src="/Illustration/services/7.webp" alt="Medical Treatment" fill className="object-cover" sizes="200px" />
       </div>
     </div>
   </>
@@ -184,13 +184,13 @@ function ServicesPageContent() {
                     className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
-                    <Image src="/Illustration/services/1.png" alt="Partner in Care" fill className="object-cover" sizes="250px" />
+                    <Image src="/Illustration/services/1.webp" alt="Partner in Care" fill className="object-cover" sizes="250px" />
                   </motion.div>
                   <motion.div
                     className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
-                    <Image src="/Illustration/services/2.png" alt="Insurance Buddy" fill className="object-cover" sizes="250px" />
+                    <Image src="/Illustration/services/2.webp" alt="Insurance Buddy" fill className="object-cover" sizes="250px" />
                   </motion.div>
                 </motion.div>
 
@@ -201,7 +201,7 @@ function ServicesPageContent() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <Image src="/Illustration/services/3.png" alt="Doctor Matching" fill className="object-cover" sizes="250px" />
+                  <Image src="/Illustration/services/3.webp" alt="Doctor Matching" fill className="object-cover" sizes="250px" />
                 </motion.div>
 
                 {/* Col 3 → drops from TOP */}
@@ -211,7 +211,7 @@ function ServicesPageContent() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <Image src="/Illustration/services/4.png" alt="Travel Support" fill className="object-cover" sizes="250px" />
+                  <Image src="/Illustration/services/4.webp" alt="Travel Support" fill className="object-cover" sizes="250px" />
                 </motion.div>
 
                 {/* Col 4 → rises from BOTTOM */}
@@ -221,7 +221,7 @@ function ServicesPageContent() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <Image src="/Illustration/services/5.png" alt="Monitor Ready" fill className="object-cover" sizes="250px" />
+                  <Image src="/Illustration/services/5.webp" alt="Monitor Ready" fill className="object-cover" sizes="250px" />
                 </motion.div>
 
                 {/* Col 5 → slides from RIGHT */}
@@ -235,13 +235,13 @@ function ServicesPageContent() {
                     className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
-                    <Image src="/Illustration/services/6.png" alt="Guided Care" fill className="object-cover" sizes="250px" />
+                    <Image src="/Illustration/services/6.webp" alt="Guided Care" fill className="object-cover" sizes="250px" />
                   </motion.div>
                   <motion.div
                     className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
-                    <Image src="/Illustration/services/7.png" alt="Medical Treatment" fill className="object-cover" sizes="250px" />
+                    <Image src="/Illustration/services/7.webp" alt="Medical Treatment" fill className="object-cover" sizes="250px" />
                   </motion.div>
                 </motion.div>
 

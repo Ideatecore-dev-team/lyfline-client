@@ -49,7 +49,7 @@ export const CtaSection: React.FC = () => {
           {/* Logo Illustration */}
           <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 w-[150px] h-[150px] pointer-events-none z-0">
             <Image
-              src="/Illustration/LogoIllustration.png"
+              src="/Illustration/LogoIllustration.webp"
               alt="Lyfline Logo Illustration"
               fill
               className="object-contain"

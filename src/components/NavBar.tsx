@@ -30,7 +30,7 @@ export const NavBar: React.FC = () => {
         {/* LOGO (matching Figma dimensions and classes) */}
         <Link href="/" className="w-40 h-12 relative overflow-hidden block">
           <Image
-            src="/logoBlack.png"
+            src="/logoBlack.webp"
             alt="LYFLINE Logo"
             width={200}
             height={32}
@@ -136,7 +136,7 @@ export const NavBar: React.FC = () => {
               <div className="flex justify-between items-center pb-6 border-b border-primary/10 mb-6">
                 <Link href="/" className="w-32 h-10 relative overflow-hidden block" onClick={() => setIsMobileMenuOpen(false)}>
                   <Image
-                    src="/logoBlack.png"
+                    src="/logoBlack.webp"
                     alt="LYFLINE Logo"
                     width={150}
                     height={24}

@@ -54,16 +54,16 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
   ];
 
   const logos = [
-    { src: "/Partners/1.png" },
-    { src: "/Partners/2.png" },
-    { src: "/Partners/3.png" },
-    { src: "/Partners/4.png" },
-    { src: "/Partners/5.png" },
-    { src: "/Partners/6.png" },
-    { src: "/Partners/7.png" },
-    { src: "/Partners/8.png" },
-    { src: "/Partners/9.png" },
-    { src: "/Partners/10.png" }
+    { src: "/Partners/1.webp" },
+    { src: "/Partners/2.webp" },
+    { src: "/Partners/3.webp" },
+    { src: "/Partners/4.webp" },
+    { src: "/Partners/5.webp" },
+    { src: "/Partners/6.webp" },
+    { src: "/Partners/7.webp" },
+    { src: "/Partners/8.webp" },
+    { src: "/Partners/9.webp" },
+    { src: "/Partners/10.webp" }
   ];
 
   return (

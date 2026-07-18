@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   title: "LYFLINE | Build on Trust, Driven with Care - International Healthcare Facilitator",
   description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey. From consultations, doctor matching, travel arrangements to recovery support across 7 countries with zero hidden fees.",
   icons: {
-    icon: "/logoIcon.png",
-    shortcut: "/logoIcon.png",
-    apple: "/logoIcon.png",
+    icon: "/logoIcon.webp",
+    shortcut: "/logoIcon.webp",
+    apple: "/logoIcon.webp",
   },
   keywords: [
     "LYFLINE",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/logoBlack.png",
+        url: "/logoBlack.webp",
         width: 1200,
         height: 630,
         alt: "LYFLINE",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LYFLINE | Build on Trust, Driven with Care",
     description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey.",
-    images: ["/logoBlack.png"],
+    images: ["/logoBlack.webp"],
   },
   robots: {
     index: true,
