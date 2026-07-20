@@ -8,6 +8,7 @@ import { Badge } from "@/components/Badge";
 import { type Article, type ArticleSection } from "@/data/articlesData";
 import DOMPurify from "dompurify";
 import { slugify } from "@/lib/utils";
+import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface ArticleClientProps {
@@ -181,14 +182,25 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
               <div className="self-stretch h-64 md:h-96 relative rounded-3xl overflow-hidden border-2 border-gray-200 bg-linear-to-b from-blue-800/20 to-blue-800/40 flex items-center justify-center">
                 {article.imageUrl ? (
                   <>
-                    <Image
-                      src={article.imageUrl}
-                      alt={isTranslating ? "Article cover" : translatedTitle}
-                      fill
-                      className="object-cover animate-fade-in"
-                      sizes="(max-width: 1024px) 100vw, 800px"
-                      priority
-                    />
+                    {isVideoUrl(article.imageUrl) ? (
+                      <video
+                        src={article.imageUrl}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover animate-fade-in"
+                      />
+                    ) : (
+                      <Image
+                        src={article.imageUrl}
+                        alt={isTranslating ? "Article cover" : translatedTitle}
+                        fill
+                        className="object-cover animate-fade-in"
+                        sizes="(max-width: 1024px) 100vw, 800px"
+                        priority
+                      />
+                    )}
                     {/* Brand suit gradient overlay */}
                     <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/30 pointer-events-none mix-blend-multiply" />
                   </>
@@ -288,13 +300,24 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                     >
                       <div className="size-20 relative rounded-3xl overflow-hidden border border-gray-200 shrink-0 bg-linear-to-b from-blue-800/20 to-blue-800/40">
                         {other.imageUrl ? (
-                          <Image
-                            src={other.imageUrl}
-                            alt={other.title}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-110"
-                            sizes="80px"
-                          />
+                          isVideoUrl(other.imageUrl) ? (
+                            <video
+                              src={other.imageUrl}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          ) : (
+                            <Image
+                              src={other.imageUrl}
+                              alt={other.title}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                              sizes="80px"
+                            />
+                          )
                         ) : null}
                       </div>
                       <div className="grow flex flex-col justify-center items-start gap-2 overflow-hidden group-hover:ml-1">

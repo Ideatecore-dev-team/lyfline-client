@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { isVideoUrl } from "@/lib/media";
 import { Badge, type BadgeVariant } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
 
@@ -36,29 +37,31 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-[270px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden">
+      <div className="w-full max-w-67.5 h-98 bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden">
         {/* Skeleton Image Area */}
-        <div className="w-full h-48 bg-slate-100 animate-pulse rounded-3xl" />
+        <div className="self-stretch h-48 skeleton-shimmer rounded-3xl shrink-0" />
 
         {/* Skeleton Content */}
-        <div className="self-stretch p-6 flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
+        <div className="self-stretch p-6 rounded-bl-4xl rounded-br-4xl flex flex-col grow justify-between gap-6 overflow-hidden">
+          <div className="self-stretch flex flex-col justify-start items-start gap-3">
             {/* Badge Shimmer */}
-            <div className="h-7 w-24 bg-slate-100 rounded-full animate-pulse" />
-            {/* Name Shimmer */}
-            <div className="h-6 w-4/5 bg-slate-100 rounded-md animate-pulse" />
-            {/* Hospital Shimmer */}
-            <div className="h-4 w-11/12 bg-slate-100 rounded-md animate-pulse" />
+            <div className="h-7 w-24 skeleton-shimmer rounded-full" />
+            {/* Name & Hospital Shimmers */}
+            <div className="self-stretch flex flex-col gap-1.5">
+              <div className="h-6 w-4/5 skeleton-shimmer rounded-md" />
+              <div className="h-4 w-full skeleton-shimmer rounded-md mt-1" />
+              <div className="h-4 w-2/3 skeleton-shimmer rounded-md" />
+            </div>
           </div>
           {/* Action Link Shimmer */}
-          <div className="h-5 w-24 bg-slate-100 rounded-md mx-auto animate-pulse" />
+          <div className="h-5 w-24 skeleton-shimmer rounded-md mx-auto" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[270px] h-full bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
+    <div className="w-full max-w-67.5 h-full bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
 
       {/* Doctor Image Container */}
       {onViewDetails ? (
@@ -88,15 +91,27 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
           />
 
           {displayImageUrl ? (
-            <Image
-              src={displayImageUrl}
-              alt={displayName}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            isVideoUrl(displayImageUrl) ? (
+              <video
+                src={displayImageUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+              />
+            ) : (
+              <Image
+                src={displayImageUrl}
+                alt={displayName}
+                fill
+                unoptimized={true}
+                className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : (
-            <div className="w-full h-full bg-gradient-to-b from-indigo-100 to-indigo-50" />
+            <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}
         </div>
       ) : (
@@ -123,21 +138,33 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             />
 
           {displayImageUrl ? (
-            <Image
-              src={displayImageUrl}
-              alt={displayName}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            isVideoUrl(displayImageUrl) ? (
+              <video
+                src={displayImageUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+              />
+            ) : (
+              <Image
+                src={displayImageUrl}
+                alt={displayName}
+                fill
+                unoptimized={true}
+                className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : (
-            <div className="w-full h-full bg-gradient-to-b from-indigo-100 to-indigo-50" />
+            <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}
         </Link>
       )}
 
       {/* Content Area */}
-      <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col flex-grow justify-between gap-6 overflow-hidden">
+      <div className="self-stretch p-6 rounded-bl-4xl rounded-br-4xl flex flex-col grow justify-between gap-6 overflow-hidden">
         <div className="self-stretch flex flex-col justify-start items-start gap-3">
           {/* Title Badge */}
           <Badge

@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import DOMPurify from "dompurify";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
+import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface DoctorClientProps {
@@ -41,7 +43,12 @@ const getFlagUrl = (country: string) => {
   }
 };
 
-const getHospitalSlug = (hospitalName: string) => {
+import { slugify } from "@/lib/utils";
+
+const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
+  if (hospitalId) {
+    return `${slugify(hospitalName || "partner")}-${hospitalId}`;
+  }
   const clean = hospitalName.toLowerCase().trim();
   if (clean.includes("siloam")) return "siloam-hospitals";
   if (clean.includes("mayapada")) return "mayapada-hospital";
@@ -51,13 +58,23 @@ const getHospitalSlug = (hospitalName: string) => {
   if (clean.includes("sam hospital") || clean.includes("singapore institute") || clean.includes("sam")) return "sam-hospital";
   if (clean.includes("nulook")) return "nulook-clinic";
   if (clean.includes("royal progress") || clean.includes("royalprogress")) return "royal-progress";
-  return hospitalName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return slugify(hospitalName);
 };
 
 export default function DoctorClient({ doctor }: DoctorClientProps) {
   const { lang } = useLanguage();
   const [translatedDesc, setTranslatedDesc] = useState(doctor.description || "");
   const [isTranslating, setIsTranslating] = useState(false);
+
+  const isOldType = doctor.type?.toLowerCase() === "old";
+
+  const sanitizedDesc = useMemo(() => {
+    const raw = translatedDesc || doctor.description || "";
+    if (typeof window !== "undefined") {
+      return DOMPurify.sanitize(raw);
+    }
+    return raw;
+  }, [translatedDesc, doctor.description]);
 
   useEffect(() => {
     if (lang === "id" && doctor.description) {
@@ -89,19 +106,20 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
   }, [lang, doctor.description]);
 
   const flagUrl = getFlagUrl(doctor.region || "");
-  const qualifications = doctor.qualification || [];
-  const languages = doctor.language || [];
+  const specialties = (doctor.specialty || []).filter((s) => s && s.trim().length > 0);
+  const qualifications = (doctor.qualification || []).filter((q) => q && q.trim().length > 0);
+  const languages = (doctor.language || []).filter((l) => l && l.trim().length > 0);
 
   return (
-    <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
+    <main className="grow pt-20 w-full flex flex-col justify-start items-center">
       {/* Full-width section with background styling and rounded corners */}
       <div className="w-full py-16 bg-white flex flex-col justify-start items-center overflow-hidden relative outline -outline-offset-1 outline-gray-200">
 
         {/* Decorative background shapes */}
-        <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
+        <div className="size-48 -left-24.5 -top-24.5 absolute bg-rose-50 rounded-full pointer-events-none z-0" />
 
         {/* Centered content container */}
-        <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
+        <div className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
 
           {/* Back Button */}
           <Link href="/doctors">
@@ -128,8 +146,8 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
           <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16">
 
             {/* Left Column: Profile Picture Container */}
-            <div className="w-full max-w-[270px] lg:w-[270px] flex flex-col justify-start items-center gap-6 shrink-0">
-              <div className="w-full h-[216px] relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
+            <div className="w-full max-w-67.5 lg:w-67.5 flex flex-col justify-start items-center gap-6 shrink-0">
+              <div className="w-full h-54 relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
 
                 {/* Background Decorative Shapes */}
                 <span
@@ -150,14 +168,25 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                 />
 
                 {doctor.imageUrl ? (
-                  <Image
-                    src={doctor.imageUrl}
-                    alt={doctor.name}
-                    fill
-                    className="object-cover z-10"
-                    sizes="(max-width: 768px) 100vw, 270px"
-                    priority
-                  />
+                  isVideoUrl(doctor.imageUrl) ? (
+                    <video
+                      src={doctor.imageUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover z-10"
+                    />
+                  ) : (
+                    <Image
+                      src={doctor.imageUrl}
+                      alt={doctor.name}
+                      fill
+                      className="object-cover z-10"
+                      sizes="(max-width: 768px) 100vw, 270px"
+                      priority
+                    />
+                  )
                 ) : (
                   <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
                 )}
@@ -183,13 +212,22 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                 </h1>
 
                 {/* Doctor Description */}
-                <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2">
-                  {isTranslating ? (
+                {isTranslating ? (
+                  <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2">
                     <span className="text-slate-400 italic">Menerjemahkan deskripsi...</span>
-                  ) : (
-                    translatedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")
-                  )}
-                </p>
+                  </p>
+                ) : isOldType ? (
+                  <div
+                    className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:text-primary [&_a]:underline"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")
+                    }}
+                  />
+                ) : (
+                  <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2">
+                    {translatedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")}
+                  </p>
+                )}
               </div>
 
               {/* Separator line */}
@@ -199,59 +237,67 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
               <div className="self-stretch flex flex-col justify-start items-start gap-6">
 
                 {/* Specialties */}
-                <div className="self-stretch flex flex-col justify-start items-start gap-2">
-                  <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                    {lang === "en" ? "Speciality" : "Spesialisasi"}
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(doctor.specialty || []).map((s, idx) => (
-                      <Badge key={idx} text={s} variant="green" showDot={true} />
-                    ))}
+                {specialties.length > 0 && (
+                  <div className="self-stretch flex flex-col justify-start items-start gap-2">
+                    <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                      {lang === "en" ? "Speciality" : "Spesialisasi"}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {specialties.map((s, idx) => (
+                        <Badge key={idx} text={s} variant="green" showDot={true} />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Qualifications & Languages */}
-                <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-6">
+                {(qualifications.length > 0 || languages.length > 0) && (
+                  <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-6">
 
-                  {/* Qualifications */}
-                  <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-2">
-                    <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                      {lang === "en" ? "Qualifications" : "Kualifikasi"}
-                    </span>
-                    <div className="flex flex-col gap-1.5 items-start w-full">
-                      {qualifications.map((q: string, idx: number) => (
-                        <div
-                          key={idx}
-                          className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
-                        >
-                          <span className="justify-start text-primary text-sm font-normal font-poppins">
-                            {q}
-                          </span>
+                    {/* Qualifications */}
+                    {qualifications.length > 0 && (
+                      <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-2">
+                        <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                          {lang === "en" ? "Qualifications" : "Kualifikasi"}
+                        </span>
+                        <div className="flex flex-col gap-1.5 items-start w-full">
+                          {qualifications.map((q: string, idx: number) => (
+                            <div
+                              key={idx}
+                              className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                            >
+                              <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                {q}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                      </div>
+                    )}
 
-                  {/* Languages */}
-                  <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-2">
-                    <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                      {lang === "en" ? "Languages" : "Bahasa"}
-                    </span>
-                    <div className="flex flex-col gap-1.5 items-start w-full">
-                      {languages.map((l: string, idx: number) => (
-                        <div
-                          key={idx}
-                          className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
-                        >
-                          <span className="justify-start text-primary text-sm font-normal font-poppins">
-                            {l}
-                          </span>
+                    {/* Languages */}
+                    {languages.length > 0 && (
+                      <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-2">
+                        <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                          {lang === "en" ? "Languages" : "Bahasa"}
+                        </span>
+                        <div className="flex flex-col gap-1.5 items-start w-full">
+                          {languages.map((l: string, idx: number) => (
+                            <div
+                              key={idx}
+                              className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                            >
+                              <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                {l}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
+                      </div>
+                    )}
 
-                </div>
+                  </div>
+                )}
 
                 {/* Hospital Details */}
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
@@ -260,7 +306,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                   </span>
                   <div className="h-10 px-3 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
                     {flagUrl ? (
-                      <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+                      <div className="w-4 h-3 relative overflow-hidden rounded-xs outline outline-black">
                         <Image
                           src={flagUrl}
                           alt={lang === "en" ? `${doctor.region} flag` : `Bendera ${doctor.region}`}
@@ -270,14 +316,14 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                         />
                       </div>
                     ) : (
-                      <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
+                      <div className="w-4 h-3 relative bg-white rounded-xs outline outline-black overflow-hidden">
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                       </div>
                     )}
                     {doctor.hospital ? (
                       <Link
-                        href={`/partners/${getHospitalSlug(doctor.hospital)}`}
+                        href={`/partners/${getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
                         className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
                       >
                         {doctor.hospital}
@@ -324,7 +370,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
       </div>

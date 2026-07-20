@@ -39,9 +39,10 @@ export const ArticlesSection: React.FC = () => {
   useEffect(() => {
     let active = true;
     fetchArticles({ limit: 3 })
-      .then((data) => {
+      .then((res) => {
         if (active) {
-          setArticles(data);
+          const list = Array.isArray(res) ? res : res.data || [];
+          setArticles(list);
           setLoading(false);
         }
       })

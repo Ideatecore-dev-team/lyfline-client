@@ -11,6 +11,7 @@ import { DoctorCard } from "@/components/card/DoctorCard";
 import GooglaMapsPreviewModal from "@/components/googleMapsPreview";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 import { type Partner } from "@/data/partnersData";
+import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
 import { slugify } from "@/lib/utils";
 
@@ -87,9 +88,10 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDoctorsLoading(true);
     fetchDoctors({ hospital_id: partner.id })
-      .then((data) => {
+      .then((res) => {
         if (active) {
-          setDoctors(data);
+          const list = Array.isArray(res) ? res : res.data || [];
+          setDoctors(list);
           setDoctorsLoading(false);
         }
       })
@@ -173,14 +175,25 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                           transition={{ duration: 0.3 }}
                           className="absolute inset-0"
                         >
-                          <Image
-                            src={partnerImages[activeImageIdx]}
-                            alt={`${partner.name} view`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 490px"
-                            priority
-                          />
+                          {isVideoUrl(partnerImages[activeImageIdx]) ? (
+                            <video
+                              src={partnerImages[activeImageIdx]}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Image
+                              src={partnerImages[activeImageIdx]}
+                              alt={`${partner.name} view`}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 490px"
+                              priority
+                            />
+                          )}
                         </motion.div>
                       </AnimatePresence>
                       {/* Brand alignment gradient overlay in front of the image */}
@@ -230,7 +243,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                 <Button
                   variant="outline-primary"
                   text={lang === "en" ? "Google Maps View" : "Lihat Google Maps"}
-                  leftIcon="maps"
+                  leftIcon="Location"
                   className="w-full md:w-auto font-poppins text-base font-medium"
                   onClick={() => setIsMapOpen(true)}
                 />

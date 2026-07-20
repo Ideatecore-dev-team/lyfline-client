@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { isVideoUrl } from "@/lib/media";
 
 interface PartnerCardProps {
     name: string;
@@ -31,12 +32,23 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
             >
                 {logoUrl ? (
                     <>
-                        <Image
-                            src={logoUrl}
-                            alt={`${name} Logo`}
-                            fill
-                            className="object-cover"
-                        />
+                        {isVideoUrl(logoUrl) ? (
+                            <video
+                                src={logoUrl}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <Image
+                                src={logoUrl}
+                                alt={`${name} Logo`}
+                                fill
+                                className="object-cover"
+                            />
+                        )}
                         {/* Brand gradient overlay */}
                         <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/10 pointer-events-none mix-blend-multiply" />
                     </>

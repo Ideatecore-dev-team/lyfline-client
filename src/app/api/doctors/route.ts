@@ -11,13 +11,17 @@ export interface DbDoctor {
   doctor_qualification: string[];
   doctor_language: string[];
   description?: string;
+  type?: string;
   created_at: string;
   updated_at: string;
   avatarUrl?: string | null;
   partners: {
     hospital_name: string;
     country: string;
-  } | null;
+  } | {
+    hospital_name: string;
+    country: string;
+  }[] | null;
 }
 
 export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]): Doctor {
@@ -34,6 +38,10 @@ export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: strin
     }
   }
 
+  const partnerObj = Array.isArray(dbDoctor.partners)
+    ? dbDoctor.partners[0]
+    : dbDoctor.partners;
+
   return {
     id: dbDoctor.id,
     hospital_id: dbDoctor.hospital_id,
@@ -42,10 +50,11 @@ export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: strin
     specialty: dbDoctor.doctor_specialty || [],
     qualification: dbDoctor.doctor_qualification || [],
     language: dbDoctor.doctor_language || [],
-    hospital: dbDoctor.partners?.hospital_name ?? undefined,
-    region: dbDoctor.partners?.country ?? undefined,
+    hospital: partnerObj?.hospital_name ?? undefined,
+    region: partnerObj?.country ?? undefined,
     imageUrl,
     description: dbDoctor.description || "",
+    type: dbDoctor.type || "new",
   };
 }
 
@@ -53,25 +62,54 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = searchParams.get("limit");
+    const page = searchParams.get("page");
     const hospitalId = searchParams.get("hospital_id");
+    const search = searchParams.get("search");
+    const region = searchParams.get("region");
+    const hospital = searchParams.get("hospital");
+    const specialty = searchParams.get("specialty");
+
+    const pageVal = page ? parseInt(page, 10) : undefined;
+    const limitVal = limit ? parseInt(limit, 10) : undefined;
+
+    const hasPartnerFilter = !!(hospital || region);
+    const selectClause = hasPartnerFilter
+      ? "*, partners!hospital_id!inner(hospital_name, country)"
+      : "*, partners!hospital_id(hospital_name, country)";
 
     let query = supabase
       .from("doctors")
-      .select("*, partners!hospital_id(hospital_name, country)")
+      .select(selectClause, { count: pageVal !== undefined ? "exact" : undefined })
       .order("created_at", { ascending: false });
 
     if (hospitalId) {
       query = query.eq("hospital_id", hospitalId);
     }
-
-    if (limit) {
-      const limitVal = parseInt(limit, 10);
-      if (!isNaN(limitVal)) {
-        query = query.limit(limitVal);
+    if (search && search.trim()) {
+      const cleanSearch = search.trim().replace(/[,()"']/g, "");
+      if (cleanSearch) {
+        query = query.or(`doctor_name.ilike.%${cleanSearch}%,doctor_title.ilike.%${cleanSearch}%`);
       }
     }
+    if (specialty && specialty.trim()) {
+      query = query.contains("doctor_specialty", [specialty.trim()]);
+    }
+    if (hospital && hospital.trim()) {
+      query = query.eq("partners.hospital_name", hospital.trim());
+    }
+    if (region && region.trim()) {
+      query = query.eq("partners.country", region.trim());
+    }
 
-    const { data: doctors, error } = await query;
+    if (pageVal !== undefined && limitVal !== undefined) {
+      const from = (pageVal - 1) * limitVal;
+      const to = pageVal * limitVal - 1;
+      query = query.range(from, to);
+    } else if (limitVal !== undefined) {
+      query = query.limit(limitVal);
+    }
+
+    const { data: doctors, count, error } = await query;
 
     if (error) {
       console.error("Supabase error fetching doctors:", error);
@@ -87,6 +125,22 @@ export async function GET(request: Request) {
       mapDbDoctorToDoctor(doc as DbDoctor, fileList || [])
     );
 
+    if (pageVal !== undefined) {
+      const effectiveLimit = limitVal || 10;
+      const total = count || 0;
+      const totalPages = Math.ceil(total / effectiveLimit) || 1;
+
+      return NextResponse.json({
+        data: formattedDoctors,
+        meta: {
+          total,
+          page: pageVal,
+          limit: effectiveLimit,
+          totalPages,
+        },
+      });
+    }
+
     return NextResponse.json(formattedDoctors);
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);
@@ -94,3 +148,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: errorMsg }, { status: 500 });
   }
 }
+

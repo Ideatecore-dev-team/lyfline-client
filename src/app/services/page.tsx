@@ -59,36 +59,36 @@ const labelSlideLeft: Variants = {
 const TickerColumns = () => (
   <>
     {/* Col 1 */}
-    <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6">
-      <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+    <div className="w-50 shrink-0 flex flex-col justify-end gap-6">
+      <div className="self-stretch h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
         <Image src="/Illustration/services/1.webp" alt="Partner in Care" fill className="object-cover" sizes="200px" />
       </div>
-      <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+      <div className="self-stretch h-44 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
         <Image src="/Illustration/services/2.webp" alt="Insurance Buddy" fill className="object-cover" sizes="200px" />
       </div>
     </div>
 
     {/* Col 2 */}
-    <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+    <div className="w-50 shrink-0 h-80 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
       <Image src="/Illustration/services/3.webp" alt="Doctor Matching" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 3 */}
-    <div className="w-[200px] shrink-0 h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+    <div className="w-50 shrink-0 h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
       <Image src="/Illustration/services/4.webp" alt="Travel Support" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 4 */}
-    <div className="w-[200px] shrink-0 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+    <div className="w-50 shrink-0 h-80 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
       <Image src="/Illustration/services/5.webp" alt="Monitor Ready" fill className="object-cover" sizes="200px" />
     </div>
 
     {/* Col 5 */}
-    <div className="w-[200px] shrink-0 flex flex-col justify-end gap-6 mr-24">
-      <div className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+    <div className="w-50 shrink-0 flex flex-col justify-end gap-6 mr-24">
+      <div className="self-stretch h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
         <Image src="/Illustration/services/6.webp" alt="Guided Care" fill className="object-cover" sizes="200px" />
       </div>
-      <div className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
+      <div className="self-stretch h-44 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden bg-slate-100">
         <Image src="/Illustration/services/7.webp" alt="Medical Treatment" fill className="object-cover" sizes="200px" />
       </div>
     </div>
@@ -133,13 +133,13 @@ function ServicesPageContent() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Combined Services Section */}
-        <section className="w-full py-16 bg-primary/10 flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-[32px] rounded-br-[32px] outline -outline-offset-1 outline-gray-200">
+        <section className="w-full py-16 bg-primary/10 flex flex-col justify-start items-center overflow-hidden relative border-b border-gray-100 rounded-bl-4xl rounded-br-4xl outline -outline-offset-1 outline-gray-200">
           <NoiseTexture />
 
           {/* Header & Desktop Grid (inside padded container) */}
-          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10">
+          <div className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10">
 
             <div className="self-stretch flex flex-col justify-start items-start gap-6 z-10 w-full">
 
@@ -181,13 +181,13 @@ function ServicesPageContent() {
                   animate="visible"
                 >
                   <motion.div
-                    className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    className="self-stretch h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
                     <Image src="/Illustration/services/1.webp" alt="Partner in Care" fill className="object-cover" sizes="250px" />
                   </motion.div>
                   <motion.div
-                    className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    className="self-stretch h-44 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
                     <Image src="/Illustration/services/2.webp" alt="Insurance Buddy" fill className="object-cover" sizes="250px" />
@@ -196,7 +196,7 @@ function ServicesPageContent() {
 
                 {/* Col 2 → rises from BOTTOM */}
                 <motion.div
-                  className="flex-1 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  className="flex-1 h-80 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                   variants={colVariants[1]}
                   initial="hidden"
                   animate="visible"
@@ -206,7 +206,7 @@ function ServicesPageContent() {
 
                 {/* Col 3 → drops from TOP */}
                 <motion.div
-                  className="flex-1 h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  className="flex-1 h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                   variants={colVariants[2]}
                   initial="hidden"
                   animate="visible"
@@ -216,7 +216,7 @@ function ServicesPageContent() {
 
                 {/* Col 4 → rises from BOTTOM */}
                 <motion.div
-                  className="flex-1 h-80 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                  className="flex-1 h-80 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                   variants={colVariants[3]}
                   initial="hidden"
                   animate="visible"
@@ -232,13 +232,13 @@ function ServicesPageContent() {
                   animate="visible"
                 >
                   <motion.div
-                    className="self-stretch h-60 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    className="self-stretch h-60 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
                     <Image src="/Illustration/services/6.webp" alt="Guided Care" fill className="object-cover" sizes="250px" />
                   </motion.div>
                   <motion.div
-                    className="self-stretch h-44 relative rounded-[32px] outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
+                    className="self-stretch h-44 relative rounded-4xl outline-1 -outline-offset-1 outline-zinc-200 overflow-hidden w-full bg-slate-100"
                     variants={imgItemVariants}
                   >
                     <Image src="/Illustration/services/7.webp" alt="Medical Treatment" fill className="object-cover" sizes="250px" />
@@ -272,7 +272,7 @@ function ServicesPageContent() {
           </div>
 
           {/* Details Accordion (inside another padded container) */}
-          <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10 mt-8">
+          <div className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-8 relative z-10 mt-8">
 
             {/* Divider */}
             <hr className="w-full border-t border-primary/20 my-4" />
@@ -326,7 +326,7 @@ function ServicesPageContent() {
               maskImage: 'url("/icons/assets/lyflineHeart.svg")',
               WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
             }}
-            className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-primary/50 mask-contain mask-no-repeat mask-center shrink-0"
+            className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-primary/50 mask-contain mask-no-repeat mask-center shrink-0"
             aria-hidden="true"
           />
         </section>

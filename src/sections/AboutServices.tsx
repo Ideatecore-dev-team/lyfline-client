@@ -19,19 +19,19 @@ export const AboutServices: React.FC = () => {
           maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
         }}
-        className="absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+        className="absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
         aria-hidden="true"
       />
-      <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 inline-flex flex-col justify-start items-center">
+      <div className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 inline-flex flex-col justify-start items-center">
 
         {/* Section Heading Subtitle */}
-        <span className="text-sm text-[#95B0D7] tracking-widest uppercase block text-left font-poppins w-full max-w-[1152px] mx-auto mb-3">
+        <span className="text-sm text-[#95B0D7] tracking-widest uppercase block text-left font-poppins w-full max-w-6xl mx-auto mb-3">
           {lang === "en" ? "OUR SERVICES" : "LAYANAN KAMI"}
         </span>
 
         {/* Banner container styled exactly like CtaSection */}
         <motion.div
-          className="w-full max-w-[1152px] p-6 md:p-6 bg-linear-to-r from-primary to-primary-hover rounded-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
+          className="w-full max-w-6xl p-6 md:p-6 bg-linear-to-r from-primary to-primary-hover rounded-4xl flex flex-col justify-start items-start gap-6 overflow-hidden relative shadow-lg"
           initial={{ opacity: 0, x: 80 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
@@ -47,7 +47,7 @@ export const AboutServices: React.FC = () => {
               maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
               WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             }}
-            className="absolute top-0 left-0 size-[60px] pointer-events-none select-none opacity-10 bg-white mask-contain mask-no-repeat mask-center shrink-0 z-0"
+            className="absolute top-0 left-0 size-15 pointer-events-none select-none opacity-10 bg-white mask-contain mask-no-repeat mask-center shrink-0 z-0"
             aria-hidden="true"
           />
 
@@ -57,12 +57,12 @@ export const AboutServices: React.FC = () => {
               maskImage: 'url("/icons/assets/lyflineHeart.svg")',
               WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
             }}
-            className="absolute bottom-0 right-0 size-[80px] pointer-events-none select-none bg-red-600 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+            className="absolute bottom-0 right-0 size-20 pointer-events-none select-none bg-red-600 mask-contain mask-no-repeat mask-center shrink-0 z-0"
             aria-hidden="true"
           />
 
           {/* Services Illustration */}
-          <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 w-[192px] h-[144px] pointer-events-none z-0">
+          <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 w-48 h-36 pointer-events-none z-0">
             <Image
               src="/Illustration/ServicesIllustration.webp"
               alt="Services Illustration"
@@ -72,7 +72,7 @@ export const AboutServices: React.FC = () => {
           </div>
 
           {/* Header Text */}
-          <h2 className="w-full max-w-[662px] justify-start text-white text-3xl font-medium font-poppins leading-tight z-10">
+          <h2 className="w-full max-w-165.5 justify-start text-white text-3xl font-medium font-poppins leading-tight z-10">
             {lang === "en" ? "Discover Our End-to-End Integrated Healthcare Services" : "Temukan Layanan Kesehatan Terintegrasi End-to-End Kami"}
           </h2>
 

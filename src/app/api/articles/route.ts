@@ -108,25 +108,40 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = searchParams.get("limit");
+    const page = searchParams.get("page");
     const exclude = searchParams.get("exclude");
+    const search = searchParams.get("search");
+    const category = searchParams.get("category");
+
+    const pageVal = page ? parseInt(page, 10) : undefined;
+    const limitVal = limit ? parseInt(limit, 10) : undefined;
 
     let query = supabase
       .from("articles")
-      .select("*")
+      .select("*", { count: pageVal !== undefined ? "exact" : undefined })
       .order("created_at", { ascending: false });
 
     if (exclude) {
       query = query.neq("id", exclude);
     }
 
-    if (limit) {
-      const limitVal = parseInt(limit, 10);
-      if (!isNaN(limitVal)) {
-        query = query.limit(limitVal);
-      }
+    if (search) {
+      query = query.ilike("article_title", `%${search}%`);
     }
 
-    const { data: articles, error } = await query;
+    if (category && category !== "All Categories") {
+      query = query.eq("category", category);
+    }
+
+    if (pageVal !== undefined && limitVal !== undefined) {
+      const from = (pageVal - 1) * limitVal;
+      const to = pageVal * limitVal - 1;
+      query = query.range(from, to);
+    } else if (limitVal !== undefined) {
+      query = query.limit(limitVal);
+    }
+
+    const { data: articles, count, error } = await query;
 
     if (error) {
       console.error("Supabase error fetching articles:", error);
@@ -141,6 +156,22 @@ export async function GET(request: Request) {
       mapDbArticleToArticle(art as DbArticle, fileList || [])
     );
 
+    if (pageVal !== undefined) {
+      const effectiveLimit = limitVal || 10;
+      const total = count || 0;
+      const totalPages = Math.ceil(total / effectiveLimit) || 1;
+
+      return NextResponse.json({
+        data: formattedArticles,
+        meta: {
+          total,
+          page: pageVal,
+          limit: effectiveLimit,
+          totalPages,
+        },
+      });
+    }
+
     return NextResponse.json(formattedArticles);
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);
@@ -148,3 +179,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: errorMsg }, { status: 500 });
   }
 }
+

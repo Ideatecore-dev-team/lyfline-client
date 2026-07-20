@@ -38,20 +38,25 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = searchParams.get("limit");
+    const page = searchParams.get("page");
+
+    const pageVal = page ? parseInt(page, 10) : undefined;
+    const limitVal = limit ? parseInt(limit, 10) : undefined;
 
     let query = supabase
       .from("partners")
-      .select("*")
+      .select("*", { count: pageVal !== undefined ? "exact" : undefined })
       .order("hospital_name", { ascending: true });
 
-    if (limit) {
-      const limitVal = parseInt(limit, 10);
-      if (!isNaN(limitVal)) {
-        query = query.limit(limitVal);
-      }
+    if (pageVal !== undefined && limitVal !== undefined) {
+      const from = (pageVal - 1) * limitVal;
+      const to = pageVal * limitVal - 1;
+      query = query.range(from, to);
+    } else if (limitVal !== undefined) {
+      query = query.limit(limitVal);
     }
 
-    const { data: partners, error } = await query;
+    const { data: partners, count, error } = await query;
 
     if (error) {
       console.error("Supabase error fetching partners:", error);
@@ -60,6 +65,22 @@ export async function GET(request: Request) {
 
     const formattedPartners = (partners || []).map((p: unknown) => mapDbPartnerToPartner(p as DbPartner));
 
+    if (pageVal !== undefined) {
+      const effectiveLimit = limitVal || 10;
+      const total = count || 0;
+      const totalPages = Math.ceil(total / effectiveLimit) || 1;
+
+      return NextResponse.json({
+        data: formattedPartners,
+        meta: {
+          total,
+          page: pageVal,
+          limit: effectiveLimit,
+          totalPages,
+        },
+      });
+    }
+
     return NextResponse.json(formattedPartners);
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);
@@ -67,3 +88,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: errorMsg }, { status: 500 });
   }
 }
+

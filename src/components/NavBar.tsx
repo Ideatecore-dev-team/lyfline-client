@@ -25,7 +25,7 @@ export const NavBar: React.FC = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200">
-      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-12 py-4 flex justify-between items-center bg-white">
+      <div className="w-full max-w-360 mx-auto px-6 md:px-12 py-4 flex justify-between items-center bg-white">
 
         {/* LOGO (matching Figma dimensions and classes) */}
         <Link href="/" className="w-40 h-12 relative overflow-hidden block">
@@ -34,12 +34,12 @@ export const NavBar: React.FC = () => {
             alt="LYFLINE Logo"
             width={200}
             height={32}
-            className="w-40 h-10 left-[3px] top-[4px] absolute object-contain"
+            className="w-40 h-10 left-0.75 top-1 absolute object-contain"
             priority
           />
         </Link>
 
-        <nav className="hidden lg:flex justify-start items-center gap-[12px]">
+        <nav className="hidden lg:flex justify-start items-center gap-3">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
             return (
@@ -60,7 +60,7 @@ export const NavBar: React.FC = () => {
               className="flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer border-0 bg-transparent p-0"
               title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
             >
-              <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+              <div className="w-4 h-3 relative overflow-hidden rounded-xs outline outline-black">
                 <Image
                   src={lang === "en" ? "/Flags/GB-UKM - United Kingdom.svg" : "/Flags/ID - Indonesia.svg"}
                   alt={lang === "en" ? "English" : "Bahasa Indonesia"}
@@ -183,7 +183,7 @@ export const NavBar: React.FC = () => {
                     className="flex items-center gap-2.5 hover:opacity-95 transition-opacity bg-primary-light hover:bg-[#D9E6F5] px-4 py-2.5 rounded-3xl border border-primary/25 shadow-sm cursor-pointer select-none active:scale-98"
                     title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
                   >
-                    <div className="w-5 h-3.5 relative overflow-hidden rounded-[2px] outline-1 outline-black">
+                    <div className="w-5 h-3.5 relative overflow-hidden rounded-xs outline-1 outline-black">
                       <Image
                         src={lang === "en" ? "/Flags/GB-UKM - United Kingdom.svg" : "/Flags/ID - Indonesia.svg"}
                         alt="Language"

@@ -44,7 +44,12 @@ const getFlagUrl = (country: string) => {
     }
 };
 
-const getHospitalSlug = (hospitalName: string) => {
+import { slugify } from "@/lib/utils";
+
+const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
+    if (hospitalId) {
+        return `${slugify(hospitalName || "partner")}-${hospitalId}`;
+    }
     const clean = hospitalName.toLowerCase().trim();
     if (clean.includes("siloam")) return "siloam-hospitals";
     if (clean.includes("mayapada")) return "mayapada-hospital";
@@ -54,7 +59,7 @@ const getHospitalSlug = (hospitalName: string) => {
     if (clean.includes("sam hospital") || clean.includes("singapore institute") || clean.includes("sam")) return "sam-hospital";
     if (clean.includes("nulook")) return "nulook-clinic";
     if (clean.includes("royal progress") || clean.includes("royalprogress")) return "royal-progress";
-    return hospitalName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    return slugify(hospitalName);
 };
 
 export const DoctorModals: React.FC<DoctorModalsProps> = ({
@@ -66,8 +71,9 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
     if (!doctor) return null;
 
     const flagUrl = getFlagUrl(doctor.region || "");
-    const qualifications = doctor.qualification || [];
-    const languages = doctor.language || [];
+    const specialties = (doctor.specialty || []).filter((s) => s && s.trim().length > 0);
+    const qualifications = (doctor.qualification || []).filter((q) => q && q.trim().length > 0);
+    const languages = (doctor.language || []).filter((l) => l && l.trim().length > 0);
 
     return (
         <AnimatePresence>
@@ -168,59 +174,67 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                             <div className="flex-1 flex flex-col justify-between items-start gap-6">
 
                                 {/* Specialties */}
-                                <div className="self-stretch flex flex-col justify-start items-start gap-1">
-                                    <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                        {lang === "en" ? "Speciality" : "Spesialisasi"}
-                                    </span>
-                                    <div className="flex flex-wrap gap-1.5">
-                                        {(doctor.specialty || []).map((s, idx) => (
-                                            <Badge key={idx} text={s} variant="green" showDot={true} />
-                                        ))}
+                                {specialties.length > 0 && (
+                                    <div className="self-stretch flex flex-col justify-start items-start gap-1">
+                                        <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                                            {lang === "en" ? "Speciality" : "Spesialisasi"}
+                                        </span>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {specialties.map((s, idx) => (
+                                                <Badge key={idx} text={s} variant="green" showDot={true} />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 {/* Qualifications & Languages */}
-                                <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-4">
+                                {(qualifications.length > 0 || languages.length > 0) && (
+                                    <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-4">
 
-                                    {/* Qualifications Stack */}
-                                    <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
-                                        <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                            {lang === "en" ? "Qualifications" : "Kualifikasi"}
-                                        </span>
-                                        <div className="flex flex-col gap-1.5 items-start w-full">
-                                            {qualifications.map((q: string, idx: number) => (
-                                                <div
-                                                    key={idx}
-                                                    className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
-                                                >
-                                                    <span className="justify-start text-primary text-sm font-normal font-poppins">
-                                                        {q}
-                                                    </span>
+                                        {/* Qualifications Stack */}
+                                        {qualifications.length > 0 && (
+                                            <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
+                                                <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                                                    {lang === "en" ? "Qualifications" : "Kualifikasi"}
+                                                </span>
+                                                <div className="flex flex-col gap-1.5 items-start w-full">
+                                                    {qualifications.map((q: string, idx: number) => (
+                                                        <div
+                                                            key={idx}
+                                                            className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                                                        >
+                                                            <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                                                {q}
+                                                            </span>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                            </div>
+                                        )}
 
-                                    {/* Languages Stack */}
-                                    <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
-                                        <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
-                                            {lang === "en" ? "Languages" : "Bahasa"}
-                                        </span>
-                                        <div className="flex flex-col gap-1.5 items-start w-full">
-                                            {languages.map((l: string, idx: number) => (
-                                                <div
-                                                    key={idx}
-                                                    className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
-                                                >
-                                                    <span className="justify-start text-primary text-sm font-normal font-poppins">
-                                                        {l}
-                                                    </span>
+                                        {/* Languages Stack */}
+                                        {languages.length > 0 && (
+                                            <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-1">
+                                                <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                                                    {lang === "en" ? "Languages" : "Bahasa"}
+                                                </span>
+                                                <div className="flex flex-col gap-1.5 items-start w-full">
+                                                    {languages.map((l: string, idx: number) => (
+                                                        <div
+                                                            key={idx}
+                                                            className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                                                        >
+                                                            <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                                                {l}
+                                                            </span>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                            </div>
+                                        )}
 
-                                </div>
+                                    </div>
+                                )}
 
                                 {/* Hospital details */}
                                 <div className="self-stretch h-14 flex flex-col justify-start items-start gap-1">
@@ -246,7 +260,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                         )}
                                         {doctor.hospital ? (
                                             <Link
-                                                href={`/partners/${getHospitalSlug(doctor.hospital)}`}
+                                                href={`/partners/${getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
                                                 className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
                                             >
                                                 {doctor.hospital}

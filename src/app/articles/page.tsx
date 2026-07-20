@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
+import { Pagination } from "@/components/Pagination";
 import InputBox from "@/components/inputbox";
 import { ArticleCard } from "@/components/card/ArticleCard";
-import { fetchArticles } from "@/api/articles";
+import { fetchArticles, fetchArticleCategories, type PaginatedArticlesResponse } from "@/api/articles";
 import { type Article } from "@/data/articlesData";
 import { slugify } from "@/lib/utils";
 import { useLanguage } from "@/context/LanguageContext";
@@ -36,29 +37,19 @@ export default function ArticlesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [appliedSearchQuery, setAppliedSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [categoriesList, setCategoriesList] = useState<string[]>(["All Categories"]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [articlesPerPage, setArticlesPerPage] = useState(9);
   const [isMobileSearch, setIsMobileSearch] = useState(false);
 
+  // Fetch unique categories once
   useEffect(() => {
-    let active = true;
-    fetchArticles()
-      .then((data) => {
-        if (active) {
-          setArticles(data);
-          setLoading(false);
-        }
+    fetchArticleCategories()
+      .then((cats) => {
+        setCategoriesList(["All Categories", ...cats]);
       })
-      .catch((err) => {
-        console.error("Error fetching articles:", err);
-        if (active) {
-          setError(err.message);
-          setLoading(false);
-        }
-      });
-    return () => {
-      active = false;
-    };
+      .catch((err) => console.error("Failed to load categories:", err));
   }, []);
 
   useEffect(() => {
@@ -76,41 +67,47 @@ export default function ArticlesPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Filter articles based on category and search query
-  const filteredArticles = useMemo(() => {
-    return articles.filter((article) => {
-      const matchesCategory =
-        selectedCategory === "All Categories" || article.category === selectedCategory;
-      const matchesSearch = article.title
-        .toLowerCase()
-        .includes(appliedSearchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [articles, selectedCategory, appliedSearchQuery]);
+  // Fetch paginated articles whenever filter or page parameters change
+  useEffect(() => {
+    let active = true;
+    fetchArticles({
+      page: currentPage,
+      limit: articlesPerPage,
+      search: appliedSearchQuery,
+      category: selectedCategory,
+    })
+      .then((res) => {
+        if (active) {
+          if (Array.isArray(res)) {
+            setArticles(res);
+            setTotalPages(1);
+          } else {
+            const paginatedRes = res as PaginatedArticlesResponse;
+            setArticles(paginatedRes.data || []);
+            setTotalPages(paginatedRes.meta?.totalPages || 1);
+          }
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching articles:", err);
+        if (active) {
+          setError(err.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [currentPage, articlesPerPage, appliedSearchQuery, selectedCategory]);
 
-  // Dynamically compute category buttons from actual loaded articles
-  const categoriesList = useMemo(() => {
-    if (articles.length === 0) {
-      return ["All Categories"];
-    }
-    const list = ["All Categories"];
-    articles.forEach((a) => {
-      if (a.category && !list.includes(a.category)) {
-        list.push(a.category);
-      }
-    });
-    return list;
-  }, [articles]);
-
-  // Paginated articles
-  const paginatedArticles = useMemo(() => {
-    const startIndex = (currentPage - 1) * articlesPerPage;
-    return filteredArticles.slice(startIndex, startIndex + articlesPerPage);
-  }, [filteredArticles, currentPage, articlesPerPage]);
-
-  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage) || 1;
+  const handlePageChange = (page: number) => {
+    setLoading(true);
+    setCurrentPage(page);
+  };
 
   const handleSearch = () => {
+    setLoading(true);
     setAppliedSearchQuery(searchQuery);
     setCurrentPage(1);
   };
@@ -122,6 +119,7 @@ export default function ArticlesPage() {
   };
 
   const handleCategoryChange = (category: string) => {
+    setLoading(true);
     setSelectedCategory(category);
     setCurrentPage(1);
   };
@@ -130,10 +128,10 @@ export default function ArticlesPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         {/* Main Section */}
-        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
+        <section className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
 
           <div className="self-stretch flex flex-col justify-start items-start gap-8 z-10">
 
@@ -225,16 +223,21 @@ export default function ArticlesPage() {
               {loading ? (
                 <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-8 justify-items-center">
                   {Array.from({ length: articlesPerPage }).map((_, i) => (
-                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
-                      <div className="w-full h-52 bg-slate-200" />
-                      <div className="self-stretch p-6 flex flex-col gap-6 w-full">
-                        <div className="flex justify-between items-center gap-3">
-                          <div className="h-8 w-24 bg-slate-200 rounded-full" />
-                          <div className="h-8 w-20 bg-slate-200 rounded-full" />
+                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] h-99 bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden">
+                      <div className="self-stretch h-52 skeleton-shimmer border-b-2 border-gray-200 rounded-t-4xl rounded-b-3xl shrink-0" />
+                      <div className="self-stretch p-6 rounded-bl-4xl rounded-br-4xl flex flex-col grow justify-between gap-6 overflow-hidden">
+                        <div className="self-stretch flex flex-col justify-start items-start gap-6">
+                          <div className="self-stretch flex justify-between items-center gap-3">
+                            <div className="h-8 w-28 skeleton-shimmer rounded-full" />
+                            <div className="h-8 w-24 skeleton-shimmer rounded-full" />
+                          </div>
+                          <div className="self-stretch flex flex-col gap-2">
+                            <div className="h-5 skeleton-shimmer rounded-md w-full" />
+                            <div className="h-5 skeleton-shimmer rounded-md w-4/5" />
+                            <div className="h-5 skeleton-shimmer rounded-md w-2/3" />
+                          </div>
                         </div>
-                        <div className="h-5 bg-slate-200 rounded w-full" />
-                        <div className="h-5 bg-slate-200 rounded w-4/5" />
-                        <div className="h-4 bg-slate-200 rounded w-16 mt-2" />
+                        <div className="h-5 w-24 skeleton-shimmer rounded-md" />
                       </div>
                     </div>
                   ))}
@@ -243,7 +246,7 @@ export default function ArticlesPage() {
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
                   {lang === "en" ? "Failed to load articles: " : "Gagal memuat artikel: "}{error}
                 </div>
-              ) : paginatedArticles.length > 0 ? (
+              ) : articles.length > 0 ? (
                 <motion.div
                   key={`${selectedCategory}-${appliedSearchQuery}-${currentPage}`}
                   variants={containerVariants}
@@ -252,7 +255,7 @@ export default function ArticlesPage() {
                   exit="hidden"
                   className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-8 justify-items-center"
                 >
-                  {paginatedArticles.map((article) => (
+                  {articles.map((article) => (
                     <motion.div
                       key={article.id}
                       variants={cardVariants}
@@ -284,50 +287,12 @@ export default function ArticlesPage() {
             </AnimatePresence>
 
             {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6">
-
-                {/* Previous Button */}
-                <Button
-                  variant="outline-primary"
-                  text={lang === "en" ? "Previous" : "Sebelumnya"}
-                  leftIcon="Left 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                />
-
-                {/* Page numbers */}
-                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    const isCurrent = currentPage === page;
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
-                          : "text-slate-500 hover:bg-slate-100"
-                          }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Next Button */}
-                <Button
-                  variant="primary"
-                  text={lang === "en" ? "Next" : "Berikutnya"}
-                  rightIcon="Right 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                />
-
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              lang={lang}
+            />
 
           </div>
 
@@ -339,7 +304,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -348,7 +313,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

@@ -5,13 +5,16 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
+import { Pagination } from "@/components/Pagination";
 import Image from "next/image";
 import InputBox from "@/components/inputbox";
 import Dropdown from "@/components/Dropdown";
 import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
 import { type Doctor } from "@/data/doctorsData";
-import { fetchDoctors } from "@/api/doctors";
+import { fetchDoctors, type PaginatedDoctorsResponse } from "@/api/doctors";
+import { fetchPartners } from "@/api/partners";
+import { type Partner } from "@/data/partnersData";
 import { useLanguage } from "@/context/LanguageContext";
 import { slugify } from "@/lib/utils";
 
@@ -93,19 +96,53 @@ export default function DoctorsPage() {
     specialty: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const doctorsPerPage = 8;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [allDoctorsForOptions, setAllDoctorsForOptions] = useState<Doctor[]>([]);
+  const [allPartnersForOptions, setAllPartnersForOptions] = useState<Partner[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch full doctors and partners list once just for populating filter options
+  useEffect(() => {
+    Promise.all([fetchDoctors(), fetchPartners()])
+      .then(([docsData, partnersData]) => {
+        if (Array.isArray(docsData)) {
+          setAllDoctorsForOptions(docsData);
+        }
+        if (Array.isArray(partnersData)) {
+          setAllPartnersForOptions(partnersData);
+        }
+      })
+      .catch((err) => console.error("Error fetching doctor filter options:", err));
+  }, []);
+
+  // Fetch paginated doctors on page/filter change
   useEffect(() => {
     let active = true;
-    fetchDoctors()
-      .then((data) => {
+    fetchDoctors({
+      page: currentPage,
+      limit: doctorsPerPage,
+      search: searchQuery,
+      region: filters.region,
+      hospital: filters.hospital,
+      specialty: filters.specialty,
+    })
+      .then((res) => {
         if (active) {
-          setDoctors(data);
+          if (Array.isArray(res)) {
+            setDoctors(res);
+            setTotalPages(1);
+          } else {
+            const paginated = res as PaginatedDoctorsResponse;
+            setDoctors(paginated.data || []);
+            setTotalPages(paginated.meta?.totalPages || 1);
+          }
           setLoading(false);
         }
       })
@@ -117,35 +154,45 @@ export default function DoctorsPage() {
         }
       });
     return () => { active = false; };
-  }, []);
+  }, [currentPage, searchQuery, filters]);
 
-  // Filter options dynamically extracted from live doctor list
+  const handlePageChange = (page: number) => {
+    setLoading(true);
+    setCurrentPage(page);
+  };
+
+  // Filter options dynamically extracted from live doctor & partner list
   const countryOptions = useMemo(() => {
-    const unique = Array.from(new Set(doctors.map((d) => d.region).filter(Boolean))).sort() as string[];
+    const fromPartners = allPartnersForOptions.map((p) => p.country).filter((c): c is string => Boolean(c));
+    const fromDoctors = allDoctorsForOptions.map((d) => d.region).filter((r): r is string => Boolean(r));
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Country" : "Pilih Negara" },
+      { value: "", label: lang === "en" ? "All Country" : "Semua Negara" },
       ...unique.map((r) => ({ value: r, label: r })),
     ];
-  }, [doctors, lang]);
+  }, [allPartnersForOptions, allDoctorsForOptions, lang]);
 
   const hospitalOptions = useMemo(() => {
-    const unique = Array.from(new Set(doctors.map((d) => d.hospital).filter(Boolean))).sort() as string[];
+    const fromPartners = allPartnersForOptions.map((p) => p.name).filter((h): h is string => Boolean(h));
+    const fromDoctors = allDoctorsForOptions.map((d) => d.hospital).filter((h): h is string => Boolean(h));
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit" },
+      { value: "", label: lang === "en" ? "All Hospital" : "Semua Rumah Sakit" },
       ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [doctors, lang]);
+  }, [allPartnersForOptions, allDoctorsForOptions, lang]);
 
   const specialtyOptions = useMemo(() => {
-    const all = doctors.flatMap((d) => d.specialty || []);
+    const all = allDoctorsForOptions.flatMap((d) => d.specialty || []).filter((s): s is string => Boolean(s));
     const unique = Array.from(new Set(all)).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi" },
+      { value: "", label: lang === "en" ? "All Specialty" : "Semua Spesialisasi" },
       ...unique.map((s) => ({ value: s, label: s })),
     ];
-  }, [doctors, lang]);
+  }, [allDoctorsForOptions, lang]);
 
   const handleSearch = () => {
+    setLoading(true);
     setSearchQuery(searchVal);
     setCurrentPage(1);
   };
@@ -157,48 +204,23 @@ export default function DoctorsPage() {
   };
 
   const handleFilterChange = (key: "region" | "hospital" | "specialty", val: string) => {
+    setLoading(true);
     setFilters((prev) => ({ ...prev, [key]: val }));
     setCurrentPage(1);
   };
-
-  // Filtered doctors list based on search and selected options
-  const filteredDoctors = useMemo(() => {
-    return doctors.filter((doc) => {
-      const matchesSearch =
-        searchQuery.trim() === "" ||
-        doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.specialty.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesRegion = filters.region === "" || doc.region === filters.region;
-      const matchesHospital = filters.hospital === "" || doc.hospital === filters.hospital;
-      const matchesSpecialty = filters.specialty === "" || doc.specialty.includes(filters.specialty);
-
-      return matchesSearch && matchesRegion && matchesHospital && matchesSpecialty;
-    });
-  }, [doctors, searchQuery, filters]);
-
-  // Pagination bounds (8 doctors per page)
-  const doctorsPerPage = 8;
-  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage) || 1;
-
-  const paginatedDoctors = useMemo(() => {
-    const startIndex = (currentPage - 1) * doctorsPerPage;
-    return filteredDoctors.slice(startIndex, startIndex + doctorsPerPage);
-  }, [filteredDoctors, currentPage]);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Main centered container */}
-        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
           {/* ── Banner segment with search layout: rises from below ── */}
           <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
             <motion.div
-              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative"
+              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-4xl flex flex-col justify-start items-start gap-8 shadow-sm relative"
               variants={bannerVariants}
               initial="hidden"
               animate="visible"
@@ -221,7 +243,14 @@ export default function DoctorsPage() {
                   label={<span className="text-white text-sm font-normal font-poppins">{lang === "en" ? "Search Doctor Name" : "Cari Nama Dokter"}</span>}
                   placeholder={lang === "en" ? "Dr. Abraham.." : "Dr. Abraham.."}
                   value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setSearchVal(val);
+                    if (val === "" && searchQuery !== "") {
+                      setSearchQuery("");
+                      setCurrentPage(1);
+                    }
+                  }}
                   onKeyDown={handleKeyPress}
                   containerClassName="w-full xl:w-[466px]"
                 />
@@ -236,7 +265,7 @@ export default function DoctorsPage() {
 
               {/* Doctor Illustration: slides from right */}
               <motion.div
-                className="hidden xl:block absolute bottom-[-1] right-8 ml-6 w-[406px] h-[258px] pointer-events-none z-0"
+                className="hidden xl:block absolute bottom-[-1] right-8 ml-6 w-101.5 h-64.5 pointer-events-none z-0"
                 variants={illustrationVariants}
                 initial="hidden"
                 animate="visible"
@@ -271,7 +300,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Country" : "Negara"}
-                    placeholder={lang === "en" ? "Pick a Country" : "Pilih Negara"}
+                    placeholder={lang === "en" ? "All Country" : "Semua Negara"}
                     options={countryOptions}
                     value={filters.region}
                     onChange={(val) => handleFilterChange("region", val)}
@@ -281,7 +310,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Hospital Name" : "Nama Rumah Sakit"}
-                    placeholder={lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit"}
+                    placeholder={lang === "en" ? "All Hospital" : "Semua Rumah Sakit"}
                     options={hospitalOptions}
                     value={filters.hospital}
                     onChange={(val) => handleFilterChange("hospital", val)}
@@ -291,7 +320,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Specialty" : "Spesialisasi"}
-                    placeholder={lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi"}
+                    placeholder={lang === "en" ? "All Specialty" : "Semua Spesialisasi"}
                     options={specialtyOptions}
                     value={filters.specialty}
                     onChange={(val) => handleFilterChange("specialty", val)}
@@ -347,7 +376,7 @@ export default function DoctorsPage() {
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
                   {lang === "en" ? "Failed to load doctors: " : "Gagal memuat data dokter: "}{error}
                 </div>
-              ) : paginatedDoctors.length > 0 ? (
+              ) : doctors.length > 0 ? (
                 <motion.div
                   key={`page-${currentPage}-${searchQuery}-${filters.region}-${filters.hospital}-${filters.specialty}`}
                   className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center"
@@ -356,8 +385,8 @@ export default function DoctorsPage() {
                   animate="visible"
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
                 >
-                  {paginatedDoctors.map((doc) => (
-                    <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-[270px] flex justify-center">
+                  {doctors.map((doc) => (
+                    <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-67.5 flex justify-center">
                       <DoctorCard
                         name={doc.name}
                         title={doc.title}
@@ -382,53 +411,19 @@ export default function DoctorsPage() {
             </AnimatePresence>
 
             {/* ── Pagination Controls: fades + slides up ── */}
-            {totalPages > 1 && (
-              <motion.div
-                className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6 w-full"
-                variants={paginationVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {/* Previous Button */}
-                <Button
-                  variant="outline-primary"
-                  text={lang === "en" ? "Previous" : "Sebelumnya"}
-                  leftIcon="Left 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                />
-
-                {/* Page numbers */}
-                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    const isCurrent = currentPage === page;
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
-                          : "text-slate-500 hover:bg-slate-100"
-                          }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Next Button */}
-                <Button
-                  variant="primary"
-                  text={lang === "en" ? "Next" : "Berikutnya"}
-                  rightIcon="Right 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                />
-              </motion.div>
-            )}
+            <motion.div
+              className="w-full"
+              variants={paginationVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                lang={lang}
+              />
+            </motion.div>
           </div>
 
           <DoctorModals
@@ -445,7 +440,7 @@ export default function DoctorsPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -454,7 +449,7 @@ export default function DoctorsPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
       </main>
