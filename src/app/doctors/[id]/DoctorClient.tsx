@@ -43,7 +43,12 @@ const getFlagUrl = (country: string) => {
   }
 };
 
-const getHospitalSlug = (hospitalName: string) => {
+import { slugify } from "@/lib/utils";
+
+const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
+  if (hospitalId) {
+    return `${slugify(hospitalName || "partner")}-${hospitalId}`;
+  }
   const clean = hospitalName.toLowerCase().trim();
   if (clean.includes("siloam")) return "siloam-hospitals";
   if (clean.includes("mayapada")) return "mayapada-hospital";
@@ -53,7 +58,7 @@ const getHospitalSlug = (hospitalName: string) => {
   if (clean.includes("sam hospital") || clean.includes("singapore institute") || clean.includes("sam")) return "sam-hospital";
   if (clean.includes("nulook")) return "nulook-clinic";
   if (clean.includes("royal progress") || clean.includes("royalprogress")) return "royal-progress";
-  return hospitalName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return slugify(hospitalName);
 };
 
 export default function DoctorClient({ doctor }: DoctorClientProps) {
@@ -318,7 +323,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                     )}
                     {doctor.hospital ? (
                       <Link
-                        href={`/partners/${getHospitalSlug(doctor.hospital)}`}
+                        href={`/partners/${getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
                         className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
                       >
                         {doctor.hospital}

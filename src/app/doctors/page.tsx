@@ -13,6 +13,8 @@ import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
 import { type Doctor } from "@/data/doctorsData";
 import { fetchDoctors, type PaginatedDoctorsResponse } from "@/api/doctors";
+import { fetchPartners } from "@/api/partners";
+import { type Partner } from "@/data/partnersData";
 import { useLanguage } from "@/context/LanguageContext";
 import { slugify } from "@/lib/utils";
 
@@ -101,16 +103,20 @@ export default function DoctorsPage() {
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allDoctorsForOptions, setAllDoctorsForOptions] = useState<Doctor[]>([]);
+  const [allPartnersForOptions, setAllPartnersForOptions] = useState<Partner[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch full doctors list once just for populating filter options
+  // Fetch full doctors and partners list once just for populating filter options
   useEffect(() => {
-    fetchDoctors()
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setAllDoctorsForOptions(data);
+    Promise.all([fetchDoctors(), fetchPartners()])
+      .then(([docsData, partnersData]) => {
+        if (Array.isArray(docsData)) {
+          setAllDoctorsForOptions(docsData);
+        }
+        if (Array.isArray(partnersData)) {
+          setAllPartnersForOptions(partnersData);
         }
       })
       .catch((err) => console.error("Error fetching doctor filter options:", err));
@@ -150,28 +156,32 @@ export default function DoctorsPage() {
     return () => { active = false; };
   }, [currentPage, searchQuery, filters]);
 
-  // Filter options dynamically extracted from live doctor list
+  // Filter options dynamically extracted from live doctor & partner list
   const countryOptions = useMemo(() => {
-    const unique = Array.from(new Set(allDoctorsForOptions.map((d) => d.region).filter(Boolean))).sort() as string[];
+    const fromPartners = allPartnersForOptions.map((p) => p.country).filter((c): c is string => Boolean(c));
+    const fromDoctors = allDoctorsForOptions.map((d) => d.region).filter((r): r is string => Boolean(r));
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Country" : "Pilih Negara" },
+      { value: "", label: lang === "en" ? "All Country" : "Semua Negara" },
       ...unique.map((r) => ({ value: r, label: r })),
     ];
-  }, [allDoctorsForOptions, lang]);
+  }, [allPartnersForOptions, allDoctorsForOptions, lang]);
 
   const hospitalOptions = useMemo(() => {
-    const unique = Array.from(new Set(allDoctorsForOptions.map((d) => d.hospital).filter(Boolean))).sort() as string[];
+    const fromPartners = allPartnersForOptions.map((p) => p.name).filter((h): h is string => Boolean(h));
+    const fromDoctors = allDoctorsForOptions.map((d) => d.hospital).filter((h): h is string => Boolean(h));
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit" },
+      { value: "", label: lang === "en" ? "All Hospital" : "Semua Rumah Sakit" },
       ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [allDoctorsForOptions, lang]);
+  }, [allPartnersForOptions, allDoctorsForOptions, lang]);
 
   const specialtyOptions = useMemo(() => {
-    const all = allDoctorsForOptions.flatMap((d) => d.specialty || []);
+    const all = allDoctorsForOptions.flatMap((d) => d.specialty || []).filter((s): s is string => Boolean(s));
     const unique = Array.from(new Set(all)).sort();
     return [
-      { value: "", label: lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi" },
+      { value: "", label: lang === "en" ? "All Specialty" : "Semua Spesialisasi" },
       ...unique.map((s) => ({ value: s, label: s })),
     ];
   }, [allDoctorsForOptions, lang]);
@@ -228,7 +238,14 @@ export default function DoctorsPage() {
                   label={<span className="text-white text-sm font-normal font-poppins">{lang === "en" ? "Search Doctor Name" : "Cari Nama Dokter"}</span>}
                   placeholder={lang === "en" ? "Dr. Abraham.." : "Dr. Abraham.."}
                   value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setSearchVal(val);
+                    if (val === "" && searchQuery !== "") {
+                      setSearchQuery("");
+                      setCurrentPage(1);
+                    }
+                  }}
                   onKeyDown={handleKeyPress}
                   containerClassName="w-full xl:w-[466px]"
                 />
@@ -278,7 +295,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Country" : "Negara"}
-                    placeholder={lang === "en" ? "Pick a Country" : "Pilih Negara"}
+                    placeholder={lang === "en" ? "All Country" : "Semua Negara"}
                     options={countryOptions}
                     value={filters.region}
                     onChange={(val) => handleFilterChange("region", val)}
@@ -288,7 +305,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Hospital Name" : "Nama Rumah Sakit"}
-                    placeholder={lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit"}
+                    placeholder={lang === "en" ? "All Hospital" : "Semua Rumah Sakit"}
                     options={hospitalOptions}
                     value={filters.hospital}
                     onChange={(val) => handleFilterChange("hospital", val)}
@@ -298,7 +315,7 @@ export default function DoctorsPage() {
                 <motion.div variants={filterItemVariants}>
                   <Dropdown
                     label={lang === "en" ? "Specialty" : "Spesialisasi"}
-                    placeholder={lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi"}
+                    placeholder={lang === "en" ? "All Specialty" : "Semua Spesialisasi"}
                     options={specialtyOptions}
                     value={filters.specialty}
                     onChange={(val) => handleFilterChange("specialty", val)}

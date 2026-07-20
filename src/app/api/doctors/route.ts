@@ -18,7 +18,10 @@ export interface DbDoctor {
   partners: {
     hospital_name: string;
     country: string;
-  } | null;
+  } | {
+    hospital_name: string;
+    country: string;
+  }[] | null;
 }
 
 export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: string }[]): Doctor {
@@ -35,6 +38,10 @@ export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: strin
     }
   }
 
+  const partnerObj = Array.isArray(dbDoctor.partners)
+    ? dbDoctor.partners[0]
+    : dbDoctor.partners;
+
   return {
     id: dbDoctor.id,
     hospital_id: dbDoctor.hospital_id,
@@ -43,8 +50,8 @@ export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: strin
     specialty: dbDoctor.doctor_specialty || [],
     qualification: dbDoctor.doctor_qualification || [],
     language: dbDoctor.doctor_language || [],
-    hospital: dbDoctor.partners?.hospital_name ?? undefined,
-    region: dbDoctor.partners?.country ?? undefined,
+    hospital: partnerObj?.hospital_name ?? undefined,
+    region: partnerObj?.country ?? undefined,
     imageUrl,
     description: dbDoctor.description || "",
     type: dbDoctor.type || "new",
@@ -65,25 +72,33 @@ export async function GET(request: Request) {
     const pageVal = page ? parseInt(page, 10) : undefined;
     const limitVal = limit ? parseInt(limit, 10) : undefined;
 
+    const hasPartnerFilter = !!(hospital || region);
+    const selectClause = hasPartnerFilter
+      ? "*, partners!hospital_id!inner(hospital_name, country)"
+      : "*, partners!hospital_id(hospital_name, country)";
+
     let query = supabase
       .from("doctors")
-      .select("*, partners!hospital_id(hospital_name, country)", { count: pageVal !== undefined ? "exact" : undefined })
+      .select(selectClause, { count: pageVal !== undefined ? "exact" : undefined })
       .order("created_at", { ascending: false });
 
     if (hospitalId) {
       query = query.eq("hospital_id", hospitalId);
     }
-    if (search) {
-      query = query.or(`doctor_name.ilike.%${search}%,doctor_title.ilike.%${search}%`);
+    if (search && search.trim()) {
+      const cleanSearch = search.trim().replace(/[,()"']/g, "");
+      if (cleanSearch) {
+        query = query.or(`doctor_name.ilike.%${cleanSearch}%,doctor_title.ilike.%${cleanSearch}%`);
+      }
     }
-    if (specialty) {
-      query = query.contains("doctor_specialty", [specialty]);
+    if (specialty && specialty.trim()) {
+      query = query.contains("doctor_specialty", [specialty.trim()]);
     }
-    if (hospital) {
-      query = query.eq("partners.hospital_name", hospital);
+    if (hospital && hospital.trim()) {
+      query = query.eq("partners.hospital_name", hospital.trim());
     }
-    if (region) {
-      query = query.eq("partners.country", region);
+    if (region && region.trim()) {
+      query = query.eq("partners.country", region.trim());
     }
 
     if (pageVal !== undefined && limitVal !== undefined) {

@@ -243,7 +243,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                 <Button
                   variant="outline-primary"
                   text={lang === "en" ? "Google Maps View" : "Lihat Google Maps"}
-                  leftIcon="maps"
+                  leftIcon="Location"
                   className="w-full md:w-auto font-poppins text-base font-medium"
                   onClick={() => setIsMapOpen(true)}
                 />
