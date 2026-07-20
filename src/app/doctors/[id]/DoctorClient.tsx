@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
+import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface DoctorClientProps {
@@ -150,14 +151,25 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                 />
 
                 {doctor.imageUrl ? (
-                  <Image
-                    src={doctor.imageUrl}
-                    alt={doctor.name}
-                    fill
-                    className="object-cover z-10"
-                    sizes="(max-width: 768px) 100vw, 270px"
-                    priority
-                  />
+                  isVideoUrl(doctor.imageUrl) ? (
+                    <video
+                      src={doctor.imageUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover z-10"
+                    />
+                  ) : (
+                    <Image
+                      src={doctor.imageUrl}
+                      alt={doctor.name}
+                      fill
+                      className="object-cover z-10"
+                      sizes="(max-width: 768px) 100vw, 270px"
+                      priority
+                    />
+                  )
                 ) : (
                   <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
                 )}

@@ -11,6 +11,7 @@ import { DoctorCard } from "@/components/card/DoctorCard";
 import GooglaMapsPreviewModal from "@/components/googleMapsPreview";
 import { NoiseTexture } from "@/components/magicui/NoiseTexture";
 import { type Partner } from "@/data/partnersData";
+import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
 import { slugify } from "@/lib/utils";
 
@@ -174,14 +175,25 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                           transition={{ duration: 0.3 }}
                           className="absolute inset-0"
                         >
-                          <Image
-                            src={partnerImages[activeImageIdx]}
-                            alt={`${partner.name} view`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 490px"
-                            priority
-                          />
+                          {isVideoUrl(partnerImages[activeImageIdx]) ? (
+                            <video
+                              src={partnerImages[activeImageIdx]}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Image
+                              src={partnerImages[activeImageIdx]}
+                              alt={`${partner.name} view`}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 490px"
+                              priority
+                            />
+                          )}
                         </motion.div>
                       </AnimatePresence>
                       {/* Brand alignment gradient overlay in front of the image */}

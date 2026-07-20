@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { isVideoUrl } from "@/lib/media";
 import { Badge, type BadgeVariant } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
 
@@ -88,14 +89,25 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
           />
 
           {displayImageUrl ? (
-            <Image
-              src={displayImageUrl}
-              alt={displayName}
-              fill
-              unoptimized={true}
-              className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            isVideoUrl(displayImageUrl) ? (
+              <video
+                src={displayImageUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+              />
+            ) : (
+              <Image
+                src={displayImageUrl}
+                alt={displayName}
+                fill
+                unoptimized={true}
+                className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : (
             <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}
@@ -124,14 +136,25 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             />
 
           {displayImageUrl ? (
-            <Image
-              src={displayImageUrl}
-              alt={displayName}
-              fill
-              unoptimized={true}
-              className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            isVideoUrl(displayImageUrl) ? (
+              <video
+                src={displayImageUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+              />
+            ) : (
+              <Image
+                src={displayImageUrl}
+                alt={displayName}
+                fill
+                unoptimized={true}
+                className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : (
             <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}

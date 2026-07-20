@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge, type BadgeVariant } from "@/components/Badge";
+import { isVideoUrl } from "@/lib/media";
 
 interface ArticleCardProps {
   title: string;
@@ -34,14 +35,25 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       >
         {imageUrl ? (
           <>
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              unoptimized={true}
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            {isVideoUrl(imageUrl) ? (
+              <video
+                src={imageUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                unoptimized={true}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )}
             {/* Brand suit gradient overlay */}
             <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/30 pointer-events-none mix-blend-multiply" />
           </>
