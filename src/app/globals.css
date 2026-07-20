@@ -188,3 +188,21 @@ body {
   color: #ffffff !important;
 }
 
+/* Custom CSS Mask Utilities */
+.mask-contain {
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+
+.mask-no-repeat {
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.mask-center {
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+
+

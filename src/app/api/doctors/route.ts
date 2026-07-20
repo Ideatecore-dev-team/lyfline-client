@@ -11,6 +11,7 @@ export interface DbDoctor {
   doctor_qualification: string[];
   doctor_language: string[];
   description?: string;
+  type?: string;
   created_at: string;
   updated_at: string;
   avatarUrl?: string | null;
@@ -46,6 +47,7 @@ export function mapDbDoctorToDoctor(dbDoctor: DbDoctor, fileList?: { name: strin
     region: dbDoctor.partners?.country ?? undefined,
     imageUrl,
     description: dbDoctor.description || "",
+    type: dbDoctor.type || "new",
   };
 }
 

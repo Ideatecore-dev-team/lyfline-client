@@ -10,4 +10,6 @@ export interface Doctor {
   region?: string;      // Joined from partners table (country)
   imageUrl?: string;    // Resolved from Supabase storage
   description?: string; // Optional description from database
+  type?: string;        // "old" (HTML description) or "new" (plain text)
 }
+
