@@ -123,10 +123,10 @@ export default function ArticlesPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
         {/* Main Section */}
-        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
+        <section className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8">
 
           <div className="self-stretch flex flex-col justify-start items-start gap-8 z-10">
 
@@ -218,7 +218,7 @@ export default function ArticlesPage() {
               {loading ? (
                 <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-8 justify-items-center">
                   {Array.from({ length: articlesPerPage }).map((_, i) => (
-                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
+                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
                       <div className="w-full h-52 bg-slate-200" />
                       <div className="self-stretch p-6 flex flex-col gap-6 w-full">
                         <div className="flex justify-between items-center gap-3">
@@ -294,7 +294,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -303,7 +303,7 @@ export default function ArticlesPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

@@ -109,9 +109,9 @@ export default function PartnersPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
 
-        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
           <div className="self-stretch flex flex-col justify-start items-start gap-8">
 
@@ -177,7 +177,7 @@ export default function PartnersPage() {
                   {Array.from({ length: partnersPerPage }).map((_, i) => (
                     <div
                       key={`skeleton-${i}`}
-                      className="w-full min-w-[254px] max-w-[288px] h-64 bg-slate-50 border border-slate-100 rounded-[32px] animate-pulse"
+                      className="w-full min-w-63.5 max-w-[288px] h-64 bg-slate-50 border border-slate-100 rounded-4xl animate-pulse"
                     />
                   ))}
                 </div>
@@ -198,7 +198,7 @@ export default function PartnersPage() {
                     <motion.div
                       key={partner.id}
                       variants={cardVariants}
-                      className="w-full min-w-[254px] max-w-[288px]"
+                      className="w-full min-w-63.5 max-w-[288px]"
                     >
                       <PartnerCard
                         name={partner.name}
@@ -241,7 +241,7 @@ export default function PartnersPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -250,7 +250,7 @@ export default function PartnersPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 

@@ -45,7 +45,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          className="absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
           aria-hidden="true"
         />
 
@@ -54,17 +54,17 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
+          className="absolute bottom-0 right-0 size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0 z-0"
           aria-hidden="true"
         />
 
         {/* Content Container */}
-        <div className="w-full max-w-[1152px] px-6 md:px-12 xl:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
+        <div className="w-full max-w-6xl px-6 md:px-12 xl:px-0 flex flex-col justify-start items-center gap-12 lg:gap-24 z-10">
           <div className="w-full flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
 
             {/* Left Column (WHO WE ARE card) */}
             <motion.div
-              className="w-full lg:w-[564px] flex flex-col justify-start items-start gap-6"
+              className="w-full lg:w-141 flex flex-col justify-start items-start gap-6"
               variants={slideFromLeft}
               initial="hidden"
               whileInView="visible"
@@ -122,7 +122,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
 
             {/* Right Column (Stat Cards Sidebar) */}
             <motion.div
-              className="w-full lg:w-[384px] p-6 bg-primary/10 rounded-[32px] flex flex-col justify-center items-start gap-6"
+              className="w-full lg:w-[384px] p-6 bg-primary/10 rounded-4xl flex flex-col justify-center items-start gap-6"
               variants={slideFromRight}
               initial="hidden"
               whileInView="visible"
@@ -148,7 +148,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#E83C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-18 pointer-events-none select-none bg-[#E83C3C] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-center items-center relative z-10">
@@ -180,7 +180,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-18 pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-center items-center relative z-10">
@@ -212,7 +212,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-18 pointer-events-none select-none bg-[#F8F8F8] mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-center items-center relative z-10">
@@ -244,7 +244,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                       maskImage: 'url("/icons/assets/lyflineHeart.svg")',
                       WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
                     }}
-                    className="absolute bottom-0 right-0 size-[72px] pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
+                    className="absolute bottom-0 right-0 size-18 pointer-events-none select-none bg-primary-accent mask-contain mask-no-repeat mask-center shrink-0 z-0"
                     aria-hidden="true"
                   />
                   <div className="self-stretch flex flex-col justify-center items-center relative z-10">
@@ -268,8 +268,8 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
         </div>
 
         {/* Absolute Background Ornaments */}
-        <div className="size-40 left-[85%] lg:left-[1272px] top-[75%] lg:top-[421px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
-        <div className="size-48 left-[-100px] top-[-89.43px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
+        <div className="size-40 left-[85%] lg:left-318 top-[75%] lg:top-105.25 absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
+        <div className="size-48 -left-25 top-[-89.43px] absolute bg-rose-50 rounded-full -z-10 pointer-events-none opacity-60"></div>
       </div>
     </section>
   );

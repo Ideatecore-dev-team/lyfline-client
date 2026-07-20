@@ -10,7 +10,7 @@ interface TestimonialCardProps {
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name }) => {
     return (
         <motion.div
-            className="w-80 h-[420px] shrink-0 p-6 relative bg-white rounded-3xl flex flex-col justify-between items-start overflow-hidden border border-slate-100/50 shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] cursor-pointer"
+            className="w-80 h-105 shrink-0 p-6 relative bg-white rounded-3xl flex flex-col justify-between items-start overflow-hidden border border-slate-100/50 shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] cursor-pointer"
             whileHover={{
                 y: -10,
                 rotateX: 8,

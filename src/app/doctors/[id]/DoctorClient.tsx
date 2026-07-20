@@ -111,15 +111,15 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
   const languages = (doctor.language || []).filter((l) => l && l.trim().length > 0);
 
   return (
-    <main className="grow pt-[80px] w-full flex flex-col justify-start items-center">
+    <main className="grow pt-20 w-full flex flex-col justify-start items-center">
       {/* Full-width section with background styling and rounded corners */}
       <div className="w-full py-16 bg-white flex flex-col justify-start items-center overflow-hidden relative outline -outline-offset-1 outline-gray-200">
 
         {/* Decorative background shapes */}
-        <div className="size-48 left-[-98px] top-[-98px] absolute bg-rose-50 rounded-full pointer-events-none z-0" />
+        <div className="size-48 -left-24.5 -top-24.5 absolute bg-rose-50 rounded-full pointer-events-none z-0" />
 
         {/* Centered content container */}
-        <div className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
+        <div className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 flex flex-col justify-start items-start gap-3 relative z-10">
 
           {/* Back Button */}
           <Link href="/doctors">
@@ -146,8 +146,8 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
           <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16">
 
             {/* Left Column: Profile Picture Container */}
-            <div className="w-full max-w-[270px] lg:w-[270px] flex flex-col justify-start items-center gap-6 shrink-0">
-              <div className="w-full h-[216px] relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
+            <div className="w-full max-w-67.5 lg:w-67.5 flex flex-col justify-start items-center gap-6 shrink-0">
+              <div className="w-full h-54 relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
 
                 {/* Background Decorative Shapes */}
                 <span
@@ -306,7 +306,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                   </span>
                   <div className="h-10 px-3 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
                     {flagUrl ? (
-                      <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+                      <div className="w-4 h-3 relative overflow-hidden rounded-xs outline outline-black">
                         <Image
                           src={flagUrl}
                           alt={lang === "en" ? `${doctor.region} flag` : `Bendera ${doctor.region}`}
@@ -316,7 +316,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                         />
                       </div>
                     ) : (
-                      <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
+                      <div className="w-4 h-3 relative bg-white rounded-xs outline outline-black overflow-hidden">
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                       </div>
@@ -370,7 +370,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
       </div>
