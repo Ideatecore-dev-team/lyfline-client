@@ -101,6 +101,11 @@ export default function ArticlesPage() {
     };
   }, [currentPage, articlesPerPage, appliedSearchQuery, selectedCategory]);
 
+  const handlePageChange = (page: number) => {
+    setLoading(true);
+    setCurrentPage(page);
+  };
+
   const handleSearch = () => {
     setLoading(true);
     setAppliedSearchQuery(searchQuery);
@@ -218,16 +223,21 @@ export default function ArticlesPage() {
               {loading ? (
                 <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-3 gap-8 justify-items-center">
                   {Array.from({ length: articlesPerPage }).map((_, i) => (
-                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col justify-start items-start overflow-hidden animate-pulse">
-                      <div className="w-full h-52 bg-slate-200" />
-                      <div className="self-stretch p-6 flex flex-col gap-6 w-full">
-                        <div className="flex justify-between items-center gap-3">
-                          <div className="h-8 w-24 bg-slate-200 rounded-full" />
-                          <div className="h-8 w-20 bg-slate-200 rounded-full" />
+                    <div key={`skeleton-${i}`} className="w-full max-w-[384px] h-99 bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden">
+                      <div className="self-stretch h-52 skeleton-shimmer border-b-2 border-gray-200 rounded-t-4xl rounded-b-3xl shrink-0" />
+                      <div className="self-stretch p-6 rounded-bl-4xl rounded-br-4xl flex flex-col grow justify-between gap-6 overflow-hidden">
+                        <div className="self-stretch flex flex-col justify-start items-start gap-6">
+                          <div className="self-stretch flex justify-between items-center gap-3">
+                            <div className="h-8 w-28 skeleton-shimmer rounded-full" />
+                            <div className="h-8 w-24 skeleton-shimmer rounded-full" />
+                          </div>
+                          <div className="self-stretch flex flex-col gap-2">
+                            <div className="h-5 skeleton-shimmer rounded-md w-full" />
+                            <div className="h-5 skeleton-shimmer rounded-md w-4/5" />
+                            <div className="h-5 skeleton-shimmer rounded-md w-2/3" />
+                          </div>
                         </div>
-                        <div className="h-5 bg-slate-200 rounded w-full" />
-                        <div className="h-5 bg-slate-200 rounded w-4/5" />
-                        <div className="h-4 bg-slate-200 rounded w-16 mt-2" />
+                        <div className="h-5 w-24 skeleton-shimmer rounded-md" />
                       </div>
                     </div>
                   ))}
@@ -280,7 +290,7 @@ export default function ArticlesPage() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage}
+              onPageChange={handlePageChange}
               lang={lang}
             />
 

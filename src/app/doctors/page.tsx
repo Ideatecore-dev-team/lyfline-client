@@ -156,6 +156,11 @@ export default function DoctorsPage() {
     return () => { active = false; };
   }, [currentPage, searchQuery, filters]);
 
+  const handlePageChange = (page: number) => {
+    setLoading(true);
+    setCurrentPage(page);
+  };
+
   // Filter options dynamically extracted from live doctor & partner list
   const countryOptions = useMemo(() => {
     const fromPartners = allPartnersForOptions.map((p) => p.country).filter((c): c is string => Boolean(c));
@@ -208,14 +213,14 @@ export default function DoctorsPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <NavBar />
 
-      <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative overflow-x-hidden">
+      <main className="grow pt-20 w-full flex flex-col justify-start items-center relative overflow-x-hidden">
         {/* Main centered container */}
-        <section className="w-full max-w-[1440px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
+        <section className="w-full max-w-360 px-6 md:px-16 lg:px-24 xl:px-36 py-16 relative bg-white flex flex-col justify-start items-start gap-8 overflow-hidden">
 
           {/* ── Banner segment with search layout: rises from below ── */}
           <div className="self-stretch flex flex-col justify-start items-start gap-4 relative z-20 w-full">
             <motion.div
-              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-[32px] flex flex-col justify-start items-start gap-8 shadow-sm relative"
+              className="w-full p-6 md:p-6 bg-linear-to-r from-primary to-[#254F8A] rounded-4xl flex flex-col justify-start items-start gap-8 shadow-sm relative"
               variants={bannerVariants}
               initial="hidden"
               animate="visible"
@@ -260,7 +265,7 @@ export default function DoctorsPage() {
 
               {/* Doctor Illustration: slides from right */}
               <motion.div
-                className="hidden xl:block absolute bottom-[-1] right-8 ml-6 w-[406px] h-[258px] pointer-events-none z-0"
+                className="hidden xl:block absolute bottom-[-1] right-8 ml-6 w-101.5 h-64.5 pointer-events-none z-0"
                 variants={illustrationVariants}
                 initial="hidden"
                 animate="visible"
@@ -381,7 +386,7 @@ export default function DoctorsPage() {
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
                 >
                   {doctors.map((doc) => (
-                    <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-[270px] flex justify-center">
+                    <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-67.5 flex justify-center">
                       <DoctorCard
                         name={doc.name}
                         title={doc.title}
@@ -415,7 +420,7 @@ export default function DoctorsPage() {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={handlePageChange}
                 lang={lang}
               />
             </motion.div>
@@ -435,7 +440,7 @@ export default function DoctorsPage() {
             maskImage: 'url("/icons/assets/lyflineHeart.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineHeart.svg")',
           }}
-          className="absolute bottom-0 right-0 size-20 md:size-[120px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="absolute bottom-0 right-0 size-20 md:size-30 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
 
@@ -444,7 +449,7 @@ export default function DoctorsPage() {
             maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
             WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
           }}
-          className="mt-20 absolute top-0 left-0 size-[100px] pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
+          className="mt-20 absolute top-0 left-0 size-25 pointer-events-none select-none opacity-10 bg-red-600/50 mask-contain mask-no-repeat mask-center shrink-0"
           aria-hidden="true"
         />
       </main>
