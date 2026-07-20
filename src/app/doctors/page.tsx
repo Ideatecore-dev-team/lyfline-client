@@ -5,13 +5,14 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/Button";
+import { Pagination } from "@/components/Pagination";
 import Image from "next/image";
 import InputBox from "@/components/inputbox";
 import Dropdown from "@/components/Dropdown";
 import { DoctorCard } from "@/components/card/DoctorCard";
 import { DoctorModals } from "@/components/card/DoctorModals";
 import { type Doctor } from "@/data/doctorsData";
-import { fetchDoctors } from "@/api/doctors";
+import { fetchDoctors, type PaginatedDoctorsResponse } from "@/api/doctors";
 import { useLanguage } from "@/context/LanguageContext";
 import { slugify } from "@/lib/utils";
 
@@ -93,19 +94,49 @@ export default function DoctorsPage() {
     specialty: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const doctorsPerPage = 8;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [allDoctorsForOptions, setAllDoctorsForOptions] = useState<Doctor[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch full doctors list once just for populating filter options
   useEffect(() => {
-    let active = true;
     fetchDoctors()
       .then((data) => {
+        if (Array.isArray(data)) {
+          setAllDoctorsForOptions(data);
+        }
+      })
+      .catch((err) => console.error("Error fetching doctor filter options:", err));
+  }, []);
+
+  // Fetch paginated doctors on page/filter change
+  useEffect(() => {
+    let active = true;
+    fetchDoctors({
+      page: currentPage,
+      limit: doctorsPerPage,
+      search: searchQuery,
+      region: filters.region,
+      hospital: filters.hospital,
+      specialty: filters.specialty,
+    })
+      .then((res) => {
         if (active) {
-          setDoctors(data);
+          if (Array.isArray(res)) {
+            setDoctors(res);
+            setTotalPages(1);
+          } else {
+            const paginated = res as PaginatedDoctorsResponse;
+            setDoctors(paginated.data || []);
+            setTotalPages(paginated.meta?.totalPages || 1);
+          }
           setLoading(false);
         }
       })
@@ -117,35 +148,36 @@ export default function DoctorsPage() {
         }
       });
     return () => { active = false; };
-  }, []);
+  }, [currentPage, searchQuery, filters]);
 
   // Filter options dynamically extracted from live doctor list
   const countryOptions = useMemo(() => {
-    const unique = Array.from(new Set(doctors.map((d) => d.region).filter(Boolean))).sort() as string[];
+    const unique = Array.from(new Set(allDoctorsForOptions.map((d) => d.region).filter(Boolean))).sort() as string[];
     return [
       { value: "", label: lang === "en" ? "Pick a Country" : "Pilih Negara" },
       ...unique.map((r) => ({ value: r, label: r })),
     ];
-  }, [doctors, lang]);
+  }, [allDoctorsForOptions, lang]);
 
   const hospitalOptions = useMemo(() => {
-    const unique = Array.from(new Set(doctors.map((d) => d.hospital).filter(Boolean))).sort() as string[];
+    const unique = Array.from(new Set(allDoctorsForOptions.map((d) => d.hospital).filter(Boolean))).sort() as string[];
     return [
       { value: "", label: lang === "en" ? "Pick a Hospital" : "Pilih Rumah Sakit" },
       ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [doctors, lang]);
+  }, [allDoctorsForOptions, lang]);
 
   const specialtyOptions = useMemo(() => {
-    const all = doctors.flatMap((d) => d.specialty || []);
+    const all = allDoctorsForOptions.flatMap((d) => d.specialty || []);
     const unique = Array.from(new Set(all)).sort();
     return [
       { value: "", label: lang === "en" ? "Pick a Specialty" : "Pilih Spesialisasi" },
       ...unique.map((s) => ({ value: s, label: s })),
     ];
-  }, [doctors, lang]);
+  }, [allDoctorsForOptions, lang]);
 
   const handleSearch = () => {
+    setLoading(true);
     setSearchQuery(searchVal);
     setCurrentPage(1);
   };
@@ -157,35 +189,10 @@ export default function DoctorsPage() {
   };
 
   const handleFilterChange = (key: "region" | "hospital" | "specialty", val: string) => {
+    setLoading(true);
     setFilters((prev) => ({ ...prev, [key]: val }));
     setCurrentPage(1);
   };
-
-  // Filtered doctors list based on search and selected options
-  const filteredDoctors = useMemo(() => {
-    return doctors.filter((doc) => {
-      const matchesSearch =
-        searchQuery.trim() === "" ||
-        doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.specialty.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesRegion = filters.region === "" || doc.region === filters.region;
-      const matchesHospital = filters.hospital === "" || doc.hospital === filters.hospital;
-      const matchesSpecialty = filters.specialty === "" || doc.specialty.includes(filters.specialty);
-
-      return matchesSearch && matchesRegion && matchesHospital && matchesSpecialty;
-    });
-  }, [doctors, searchQuery, filters]);
-
-  // Pagination bounds (8 doctors per page)
-  const doctorsPerPage = 8;
-  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage) || 1;
-
-  const paginatedDoctors = useMemo(() => {
-    const startIndex = (currentPage - 1) * doctorsPerPage;
-    return filteredDoctors.slice(startIndex, startIndex + doctorsPerPage);
-  }, [filteredDoctors, currentPage]);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -347,7 +354,7 @@ export default function DoctorsPage() {
                 <div className="py-12 text-center text-red-500 font-poppins text-base w-full">
                   {lang === "en" ? "Failed to load doctors: " : "Gagal memuat data dokter: "}{error}
                 </div>
-              ) : paginatedDoctors.length > 0 ? (
+              ) : doctors.length > 0 ? (
                 <motion.div
                   key={`page-${currentPage}-${searchQuery}-${filters.region}-${filters.hospital}-${filters.specialty}`}
                   className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center"
@@ -356,7 +363,7 @@ export default function DoctorsPage() {
                   animate="visible"
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
                 >
-                  {paginatedDoctors.map((doc) => (
+                  {doctors.map((doc) => (
                     <motion.div key={doc.id} variants={cardItemVariants} className="w-full max-w-[270px] flex justify-center">
                       <DoctorCard
                         name={doc.name}
@@ -382,53 +389,19 @@ export default function DoctorsPage() {
             </AnimatePresence>
 
             {/* ── Pagination Controls: fades + slides up ── */}
-            {totalPages > 1 && (
-              <motion.div
-                className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6 w-full"
-                variants={paginationVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                {/* Previous Button */}
-                <Button
-                  variant="outline-primary"
-                  text={lang === "en" ? "Previous" : "Sebelumnya"}
-                  leftIcon="Left 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                />
-
-                {/* Page numbers */}
-                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    const isCurrent = currentPage === page;
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
-                          : "text-slate-500 hover:bg-slate-100"
-                          }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Next Button */}
-                <Button
-                  variant="primary"
-                  text={lang === "en" ? "Next" : "Berikutnya"}
-                  rightIcon="Right 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                />
-              </motion.div>
-            )}
+            <motion.div
+              className="w-full"
+              variants={paginationVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                lang={lang}
+              />
+            </motion.div>
           </div>
 
           <DoctorModals

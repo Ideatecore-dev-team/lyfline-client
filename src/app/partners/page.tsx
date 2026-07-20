@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/Button";
+import { Pagination } from "@/components/Pagination";
 import { PartnerCard } from "@/components/card/PartnerCard";
 import { fetchPartners } from "@/api/partners";
 import { type Partner } from "@/data/partnersData";
@@ -225,50 +225,12 @@ export default function PartnersPage() {
             </AnimatePresence>
 
             {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6">
-
-                {/* Previous Button */}
-                <Button
-                  variant="outline-primary"
-                  text={lang === "en" ? "Previous" : "Sebelumnya"}
-                  leftIcon="Left 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
-                  disabled={activePage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                />
-
-                {/* Page numbers */}
-                <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-4">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                    const isCurrent = activePage === page;
-                    return (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${isCurrent
-                          ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500"
-                          : "text-slate-500 hover:bg-slate-100"
-                          }`}
-                      >
-                        {page}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Next Button */}
-                <Button
-                  variant="primary"
-                  text={lang === "en" ? "Next" : "Berikutnya"}
-                  rightIcon="Right 1"
-                  className="w-full sm:w-32 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
-                  disabled={activePage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                />
-
-              </div>
-            )}
+            <Pagination
+              currentPage={activePage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              lang={lang}
+            />
           </div>
 
         </section>

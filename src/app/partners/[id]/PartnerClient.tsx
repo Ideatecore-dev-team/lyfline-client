@@ -87,9 +87,10 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDoctorsLoading(true);
     fetchDoctors({ hospital_id: partner.id })
-      .then((data) => {
+      .then((res) => {
         if (active) {
-          setDoctors(data);
+          const list = Array.isArray(res) ? res : res.data || [];
+          setDoctors(list);
           setDoctorsLoading(false);
         }
       })

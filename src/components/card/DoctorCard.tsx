@@ -36,7 +36,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-[270px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden">
+      <div className="w-full max-w-[270px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden">
         {/* Skeleton Image Area */}
         <div className="w-full h-48 bg-slate-100 animate-pulse rounded-3xl" />
 
@@ -58,7 +58,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
   }
 
   return (
-    <div className="w-full max-w-[270px] h-full bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
+    <div className="w-full max-w-[270px] h-full bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md group">
 
       {/* Doctor Image Container */}
       {onViewDetails ? (
@@ -92,11 +92,12 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
               src={displayImageUrl}
               alt={displayName}
               fill
+              unoptimized={true}
               className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-b from-indigo-100 to-indigo-50" />
+            <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}
         </div>
       ) : (
@@ -127,17 +128,18 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
               src={displayImageUrl}
               alt={displayName}
               fill
+              unoptimized={true}
               className="object-cover transition-transform duration-500 group-hover:scale-105 z-10"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-b from-indigo-100 to-indigo-50" />
+            <div className="w-full h-full bg-linear-to-b from-indigo-100 to-indigo-50" />
           )}
         </Link>
       )}
 
       {/* Content Area */}
-      <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col flex-grow justify-between gap-6 overflow-hidden">
+      <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col grow justify-between gap-6 overflow-hidden">
         <div className="self-stretch flex flex-col justify-start items-start gap-3">
           {/* Title Badge */}
           <Badge

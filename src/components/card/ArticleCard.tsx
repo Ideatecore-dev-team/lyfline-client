@@ -25,7 +25,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   href = "#",
 }) => {
   return (
-    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 outline-offset-[-2px] outline-stone-50 inline-flex flex-col justify-start items-start group transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+    <div className="w-full max-w-[384px] bg-white rounded-[32px] shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 inline-flex flex-col justify-start items-start group transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
 
       {/* Article Image Container */}
       <Link
@@ -38,14 +38,15 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               src={imageUrl}
               alt={title}
               fill
+              unoptimized={true}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             {/* Brand suit gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-800/0 to-blue-800/30 pointer-events-none mix-blend-multiply" />
+            <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/30 pointer-events-none mix-blend-multiply" />
           </>
         ) : (
-          <div className="w-full h-full bg-gradient-to-b from-blue-800/20 to-blue-800/40" />
+          <div className="w-full h-full bg-linear-to-b from-blue-800/20 to-blue-800/40" />
         )}
       </Link>
 

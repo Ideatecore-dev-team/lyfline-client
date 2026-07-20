@@ -1,71 +1,98 @@
 "use client";
 
-import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useMemo } from "react";
+import Button from "./Button";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  lang?: "en" | "id";
+  className?: string;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
+  lang = "id",
+  className = "",
 }) => {
+  const pageNumbers = useMemo(() => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    if (currentPage <= 4) {
+      return [1, 2, 3, 4, 5, "...", totalPages];
+    }
+
+    if (currentPage >= totalPages - 3) {
+      return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+  }, [currentPage, totalPages]);
+
   if (totalPages <= 1) return null;
 
-  // Generate page numbers
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const prevText = lang === "en" ? "Previous" : "Sebelumnya";
+  const nextText = lang === "en" ? "Next" : "Berikutnya";
 
   return (
-    <div className="max-w-[1440px] mx-auto px-6 md:px-16 lg:px-24 xl:px-36 py-8">
-      <div className="flex items-center justify-between w-full h-12">
-        {/* Previous Button */}
-        <button
-          onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary/5 disabled:opacity-40 disabled:pointer-events-none px-6 h-12 rounded-full font-bold text-xs tracking-wider transition-all active:scale-95 cursor-pointer"
-          title="Previous Page"
-        >
-          <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
-          <span>Previous</span>
-        </button>
+    <div className={`self-stretch grid grid-cols-2 sm:flex sm:justify-between items-center gap-6 sm:gap-0 mt-6 w-full ${className}`}>
+      {/* Previous Button */}
+      <Button
+        variant="outline-primary"
+        text={prevText}
+        leftIcon="Left 1"
+        className="w-full sm:w-36 h-12 px-4 py-3 font-poppins text-base font-semibold order-2 sm:order-1 justify-self-start"
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+      />
 
-        {/* Page numbers container */}
-        <div className="flex items-center gap-4">
-          {pages.map((page) => {
-            const isActive = currentPage === page;
+      {/* Page numbers */}
+      <div className="col-span-2 order-1 sm:order-2 justify-self-center flex justify-center items-center gap-2 sm:gap-3">
+        {pageNumbers.map((page, idx) => {
+          if (page === "...") {
             return (
-              <button
-                key={page}
-                onClick={() => onPageChange(page)}
-                className={cn(
-                  "w-10 h-10 flex items-center justify-center text-xs font-bold rounded-xl transition-all cursor-pointer focus:outline-none",
-                  isActive 
-                    ? "bg-primary text-white shadow-sm" 
-                    : "text-primary hover:bg-primary/5"
-                )}
+              <span
+                key={`ellipsis-${idx}`}
+                className="size-8 flex items-center justify-center text-slate-400 font-semibold font-poppins text-base select-none"
               >
-                {page}
-              </button>
+                ...
+              </span>
             );
-          })}
-        </div>
+          }
 
-        {/* Next Button */}
-        <button
-          onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white disabled:opacity-40 disabled:pointer-events-none px-7 h-12 rounded-full font-bold text-xs tracking-wider transition-all active:scale-95 cursor-pointer"
-          title="Next Page"
-        >
-          <span>Next</span>
-          <ChevronRight className="w-4 h-4 stroke-[2.5]" />
-        </button>
+          const isCurrent = currentPage === page;
+          return (
+            <button
+              key={page}
+              onClick={() => onPageChange(page as number)}
+              className={`size-8 rounded-lg flex items-center justify-center text-base font-semibold font-poppins transition-all cursor-pointer ${
+                isCurrent
+                  ? "bg-linear-to-r from-primary to-primary-hover text-white outline -outline-offset-1 outline-slate-500 shadow-xs"
+                  : "text-slate-500 hover:bg-slate-100"
+              }`}
+            >
+              {page}
+            </button>
+          );
+        })}
       </div>
+
+      {/* Next Button */}
+      <Button
+        variant="primary"
+        text={nextText}
+        rightIcon="Right 1"
+        className="w-full sm:w-36 h-12 px-4 py-3 font-poppins text-base font-semibold order-3 sm:order-3 justify-self-end"
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+      />
     </div>
   );
 };
+
+export default Pagination;
