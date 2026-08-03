@@ -17,8 +17,6 @@ interface PartnerCardProps {
 export const PartnerCard: React.FC<PartnerCardProps> = ({
     name,
     location,
-    phone,
-    email,
     logoUrl,
     href = "#",
 }) => {

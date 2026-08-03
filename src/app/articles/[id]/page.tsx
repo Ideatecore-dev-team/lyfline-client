@@ -44,7 +44,7 @@ const getOtherArticles = cache(async (excludeId: string) => {
   const fileList = await getBannerFileList();
   const slugMap = await getArticleSlugMap();
 
-  return (articles || []).map((art: any) => {
+  return (articles || []).map((art: DbArticle) => {
     const mapped = mapDbArticleToArticle(art as DbArticle, fileList);
     mapped.slug = slugMap.get(mapped.id) || slugify(mapped.title);
     return mapped;

@@ -5,7 +5,7 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import DoctorClient from "./DoctorClient";
 import { supabase } from "@/lib/supabase";
-import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap, type DbDoctor } from "@/app/api/doctors/route";
+import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap } from "@/app/api/doctors/route";
 import { getPartnerSlugMap } from "@/app/api/partners/route";
 import { slugify } from "@/lib/utils";
 

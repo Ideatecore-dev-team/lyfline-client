@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
-import { type Article, type ArticleSection } from "@/data/articlesData";
+import { type Article } from "@/data/articlesData";
 import DOMPurify from "dompurify";
 import { slugify } from "@/lib/utils";
 import { isVideoUrl } from "@/lib/media";

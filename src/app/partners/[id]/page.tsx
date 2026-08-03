@@ -4,8 +4,7 @@ import { cache } from "react";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import PartnerClient from "./PartnerClient";
-import { supabase } from "@/lib/supabase";
-import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap, type DbPartner } from "@/app/api/partners/route";
+import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap } from "@/app/api/partners/route";
 import { slugify } from "@/lib/utils";
 
 interface PageProps {
