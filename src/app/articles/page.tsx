@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import { Pagination } from "@/components/Pagination";
 import InputBox from "@/components/inputbox";
 import { ArticleCard } from "@/components/card/ArticleCard";
+import Dropdown from "@/components/Dropdown";
 import { fetchArticles, fetchArticleCategories, type PaginatedArticlesResponse } from "@/api/articles";
 import { type Article } from "@/data/articlesData";
 import { slugify } from "@/lib/utils";
@@ -147,8 +148,8 @@ export default function ArticlesPage() {
               </h1>
             </div>
 
-            {/* Search segment */}
-            <div className="w-full flex flex-col md:flex-row justify-start items-stretch md:items-end gap-3">
+            {/* Search and Category filter segment */}
+            <div className="w-full flex flex-col md:flex-row justify-start items-stretch md:items-end gap-4 z-30 relative">
               <InputBox
                 label={
                   <span className="text-red-600 text-sm font-normal font-poppins">
@@ -168,6 +169,21 @@ export default function ArticlesPage() {
                 onKeyDown={handleKeyPress}
                 containerClassName="w-full md:w-[466px]"
               />
+              <Dropdown
+                label={
+                  <span className="text-red-600 text-sm font-normal font-poppins">
+                    {lang === "en" ? "Category" : "Kategori"}
+                  </span>
+                }
+                placeholder={lang === "en" ? "All Categories" : "Semua Kategori"}
+                options={categoriesList.map((cat) => ({
+                  value: cat,
+                  label: cat === "All Categories" ? (lang === "en" ? "All Categories" : "Semua Kategori") : cat,
+                }))}
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                containerClassName="w-full md:w-[260px]"
+              />
               <Button
                 variant="outline-primary"
                 text={lang === "en" ? "Search" : "Cari"}
@@ -175,28 +191,6 @@ export default function ArticlesPage() {
                 className="hidden md:inline-flex w-full md:w-auto h-12 px-4 py-3 font-poppins text-base font-semibold"
                 onClick={handleSearch}
               />
-            </div>
-
-            {/* Separator */}
-            <hr className="w-full border-t border-gray-200 my-2" />
-
-            {/* Categories segment */}
-            <div className="self-stretch flex flex-wrap justify-center items-center gap-3">
-              {categoriesList.map((category) => {
-                const isSelected = selectedCategory === category;
-                return (
-                  <button
-                    key={category}
-                    onClick={() => handleCategoryChange(category)}
-                    className={`px-3 py-2 text-sm font-medium font-poppins transition-all cursor-pointer ${isSelected
-                      ? "bg-red-600 rounded-[100px] text-white"
-                      : "rounded-[48px] text-black hover:text-red-600"
-                      }`}
-                  >
-                    {category === "All Categories" ? (lang === "en" ? "All Categories" : "Semua Kategori") : category}
-                  </button>
-                );
-              })}
             </div>
 
           </div>
@@ -262,13 +256,14 @@ export default function ArticlesPage() {
                       className="w-full max-w-[384px]"
                     >
                       <ArticleCard
-                        title={article.title}
+                        title={lang === "id" && article.titleIndonesia ? article.titleIndonesia : article.title}
                         date={article.date}
                         category={article.category}
+                        categories={article.categories}
                         categoryVariant={article.categoryVariant}
                         customColor={article.customColor}
                         imageUrl={article.imageUrl}
-                        href={`/articles/${slugify(article.title)}-${article.id}`}
+                        href={`/articles/${article.slug || slugify(article.title)}`}
                       />
                     </motion.div>
                   ))}

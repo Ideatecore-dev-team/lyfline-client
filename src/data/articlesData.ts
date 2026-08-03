@@ -19,9 +19,12 @@ export interface ArticleSection {
 export interface Article {
   id: string;
   title: string;
+  titleIndonesia?: string;
   date: string;
   category: string;
+  categories?: string[];
   categoryVariant: BadgeVariant;
+  categoryColors?: string[];
   customColor?: string;
   imageUrl?: string;
   readTime?: string;
@@ -29,4 +32,9 @@ export interface Article {
   sections: ArticleSection[];
   references?: string[];
   htmlContent?: string;
+  // Indonesian content (pre-fetched from article_content_indonesia column)
+  htmlContentId?: string;
+  introId?: string[];
+  sectionsId?: ArticleSection[];
+  slug?: string;
 }

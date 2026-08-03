@@ -260,7 +260,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                         )}
                                         {doctor.hospital ? (
                                             <Link
-                                                href={`/partners/${getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
+                                                href={`/partners/${doctor.hospitalSlug || getHospitalSlug(doctor.hospital || "", doctor.hospital_id)}`}
                                                 className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
                                             >
                                                 {doctor.hospital}

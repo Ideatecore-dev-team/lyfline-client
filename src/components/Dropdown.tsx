@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import React, { useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 export interface DropdownOption {
   value: string;
@@ -45,11 +46,20 @@ export default function Dropdown<T extends string | string[]>({
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({});
 
-  // Close dropdown on click outside
+  // Close dropdown on click outside (checks both container element and portal panel element)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(target) &&
+        panelRef.current &&
+        !panelRef.current.contains(target)
+      ) {
         setIsOpen(false);
         setSearchQuery("");
       }
@@ -59,6 +69,31 @@ export default function Dropdown<T extends string | string[]>({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Compute panel position relative to viewport when opening and update on scroll/resize
+  useEffect(() => {
+    if (isOpen && selectRef.current) {
+      const updatePosition = () => {
+        if (selectRef.current) {
+          const rect = selectRef.current.getBoundingClientRect();
+          setPanelStyle({
+            position: "fixed",
+            top: rect.bottom + 4,
+            left: rect.left,
+            width: rect.width,
+            zIndex: 9999,
+          });
+        }
+      };
+      updatePosition();
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+      return () => {
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+      };
+    }
+  }, [isOpen]);
 
   // Filter options based on search query
   const filteredOptions = options.filter((option) => {
@@ -137,6 +172,7 @@ export default function Dropdown<T extends string | string[]>({
 
       {/* Select Box */}
       <div
+        ref={selectRef}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={`self-stretch min-h-[48px] px-4 py-2 ${selectClassName} rounded-lg outline -outline-offset-1 transition-all flex justify-between items-center gap-2 cursor-pointer ${
           disabled ? "opacity-50 cursor-not-allowed outline-slate-200" : "outline-primary focus-within:ring-2 focus-within:ring-primary/20"
@@ -196,9 +232,13 @@ export default function Dropdown<T extends string | string[]>({
         </div>
       </div>
 
-      {/* Options Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute top-[calc(100%+4px)] left-0 w-full bg-white border border-slate-200/80 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto p-1.5 flex flex-col gap-0.5 animate-fade-in">
+      {/* Options Dropdown Panel — rendered via portal to escape stacking contexts */}
+      {isOpen && typeof document !== "undefined" && createPortal(
+        <div
+          ref={panelRef}
+          style={panelStyle}
+          className="bg-white border border-slate-200/80 rounded-xl shadow-2xl max-h-60 overflow-y-auto p-1.5 flex flex-col gap-0.5 animate-fade-in"
+        >
           {filteredOptions.length === 0 && !showCustomAddOption ? (
             <div className="py-3 px-4 text-center text-[#9EB7DA] text-sm font-sans">
               No options found
@@ -234,7 +274,8 @@ export default function Dropdown<T extends string | string[]>({
               <Icon name="Add" className="size-4 bg-primary shrink-0 animate-pulse" />
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

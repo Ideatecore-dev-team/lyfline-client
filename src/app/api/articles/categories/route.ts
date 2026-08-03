@@ -12,13 +12,35 @@ export async function GET() {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const categories = Array.from(
-      new Set(
-        (data || [])
-          .map((item: { category?: string }) => item.category)
-          .filter(Boolean) as string[]
-      )
-    );
+    const categoriesSet = new Set<string>();
+    (data || []).forEach((item: { category?: string | string[] }) => {
+      if (!item.category) return;
+      if (Array.isArray(item.category)) {
+        item.category.forEach((cat) => {
+          if (cat && typeof cat === "string") {
+            categoriesSet.add(cat.trim());
+          }
+        });
+      } else if (typeof item.category === "string") {
+        const val = item.category.trim();
+        if (val.startsWith("[") && val.endsWith("]")) {
+          try {
+            const parsed = JSON.parse(val);
+            if (Array.isArray(parsed)) {
+              parsed.forEach((cat) => {
+                if (cat && typeof cat === "string") {
+                  categoriesSet.add(cat.trim());
+                }
+              });
+              return;
+            }
+          } catch {}
+        }
+        categoriesSet.add(val);
+      }
+    });
+
+    const categories = Array.from(categoriesSet).sort();
 
     return NextResponse.json(categories);
   } catch (error: unknown) {

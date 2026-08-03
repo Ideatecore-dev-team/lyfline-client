@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
@@ -19,113 +19,34 @@ interface ArticleClientProps {
 export default function ArticleClient({ article, otherArticles }: ArticleClientProps) {
   const { lang } = useLanguage();
 
-  const [translatedTitle, setTranslatedTitle] = useState(article.title || "");
-  const [translatedCategory, setTranslatedCategory] = useState(article.category || "");
-  const [translatedIntro, setTranslatedIntro] = useState<string[]>(article.intro || []);
-  const [translatedSections, setTranslatedSections] = useState<ArticleSection[]>(article.sections || []);
-  const [translatedHtml, setTranslatedHtml] = useState(article.htmlContent || "");
-  const [isTranslating, setIsTranslating] = useState(false);
+  // Select content based on language — no translation API needed
+  const isIndonesian = lang === "id";
+
+  const displayTitle = isIndonesian && article.titleIndonesia
+    ? article.titleIndonesia
+    : article.title;
+
+  // For HTML-based articles: use article_content_indonesia if available and language is Indonesian
+  const displayHtml = isIndonesian && article.htmlContentId
+    ? article.htmlContentId
+    : article.htmlContent;
+
+  // For structured articles: use Indonesian sections/intro if available
+  const displayIntro = isIndonesian && article.introId && article.introId.length > 0
+    ? article.introId
+    : article.intro;
+
+  const displaySections = isIndonesian && article.sectionsId && article.sectionsId.length > 0
+    ? article.sectionsId
+    : article.sections;
 
   const sanitizedHtml = useMemo(() => {
-    const htmlToSanitize = translatedHtml || article.htmlContent || "";
+    const htmlToSanitize = displayHtml || "";
     if (typeof window !== "undefined") {
       return DOMPurify.sanitize(htmlToSanitize);
     }
     return htmlToSanitize;
-  }, [translatedHtml, article.htmlContent]);
-
-  useEffect(() => {
-    if (lang === "id") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsTranslating(true);
-      
-      const translateText = async (text: string): Promise<string> => {
-        if (!text || !text.trim()) return "";
-        try {
-          const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|id`);
-          if (!res.ok) return text;
-          const data = await res.json();
-          return data.responseData?.translatedText || text;
-        } catch {
-          return text;
-        }
-      };
-
-      const runTranslation = async () => {
-        try {
-          // 1. Translate Title
-          const titleT = await translateText(article.title);
-          setTranslatedTitle(titleT);
-
-          // 2. Translate Category
-          const catT = await translateText(article.category);
-          setTranslatedCategory(catT);
-
-          // 3. Translate HTML content if exists
-          if (article.htmlContent) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(article.htmlContent, "text/html");
-            const textNodes: { node: Node; text: string }[] = [];
-            const walk = (node: Node) => {
-              if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.trim()) {
-                textNodes.push({ node, text: node.nodeValue });
-              } else {
-                for (let i = 0; i < node.childNodes.length; i++) {
-                  walk(node.childNodes[i]);
-                }
-              }
-            };
-            walk(doc.body);
-
-            // Translate text nodes
-            for (const item of textNodes) {
-              const trans = await translateText(item.text);
-              item.node.nodeValue = trans;
-            }
-            setTranslatedHtml(doc.body.innerHTML);
-          } else {
-            // 4. Translate Intro paragraphs
-            if (article.intro && article.intro.length > 0) {
-              const introT = await Promise.all(article.intro.map(p => translateText(p)));
-              setTranslatedIntro(introT);
-            }
-            // 5. Translate Sections
-            if (article.sections && article.sections.length > 0) {
-              const sectionsT = await Promise.all(
-                article.sections.map(async (sec) => {
-                  const headingT = sec.heading ? await translateText(sec.heading) : undefined;
-                  const paragraphsT = await Promise.all(sec.paragraphs.map(p => translateText(p)));
-                  const bulletPointsT = sec.bulletPoints 
-                    ? await Promise.all(sec.bulletPoints.map(bp => translateText(bp))) 
-                    : undefined;
-                  return {
-                    heading: headingT,
-                    paragraphs: paragraphsT,
-                    bulletPoints: bulletPointsT
-                  };
-                })
-              );
-              setTranslatedSections(sectionsT);
-            }
-          }
-        } catch (error) {
-          console.error("Translation run error:", error);
-        } finally {
-          setIsTranslating(false);
-        }
-      };
-
-      runTranslation();
-    } else {
-      // Revert to English
-      setTranslatedTitle(article.title || "");
-      setTranslatedCategory(article.category || "");
-      setTranslatedIntro(article.intro || []);
-      setTranslatedSections(article.sections || []);
-      setTranslatedHtml(article.htmlContent || "");
-      setIsTranslating(false);
-    }
-  }, [lang, article]);
+  }, [displayHtml]);
 
   return (
     <main className="grow pt-[80px] w-full flex flex-col justify-start items-center relative">
@@ -146,7 +67,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
           {/* Title and Metadata */}
           <div className="w-full flex flex-col justify-start items-start gap-3">
             <h1 className="self-stretch justify-start text-primary text-2xl md:text-3xl font-semibold font-poppins leading-tight">
-              {isTranslating ? "Menerjemahkan..." : translatedTitle}
+              {displayTitle}
             </h1>
             <div className="flex justify-start items-center gap-3">
               {/* Date Badge */}
@@ -162,13 +83,31 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                 <span className="justify-start text-primary text-sm font-normal font-poppins">{article.date}</span>
               </div>
 
-              {/* Category Badge */}
-              <Badge 
-                text={isTranslating ? "..." : translatedCategory} 
-                variant={article.categoryVariant} 
-                customColor={article.customColor}
-                showDot={true} 
-              />
+              {/* Category Badge(s) */}
+              {article.categories && article.categories.length > 0 ? (
+                <div className="flex items-center flex-wrap gap-1.5">
+                  {article.categories.map((cat, i) => (
+                    <Badge
+                      key={`cat-${i}`}
+                      text={cat}
+                      variant={article.categoryVariant}
+                      customColor={
+                        article.categoryColors && article.categoryColors[i]
+                          ? article.categoryColors[i]
+                          : article.customColor
+                      }
+                      showDot={true}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Badge
+                  text={article.category}
+                  variant={article.categoryVariant}
+                  customColor={article.customColor}
+                  showDot={true}
+                />
+              )}
             </div>
           </div>
 
@@ -194,7 +133,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                     ) : (
                       <Image
                         src={article.imageUrl}
-                        alt={isTranslating ? "Article cover" : translatedTitle}
+                        alt={displayTitle}
                         fill
                         className="object-cover animate-fade-in"
                         sizes="(max-width: 1024px) 100vw, 800px"
@@ -213,24 +152,18 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
 
               {/* Formatted Article Body */}
               <div className="self-stretch flex flex-col gap-6 text-neutral-900 text-base font-normal font-poppins text-justify leading-relaxed">
-                {isTranslating ? (
-                  <div className="py-12 text-center text-slate-400 font-poppins text-base w-full italic">
-                    Menerjemahkan artikel ke Bahasa Indonesia...
-                  </div>
-                ) : article.htmlContent ? (
-                  <div 
-                    className="article-rich-content" 
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizedHtml || ""
-                    }}
+                {displayHtml ? (
+                  <div
+                    className="article-rich-content"
+                    dangerouslySetInnerHTML={{ __html: sanitizedHtml || "" }}
                   />
                 ) : (
                   <>
-                    {translatedIntro && translatedIntro.map((p, i) => (
+                    {displayIntro && displayIntro.map((p, i) => (
                       <p key={`intro-${i}`}>{p}</p>
                     ))}
 
-                    {translatedSections && translatedSections.map((section, idx) => (
+                    {displaySections && displaySections.map((section, idx) => (
                       <div key={`section-${idx}`} className="flex flex-col gap-3 w-full">
                         {section.heading && (
                           <h2 className="text-[slate-800] text-lg md:text-xl font-semibold font-poppins mt-4 mb-1">
@@ -294,7 +227,7 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                 {otherArticles.length > 0 ? (
                   otherArticles.map((other) => (
                     <Link
-                      href={`/articles/${slugify(other.title)}-${other.id}`}
+                      href={`/articles/${other.slug || slugify(other.title)}`}
                       key={other.id}
                       className="self-stretch p-3 bg-white rounded-3xl inline-flex justify-start items-center gap-3 transition-all group w-full"
                     >
@@ -321,15 +254,35 @@ export default function ArticleClient({ article, otherArticles }: ArticleClientP
                         ) : null}
                       </div>
                       <div className="grow flex flex-col justify-center items-start gap-2 overflow-hidden group-hover:ml-1">
-                         <Badge
-                          text={other.category}
-                          variant={other.categoryVariant}
-                          customColor={other.customColor}
-                          showDot={true}
-                          className="scale-90 origin-left"
-                        />
+                       {/* Category badge(s) for sidebar article */}
+                        {other.categories && other.categories.length > 0 ? (
+                          <div className="flex items-center flex-wrap gap-1">
+                            {other.categories.map((cat, i) => (
+                              <Badge
+                                key={`sidebar-cat-${i}`}
+                                text={cat}
+                                variant={other.categoryVariant}
+                                customColor={
+                                  other.categoryColors && other.categoryColors[i]
+                                    ? other.categoryColors[i]
+                                    : other.customColor
+                                }
+                                showDot={true}
+                                className="scale-90 origin-left"
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <Badge
+                            text={other.category}
+                            variant={other.categoryVariant}
+                            customColor={other.customColor}
+                            showDot={true}
+                            className="scale-90 origin-left"
+                          />
+                        )}
                         <h4 className="self-stretch text-neutral-900 text-sm font-normal font-poppins line-clamp-2 leading-snug group-hover:ml-1 transition-all">
-                          {other.title}
+                          {isIndonesian && other.titleIndonesia ? other.titleIndonesia : other.title}
                         </h4>
                       </div>
                     </Link>

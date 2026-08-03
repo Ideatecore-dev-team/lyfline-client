@@ -5,23 +5,18 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import DoctorClient from "./DoctorClient";
 import { supabase } from "@/lib/supabase";
-import { mapDbDoctorToDoctor, type DbDoctor } from "@/app/api/doctors/route";
-import { extractIdFromSlug } from "@/lib/utils";
+import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap, type DbDoctor } from "@/app/api/doctors/route";
+import { getPartnerSlugMap } from "@/app/api/partners/route";
+import { slugify } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 const getDoctorData = cache(async (slug: string) => {
-  const id = extractIdFromSlug(slug);
+  const doctor = await resolveDoctorByIdOrSlug(slug);
 
-  const { data: doctor, error } = await supabase
-    .from("doctors")
-    .select("*, partners!hospital_id(hospital_name, country)")
-    .eq("id", id)
-    .maybeSingle();
-
-  if (error || !doctor) {
+  if (!doctor) {
     return null;
   }
 
@@ -30,7 +25,13 @@ const getDoctorData = cache(async (slug: string) => {
     .from("Lyfline Files")
     .list("Doctors");
 
-  return mapDbDoctorToDoctor(doctor as DbDoctor, fileList || []);
+  const formattedDoctor = mapDbDoctorToDoctor(doctor, fileList || []);
+  const slugMap = await getDoctorSlugMap();
+  const partnerSlugMap = await getPartnerSlugMap();
+  formattedDoctor.slug = slugMap.get(doctor.id) || slugify(doctor.doctor_name);
+  formattedDoctor.hospitalSlug = doctor.hospital_id ? partnerSlugMap.get(doctor.hospital_id) : undefined;
+
+  return formattedDoctor;
 });
 
 export async function generateMetadata(

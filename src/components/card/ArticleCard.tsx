@@ -10,6 +10,7 @@ interface ArticleCardProps {
   title: string;
   date: string;
   category: string;
+  categories?: string[];
   categoryVariant?: BadgeVariant;
   customColor?: string;
   imageUrl?: string;
@@ -20,6 +21,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   title,
   date,
   category,
+  categories,
   categoryVariant = "green",
   customColor,
   imageUrl,
@@ -80,13 +82,33 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             <span className="justify-start text-primary text-sm font-normal font-poppins">{date}</span>
           </div>
 
-          {/* Category Badge */}
-          <Badge
-            text={category}
-            variant={categoryVariant}
-            customColor={customColor}
-            showDot={true}
-          />
+          {/* Category Badge(s) */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {categories && categories.length > 0 ? (
+              <>
+                <Badge
+                  text={categories[0]}
+                  variant={categoryVariant}
+                  customColor={customColor}
+                  showDot={true}
+                />
+                {categories.length > 1 && (
+                  <Badge
+                    text={`+${categories.length - 1}`}
+                    variant="gray"
+                    showDot={false}
+                  />
+                )}
+              </>
+            ) : (
+              <Badge
+                text={category}
+                variant={categoryVariant}
+                customColor={customColor}
+                showDot={true}
+              />
+            )}
+          </div>
         </div>
 
         {/* Title */}

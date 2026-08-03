@@ -117,13 +117,14 @@ export const ArticlesSection: React.FC = () => {
             articles.map((article) => (
               <motion.div key={article.id} variants={cardVariants} className="w-full max-w-[384px] flex justify-center">
                 <ArticleCard
-                  title={article.title}
+                  title={lang === "id" && article.titleIndonesia ? article.titleIndonesia : article.title}
                   date={article.date}
                   category={article.category}
+                  categories={article.categories}
                   categoryVariant={article.categoryVariant}
                   customColor={article.customColor}
                   imageUrl={article.imageUrl}
-                  href={`/articles/${slugify(article.title)}-${article.id}`}
+                  href={`/articles/${article.slug || slugify(article.title)}`}
                 />
               </motion.div>
             ))

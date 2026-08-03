@@ -50,37 +50,10 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [doctorsLoading, setDoctorsLoading] = useState(true);
 
-  const [translatedDesc, setTranslatedDesc] = useState(partner.description || "");
-  const [isTranslating, setIsTranslating] = useState(false);
-
-  useEffect(() => {
-    if (lang === "id" && partner.description) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsTranslating(true);
-      fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-          partner.description
-        )}&langpair=en|id`
-      )
-        .then((res) => {
-          if (!res.ok) throw new Error("Translation failed");
-          return res.json();
-        })
-        .then((data) => {
-          setTranslatedDesc(
-            data.responseData?.translatedText || partner.description
-          );
-          setIsTranslating(false);
-        })
-        .catch((err) => {
-          console.error("Error translating partner description:", err);
-          setTranslatedDesc(partner.description);
-          setIsTranslating(false);
-        });
-    } else {
-      setTranslatedDesc(partner.description || "");
-    }
-  }, [lang, partner.description]);
+  const isIndonesian = lang === "id";
+  const displayDesc = isIndonesian && partner.descriptionIndonesia
+    ? partner.descriptionIndonesia
+    : partner.description || "";
 
   // Fetch doctors for this hospital by hospital_id
   useEffect(() => {
@@ -255,30 +228,6 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
 
               {/* Name & Country */}
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
-
-                {/* Dynamic Country Badge */}
-                <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
-                  {flagUrl ? (
-                    <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
-                      <Image
-                        src={flagUrl}
-                        alt={lang === "en" ? `${partner.country} flag` : `Bendera ${partner.country}`}
-                        fill
-                        className="object-contain"
-                        unoptimized
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
-                      <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
-                      <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
-                    </div>
-                  )}
-                  <span className="justify-start text-primary text-sm font-normal font-poppins">
-                    {partner.location}
-                  </span>
-                </div>
-
                 {/* Partner Name */}
                 <h1 className="self-stretch justify-start text-primary text-3xl font-semibold font-sans leading-tight">
                   {partner.name}
@@ -286,11 +235,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
 
                 {/* Partner Description */}
                 <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify">
-                  {isTranslating ? (
-                    <span className="text-slate-400 italic">Menerjemahkan deskripsi...</span>
-                  ) : (
-                    translatedDesc
-                  )}
+                  {displayDesc}
                 </p>
               </div>
 
@@ -304,6 +249,29 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                 </span>
 
                 <div className="self-stretch flex flex-col justify-start items-start gap-3">
+
+                  {/* Dynamic Country / Location Badge */}
+                  <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
+                    {flagUrl ? (
+                      <div className="w-4 h-3 relative overflow-hidden rounded-[2px] outline outline-black">
+                        <Image
+                          src={flagUrl}
+                          alt={lang === "en" ? `${partner.country} flag` : `Bendera ${partner.country}`}
+                          fill
+                          className="object-contain"
+                          unoptimized
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-4 h-3 relative bg-white rounded-[2px] outline outline-black overflow-hidden">
+                        <div className="w-4 h-1.5 left-0 top-0 absolute bg-slate-50" />
+                        <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
+                      </div>
+                    )}
+                    <span className="justify-start text-primary text-sm font-normal font-poppins">
+                      {partner.location}
+                    </span>
+                  </div>
 
                   {/* Phone Item */}
                   {partner.phone && (
@@ -408,7 +376,7 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                     title={doc.title}
                     hospital={doc.hospital}
                     imageUrl={doc.imageUrl}
-                    href={`/doctors/${slugify(doc.name)}-${doc.id}`}
+                    href={`/doctors/${doc.slug || slugify(doc.name)}`}
                   />
                 ))
               ) : (

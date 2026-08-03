@@ -63,47 +63,20 @@ const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
 
 export default function DoctorClient({ doctor }: DoctorClientProps) {
   const { lang } = useLanguage();
-  const [translatedDesc, setTranslatedDesc] = useState(doctor.description || "");
-  const [isTranslating, setIsTranslating] = useState(false);
+
+  const isIndonesian = lang === "id";
+  const displayDesc = isIndonesian && doctor.descriptionIndonesia
+    ? doctor.descriptionIndonesia
+    : doctor.description || "";
 
   const isOldType = doctor.type?.toLowerCase() === "old";
 
   const sanitizedDesc = useMemo(() => {
-    const raw = translatedDesc || doctor.description || "";
     if (typeof window !== "undefined") {
-      return DOMPurify.sanitize(raw);
+      return DOMPurify.sanitize(displayDesc);
     }
-    return raw;
-  }, [translatedDesc, doctor.description]);
-
-  useEffect(() => {
-    if (lang === "id" && doctor.description) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsTranslating(true);
-      fetch(
-        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
-          doctor.description
-        )}&langpair=en|id`
-      )
-        .then((res) => {
-          if (!res.ok) throw new Error("Translation failed");
-          return res.json();
-        })
-        .then((data) => {
-          setTranslatedDesc(
-            data.responseData?.translatedText || doctor.description
-          );
-          setIsTranslating(false);
-        })
-        .catch((err) => {
-          console.error("Error translating doctor description:", err);
-          setTranslatedDesc(doctor.description || "");
-          setIsTranslating(false);
-        });
-    } else {
-      setTranslatedDesc(doctor.description || "");
-    }
-  }, [lang, doctor.description]);
+    return displayDesc;
+  }, [displayDesc]);
 
   const flagUrl = getFlagUrl(doctor.region || "");
   const specialties = (doctor.specialty || []).filter((s) => s && s.trim().length > 0);
@@ -198,7 +171,6 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
 
               {/* Name & Title */}
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
-
                 {/* Title Badge */}
                 <div className="px-3 py-1 bg-red-50 border border-red-100 rounded-2xl inline-flex justify-center items-center gap-2">
                   <span className="justify-start text-red-600 text-sm font-normal font-poppins">
@@ -210,32 +182,10 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                 <h1 className="self-stretch justify-start text-primary text-3xl font-semibold font-sans leading-tight">
                   {doctor.name}
                 </h1>
-
-                {/* Doctor Description */}
-                {isTranslating ? (
-                  <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2">
-                    <span className="text-slate-400 italic">Menerjemahkan deskripsi...</span>
-                  </p>
-                ) : isOldType ? (
-                  <div
-                    className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:text-primary [&_a]:underline"
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")
-                    }}
-                  />
-                ) : (
-                  <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-2">
-                    {translatedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")}
-                  </p>
-                )}
               </div>
 
-              {/* Separator line */}
-              <hr className="w-full border-t border-gray-200" />
-
-              {/* Professional details */}
+              {/* Professional details (Specialties, Qualifications, and Languages on top of description) */}
               <div className="self-stretch flex flex-col justify-start items-start gap-6">
-
                 {/* Specialties */}
                 {specialties.length > 0 && (
                   <div className="self-stretch flex flex-col justify-start items-start gap-2">
@@ -253,7 +203,6 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                 {/* Qualifications & Languages */}
                 {(qualifications.length > 0 || languages.length > 0) && (
                   <div className="self-stretch flex flex-col lg:flex-row justify-between items-start gap-6">
-
                     {/* Qualifications */}
                     {qualifications.length > 0 && (
                       <div className="w-full lg:flex-1 flex flex-col justify-start items-start gap-2">
@@ -295,16 +244,76 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                         </div>
                       </div>
                     )}
-
                   </div>
                 )}
+              </div>
 
+              {/* Separator line */}
+              <hr className="w-full border-t border-gray-200" />
+
+              {/* Doctor Description / Biography */}
+              <div className="self-stretch flex flex-col justify-start items-start gap-2">
+                <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
+                  {lang === "en" ? "Biography" : "Biografi"}
+                </span>
+                {isOldType ? (
+                  <div
+                    className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-1 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:text-primary [&_a]:underline"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")
+                    }}
+                  />
+                ) : (
+                  <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify mt-1">
+                    {displayDesc || (lang === "en" ? "No description available yet." : "Deskripsi belum tersedia.")}
+                  </p>
+                )}
+              </div>
+
+              {/* Separator line */}
+              <hr className="w-full border-t border-gray-200" />
+
+              {/* Hospital Details & Booking Details */}
+              <div className="self-stretch flex flex-col justify-start items-start gap-6">
                 {/* Hospital Details */}
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
                   <span className="justify-start text-primary/50 text-sm font-semibold font-poppins tracking-wider">
                     {lang === "en" ? "Hospital" : "Rumah Sakit"}
                   </span>
-                  <div className="h-10 px-3 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2">
+
+                  {/* Hospital Link */}
+                  {doctor.hospital ? (
+                    <Link
+                      href={`/partners/${doctor.hospitalSlug || getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
+                      className="justify-start text-primary text-base font-semibold font-poppins hover:underline hover:text-primary-hover transition-colors"
+                    >
+                      {doctor.hospital}
+                    </Link>
+                  ) : (
+                    <span className="justify-start text-primary text-sm font-normal font-poppins">
+                      {lang === "en" ? "Unknown Hospital" : "Rumah Sakit Tidak Diketahui"}
+                    </span>
+                  )}
+
+                  {/* Address (if available) */}
+                  {doctor.address && (
+                    <div className="w-full px-3 py-2.5 bg-primary/10 rounded-[20px] md:rounded-[64px] inline-flex justify-start items-center gap-2 mt-1">
+                      <span
+                        style={{
+                          maskImage: 'url("/icons/Location.svg")',
+                          WebkitMaskImage: 'url("/icons/Location.svg")',
+                        }}
+                        className="size-4 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="flex-1 justify-start text-primary text-sm font-normal font-poppins leading-normal">
+                        {doctor.address}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Flag, City, Country Badge Container (under address) */}
+                  <div className="h-8 px-2.5 py-1.5 bg-white rounded-2xl outline-1 -outline-offset-1 outline-gray-200 inline-flex justify-center items-center gap-2 mt-1">
                     {flagUrl ? (
                       <div className="w-4 h-3 relative overflow-hidden rounded-xs outline outline-black">
                         <Image
@@ -321,18 +330,9 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                         <div className="w-4 h-1.5 left-0 top-0 absolute bg-red-600" />
                       </div>
                     )}
-                    {doctor.hospital ? (
-                      <Link
-                        href={`/partners/${getHospitalSlug(doctor.hospital, doctor.hospital_id)}`}
-                        className="justify-start text-primary text-sm font-normal font-poppins hover:underline hover:text-primary-hover transition-colors"
-                      >
-                        {doctor.hospital}
-                      </Link>
-                    ) : (
-                      <span className="justify-start text-primary text-sm font-normal font-poppins">
-                        {lang === "en" ? "Unknown Hospital" : "Rumah Sakit Tidak Diketahui"}
-                      </span>
-                    )}
+                    <span className="justify-start text-primary text-sm font-normal font-poppins">
+                      {doctor.city && doctor.region ? `${doctor.city}, ${doctor.region}` : doctor.region}
+                    </span>
                   </div>
                 </div>
 

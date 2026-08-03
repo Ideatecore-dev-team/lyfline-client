@@ -7,7 +7,9 @@ export interface Partner {
   email: string;
   address: string;
   description: string;
+  descriptionIndonesia?: string;
   mapsUrl: string;
   logoUrl?: string;
   images: string[];
+  slug?: string;
 }

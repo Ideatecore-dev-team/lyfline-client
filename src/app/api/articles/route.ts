@@ -2,19 +2,23 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { type BadgeVariant } from "@/components/Badge";
 import { type Article, type ArticleSection } from "@/data/articlesData";
+import { slugify } from "@/lib/utils";
 
 export interface DbArticle {
   id: string;
   article_title: string;
-  category: string;
-  category_color: string;
+  article_title_indonesia?: string;
+  category: string | string[];
+  category_color: string | string[];
   article_content: string;
+  article_content_indonesia?: string;
   created_at: string;
   updated_at: string;
   imageUrl?: string | null;
 }
 
-function getNearestVariant(hex: string): BadgeVariant {
+function getNearestVariant(hexInput: string | string[]): BadgeVariant {
+  const hex = Array.isArray(hexInput) ? hexInput[0] : hexInput;
   const normalized = (hex || "").toLowerCase().trim();
   const validVariants: BadgeVariant[] = ["green", "red", "blue", "yellow", "purple", "gray", "indigo", "orange"];
   if (validVariants.includes(normalized as BadgeVariant)) {
@@ -42,6 +46,7 @@ function formatDate(dateString: string): string {
 }
 
 export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: string }[]): Article {
+  // ── Parse English content ─────────────────────────────────────────────────
   let htmlContent: string | undefined = undefined;
   let intro: string[] = [];
   let sections: ArticleSection[] = [];
@@ -62,22 +67,43 @@ export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: s
       htmlContent = parsed.html;
     }
   } catch {
-    // Treat the entire content as raw HTML (e.g. from Quill rich text editor)
     htmlContent = content;
-
-    // Split text without tags for a fallback preview inside grid list cards
     const cleanText = content.replace(/<[^>]*>/g, " ").trim();
     const paragraphs = cleanText.split(/\n\s*\n/).map((p: string) => p.trim()).filter(Boolean);
-    
     if (paragraphs.length > 0) {
       intro = [paragraphs[0]];
     }
-
     const wordCount = cleanText.split(/\s+/).length;
     readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
   }
 
-  // Find banner image in Supabase storage if fileList is provided (fallback for legacy articles)
+  // ── Parse Indonesian content ──────────────────────────────────────────────
+  let htmlContentId: string | undefined = undefined;
+  let introId: string[] = [];
+  let sectionsId: ArticleSection[] = [];
+
+  const contentId = dbArticle.article_content_indonesia || "";
+
+  if (contentId) {
+    try {
+      const parsedId = JSON.parse(contentId);
+      introId = parsedId.intro || [];
+      sectionsId = parsedId.sections || [];
+      if (parsedId.html) {
+        htmlContentId = parsedId.html;
+      }
+    } catch {
+      // Treat as raw HTML
+      htmlContentId = contentId;
+      const cleanText = contentId.replace(/<[^>]*>/g, " ").trim();
+      const paragraphs = cleanText.split(/\n\s*\n/).map((p: string) => p.trim()).filter(Boolean);
+      if (paragraphs.length > 0) {
+        introId = [paragraphs[0]];
+      }
+    }
+  }
+
+  // ── Find banner image ─────────────────────────────────────────────────────
   if (!imageUrl && fileList && fileList.length > 0) {
     const matchingFile = fileList.find(f => f.name.startsWith(`${dbArticle.id}_banner_`));
     if (matchingFile) {
@@ -88,20 +114,138 @@ export function mapDbArticleToArticle(dbArticle: DbArticle, fileList?: { name: s
     }
   }
 
+  const categoriesList = Array.isArray(dbArticle.category)
+    ? dbArticle.category
+    : dbArticle.category
+      ? [dbArticle.category]
+      : [];
+
+  const colorsList = Array.isArray(dbArticle.category_color)
+    ? dbArticle.category_color
+    : dbArticle.category_color
+      ? [dbArticle.category_color]
+      : [];
+
+  const mainColor = colorsList[0] || undefined;
+
   return {
     id: dbArticle.id,
     title: dbArticle.article_title,
+    titleIndonesia: dbArticle.article_title_indonesia || undefined,
     date: formatDate(dbArticle.created_at),
-    category: dbArticle.category,
-    categoryVariant: getNearestVariant(dbArticle.category_color || "#000000"),
-    customColor: dbArticle.category_color,
+    category: categoriesList.join(", "),
+    categories: categoriesList,
+    categoryColors: colorsList,
+    categoryVariant: getNearestVariant(mainColor || "#000000"),
+    customColor: mainColor,
     imageUrl: imageUrl,
     readTime: readTime,
     intro: intro,
     sections: sections,
     references: references,
-    htmlContent: htmlContent
+    htmlContent: htmlContent,
+    // Indonesian content fields
+    introId: introId.length > 0 ? introId : undefined,
+    sectionsId: sectionsId.length > 0 ? sectionsId : undefined,
+    htmlContentId: htmlContentId,
   };
+}
+
+// Memory cache for article ID -> unique slug mapping
+let articleSlugCache: Promise<Map<string, string>> | null = null;
+let lastArticleCacheTime = 0;
+const CACHE_TTL = 60 * 1000; // 60 seconds
+
+export function getArticleSlugMap(): Promise<Map<string, string>> {
+  const now = Date.now();
+  if (!articleSlugCache || now - lastArticleCacheTime > CACHE_TTL) {
+    lastArticleCacheTime = now;
+    articleSlugCache = (async () => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("id, article_title")
+        .order("created_at", { ascending: true });
+
+      const slugMap = new Map<string, string>();
+      if (error || !data) return slugMap;
+
+      const slugCounts = new Map<string, number>();
+      for (const row of data) {
+        const baseSlug = slugify(row.article_title);
+        const count = slugCounts.get(baseSlug) || 0;
+        if (count === 0) {
+          slugMap.set(row.id, baseSlug);
+        } else {
+          slugMap.set(row.id, `${baseSlug}-${count + 1}`);
+        }
+        slugCounts.set(baseSlug, count + 1);
+      }
+      return slugMap;
+    })();
+  }
+  return articleSlugCache;
+}
+
+export async function resolveArticleByIdOrSlug(idOrSlug: string): Promise<DbArticle | null> {
+  const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(idOrSlug);
+
+  if (isUuid) {
+    const { data: article } = await supabase
+      .from("articles")
+      .select("*")
+      .eq("id", idOrSlug)
+      .maybeSingle();
+    return (article as DbArticle) || null;
+  }
+
+  // Otherwise, resolve as slug
+  let baseSlug = idOrSlug;
+  let suffixIndex = 0;
+
+  const suffixMatch = idOrSlug.match(/-(\d+)$/);
+  if (suffixMatch) {
+    const num = parseInt(suffixMatch[1], 10);
+    if (num > 1) {
+      suffixIndex = num - 1;
+      baseSlug = idOrSlug.slice(0, -suffixMatch[0].length);
+    }
+  }
+
+  const words: string[] = [];
+  const rawWords = baseSlug.split("-");
+  for (const word of rawWords) {
+    const lower = word.toLowerCase();
+    if (lower.length <= 1) {
+      continue;
+    }
+    words.push(word);
+    if (words.length >= 2) {
+      break;
+    }
+  }
+
+  if (words.length === 0) {
+    words.push(baseSlug);
+  }
+
+  let dbQuery = supabase
+    .from("articles")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  for (const word of words) {
+    dbQuery = dbQuery.ilike("article_title", `%${word}%`);
+  }
+
+  const { data: articles } = await dbQuery;
+  if (!articles || articles.length === 0) return null;
+
+  const candidates = articles.filter((art) => slugify(art.article_title) === baseSlug);
+  if (candidates.length > suffixIndex) {
+    return (candidates[suffixIndex] as DbArticle) || null;
+  }
+
+  return null;
 }
 
 export async function GET(request: Request) {
@@ -130,7 +274,7 @@ export async function GET(request: Request) {
     }
 
     if (category && category !== "All Categories") {
-      query = query.eq("category", category);
+      query = query.contains("category", [category]);
     }
 
     if (pageVal !== undefined && limitVal !== undefined) {
@@ -152,9 +296,13 @@ export async function GET(request: Request) {
       .from("Lyfline Files")
       .list("Articles/Banner");
 
-    const formattedArticles = (articles || []).map((art: unknown) => 
-      mapDbArticleToArticle(art as DbArticle, fileList || [])
-    );
+    const slugMap = await getArticleSlugMap();
+    const formattedArticles = (articles || []).map((art: unknown) => {
+      const dbArt = art as DbArticle;
+      const mapped = mapDbArticleToArticle(dbArt, fileList || []);
+      mapped.slug = slugMap.get(dbArt.id) || slugify(dbArt.article_title);
+      return mapped;
+    });
 
     if (pageVal !== undefined) {
       const effectiveLimit = limitVal || 10;
