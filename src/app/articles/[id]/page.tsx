@@ -5,8 +5,8 @@ import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import ArticleClient from "./ArticleClient";
 import { supabase } from "@/lib/supabase";
-import { mapDbArticleToArticle, type DbArticle } from "@/app/api/articles/route";
-import { extractIdFromSlug } from "@/lib/utils";
+import { mapDbArticleToArticle, resolveArticleByIdOrSlug, getArticleSlugMap, type DbArticle } from "@/app/api/articles/route";
+import { slugify } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -20,20 +20,17 @@ const getBannerFileList = cache(async () => {
 });
 
 const getArticleData = cache(async (slug: string) => {
-  const id = extractIdFromSlug(slug);
+  const article = await resolveArticleByIdOrSlug(slug);
 
-  const { data: article, error } = await supabase
-    .from("articles")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-
-  if (error || !article) {
+  if (!article) {
     return null;
   }
 
   const fileList = await getBannerFileList();
-  return mapDbArticleToArticle(article as DbArticle, fileList);
+  const formatted = mapDbArticleToArticle(article, fileList);
+  const slugMap = await getArticleSlugMap();
+  formatted.slug = slugMap.get(formatted.id) || slugify(formatted.title);
+  return formatted;
 });
 
 const getOtherArticles = cache(async (excludeId: string) => {
@@ -45,11 +42,13 @@ const getOtherArticles = cache(async (excludeId: string) => {
     .limit(3);
 
   const fileList = await getBannerFileList();
+  const slugMap = await getArticleSlugMap();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (articles || []).map((art: any) =>
-    mapDbArticleToArticle(art as DbArticle, fileList)
-  );
+  return (articles || []).map((art: DbArticle) => {
+    const mapped = mapDbArticleToArticle(art as DbArticle, fileList);
+    mapped.slug = slugMap.get(mapped.id) || slugify(mapped.title);
+    return mapped;
+  });
 });
 
 export async function generateMetadata(

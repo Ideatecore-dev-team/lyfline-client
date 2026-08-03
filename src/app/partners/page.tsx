@@ -34,7 +34,7 @@ export default function PartnersPage() {
 
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [currentPage, setCurrentPage] = useState(1);
-  const [partnersPerPage, setPartnersPerPage] = useState(8);
+  const [partnersPerPage, setPartnersPerPage] = useState(12);
 
   useEffect(() => {
     let active = true;
@@ -65,7 +65,7 @@ export default function PartnersPage() {
       } else if (width < 1024) {
         setPartnersPerPage(9);
       } else {
-        setPartnersPerPage(8);
+        setPartnersPerPage(12);
       }
     };
     handleResize();
@@ -198,7 +198,7 @@ export default function PartnersPage() {
                     <motion.div
                       key={partner.id}
                       variants={cardVariants}
-                      className="w-full min-w-63.5 max-w-[288px]"
+                      className="w-full min-w-63.5 max-w-[288px] h-full"
                     >
                       <PartnerCard
                         name={partner.name}
@@ -206,7 +206,7 @@ export default function PartnersPage() {
                         phone={partner.phone}
                         email={partner.email}
                         logoUrl={partner.logoUrl}
-                        href={`/partners/${slugify(partner.name)}-${partner.id}`}
+                        href={`/partners/${partner.slug || slugify(partner.name)}`}
                       />
                     </motion.div>
                   ))}

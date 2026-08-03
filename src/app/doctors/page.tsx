@@ -97,7 +97,7 @@ export default function DoctorsPage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const doctorsPerPage = 8;
+  const doctorsPerPage = 12;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
@@ -392,7 +392,7 @@ export default function DoctorsPage() {
                         title={doc.title}
                         hospital={doc.hospital}
                         imageUrl={doc.imageUrl}
-                        href={`/doctors/${slugify(doc.name)}-${doc.id}`}
+                        href={`/doctors/${doc.slug || slugify(doc.name)}`}
                       />
                     </motion.div>
                   ))}

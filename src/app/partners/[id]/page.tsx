@@ -4,28 +4,24 @@ import { cache } from "react";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import PartnerClient from "./PartnerClient";
-import { supabase } from "@/lib/supabase";
-import { mapDbPartnerToPartner, type DbPartner } from "@/app/api/partners/route";
-import { extractIdFromSlug } from "@/lib/utils";
+import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap } from "@/app/api/partners/route";
+import { slugify } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 const getPartnerData = cache(async (slug: string) => {
-  const id = extractIdFromSlug(slug);
+  const partner = await resolvePartnerByIdOrSlug(slug);
 
-  const { data: partner, error } = await supabase
-    .from("partners")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-
-  if (error || !partner) {
+  if (!partner) {
     return null;
   }
 
-  return mapDbPartnerToPartner(partner as DbPartner);
+  const formatted = mapDbPartnerToPartner(partner);
+  const slugMap = await getPartnerSlugMap();
+  formatted.slug = slugMap.get(formatted.id) || slugify(formatted.name);
+  return formatted;
 });
 
 export async function generateMetadata(

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
-import { mapDbPartnerToPartner, type DbPartner } from "../route";
-import { extractIdFromSlug } from "@/lib/utils";
+import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap } from "../route";
+import { slugify } from "@/lib/utils";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -10,24 +9,16 @@ interface RouteContext {
 export async function GET(request: Request, context: RouteContext) {
   try {
     const rawId = (await context.params).id;
-    const id = extractIdFromSlug(rawId);
-
-    const { data: partner, error } = await supabase
-      .from("partners")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
-
-    if (error) {
-      console.error(`Supabase error fetching partner ${id}:`, error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+    const partner = await resolvePartnerByIdOrSlug(rawId);
 
     if (!partner) {
       return NextResponse.json({ error: "Partner not found" }, { status: 404 });
     }
 
-    const formattedPartner = mapDbPartnerToPartner(partner as DbPartner);
+    const formattedPartner = mapDbPartnerToPartner(partner);
+    const slugMap = await getPartnerSlugMap();
+    formattedPartner.slug = slugMap.get(partner.id) || slugify(partner.hospital_name);
+
     return NextResponse.json(formattedPartner);
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);

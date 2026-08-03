@@ -17,18 +17,16 @@ interface PartnerCardProps {
 export const PartnerCard: React.FC<PartnerCardProps> = ({
     name,
     location,
-    phone,
-    email,
     logoUrl,
     href = "#",
 }) => {
     return (
-        <div className="w-full min-w-[254px] max-w-[288px] bg-white rounded-3xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline -outline-offset-2 outline-stone-50 inline-flex flex-col justify-start items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+        <div className="w-full min-w-[254px] max-w-[288px] h-full bg-white rounded-3xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline -outline-offset-2 outline-stone-50 flex flex-col justify-between items-start overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
 
             {/* Partner Logo Container */}
             <Link
                 href={href}
-                className="self-stretch h-36 relative bg-linear-to-b from-blue-800/0 to-blue-800/10 rounded-3xl outline -outline-offset-2 outline-gray-200 overflow-hidden flex items-center justify-center cursor-pointer z-10"
+                className="self-stretch h-36 relative bg-slate-50 rounded-3xl outline -outline-offset-2 outline-gray-200 overflow-hidden flex items-center justify-center cursor-pointer z-10"
             >
                 {logoUrl ? (
                     <>
@@ -49,8 +47,6 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
                                 className="object-cover"
                             />
                         )}
-                        {/* Brand gradient overlay */}
-                        <div className="absolute inset-0 bg-linear-to-b from-blue-800/0 to-blue-800/10 pointer-events-none mix-blend-multiply" />
                     </>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary font-poppins text-lg font-semibold px-4 text-center">
@@ -60,7 +56,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
             </Link>
 
             {/* Content Area */}
-            <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] flex flex-col justify-start items-start gap-6 overflow-hidden">
+            <div className="self-stretch p-6 rounded-bl-[32px] rounded-br-[32px] grow flex flex-col justify-between items-start gap-6 overflow-hidden">
 
                 {/* Name and Location */}
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
@@ -70,41 +66,6 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
                     <div className="justify-start text-black text-sm font-normal font-poppins">
                         {location}
                     </div>
-                </div>
-
-                {/* Contact Info */}
-                <div className="self-stretch flex flex-col justify-start items-start gap-3">
-
-                    {/* Phone (No Telp) */}
-                    <div className="px-2.5 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2">
-                        <span
-                            style={{
-                                maskImage: 'url("/icons/Message 18.svg")',
-                                WebkitMaskImage: 'url("/icons/Message 18.svg")',
-                            }}
-                            className="size-4 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
-                            aria-hidden="true"
-                        />
-                        <span className="justify-start text-primary text-sm font-normal font-poppins">
-                            {phone}
-                        </span>
-                    </div>
-
-                    {/* Email */}
-                    <div className="px-2.5 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2">
-                        <span
-                            style={{
-                                maskImage: 'url("/icons/Message 36.svg")',
-                                WebkitMaskImage: 'url("/icons/Message 36.svg")',
-                            }}
-                            className="size-4 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
-                            aria-hidden="true"
-                        />
-                        <span className="justify-start text-primary text-sm font-normal font-poppins">
-                            {email}
-                        </span>
-                    </div>
-
                 </div>
 
                 {/* Action Link */}
