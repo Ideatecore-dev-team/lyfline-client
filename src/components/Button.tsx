@@ -3,8 +3,10 @@ import * as React from "react";
 
 export type ButtonVariant =
   | "primary"
+  | "accent"
   | "outline-white"
   | "outline-primary"
+  | "outline-accent"
   | "slate-primary"
   | "ghost-primary"
   | "ghost-white"
@@ -14,15 +16,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: React.ReactNode;
   leftIcon?: string;
   rightIcon?: string;
-  variant?: ButtonVariant | "secondary" | "outline" | "ghost" | "danger";
+  variant?: ButtonVariant | "secondary" | "outline" | "ghost" | "danger" | "red" | "outline-danger" | "outline-red";
   size?: "sm" | "md" | "lg";
   children?: React.ReactNode;
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:from-[#335E99] hover:to-[#28528C]",
+  accent: "bg-[#E02828] text-white hover:bg-[#E02828]/90",
   "outline-white": "bg-transparent text-white outline outline-2 outline-offset-[-2px] outline-white hover:bg-white/10",
   "outline-primary": "bg-transparent text-[#3F71B7] outline outline-2 outline-offset-[-2px] outline-[#3F71B7] hover:bg-[#3F71B7]/10",
+  "outline-accent": "bg-transparent text-[#E02828] outline outline-2 outline-offset-[-2px] outline-[#E02828] hover:bg-[#E02828]/10",
   "slate-primary": "bg-linear-to-r from-[#3F71B7] to-[#3365AC] text-white hover:opacity-95",
   "ghost-primary": "bg-transparent text-[#3F71B7]",
   "ghost-white": "bg-transparent text-white",
@@ -35,7 +39,8 @@ const mapVariant = (v?: ButtonProps["variant"]): ButtonVariant => {
   if (v === "outline") return "outline-primary";
   if (v === "secondary") return "ghost-primary";
   if (v === "ghost") return "ghost-black";
-  if (v === "danger") return "primary";
+  if (v === "danger" || v === "red" || v === "accent") return "accent";
+  if (v === "outline-danger" || v === "outline-red") return "outline-accent";
   return v as ButtonVariant;
 };
 

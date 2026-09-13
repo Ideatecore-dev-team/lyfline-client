@@ -8,8 +8,8 @@ import { isVideoUrl } from "@/lib/media";
 interface PartnerCardProps {
     name: string;
     location: string;
-    phone: string;
-    email: string;
+    phone?: string;
+    email?: string;
     logoUrl?: string;
     href?: string;
 }
@@ -17,8 +17,6 @@ interface PartnerCardProps {
 export const PartnerCard: React.FC<PartnerCardProps> = ({
     name,
     location,
-    phone,
-    email,
     logoUrl,
     href = "#",
 }) => {

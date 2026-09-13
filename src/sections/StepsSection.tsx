@@ -137,7 +137,7 @@ export const StepsSection: React.FC = () => {
 
             {/* Step Content */}
             <div className="self-stretch flex flex-col justify-start items-start">
-              <p className="self-stretch justify-start text-white/80 text-sm font-normal font-poppins leading-relaxed whitespace-pre-line">
+              <p className="self-stretch text-white/80 text-sm font-normal font-poppins leading-relaxed text-justify whitespace-pre-line">
                 {step.description}
               </p>
             </div>

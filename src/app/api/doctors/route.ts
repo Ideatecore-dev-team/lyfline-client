@@ -151,7 +151,20 @@ export async function resolveDoctorByIdOrSlug(idOrSlug: string): Promise<DbDocto
     return (doctor as DbDoctor) || null;
   }
 
-  // Otherwise, resolve as slug
+  // 1. Fast match using cached slug map
+  const slugMap = await getDoctorSlugMap();
+  for (const [docId, docSlug] of slugMap.entries()) {
+    if (docSlug === idOrSlug) {
+      const { data: doctor } = await supabase
+        .from("doctors")
+        .select("*, partners!hospital_id(hospital_name, city, country, address)")
+        .eq("id", docId)
+        .maybeSingle();
+      if (doctor) return (doctor as DbDoctor) || null;
+    }
+  }
+
+  // 2. Otherwise, resolve via suffix and word query
   let baseSlug = idOrSlug;
   let suffixIndex = 0;
 
@@ -194,11 +207,35 @@ export async function resolveDoctorByIdOrSlug(idOrSlug: string): Promise<DbDocto
   }
 
   const { data: doctors } = await dbQuery;
-  if (!doctors || doctors.length === 0) return null;
+  if (doctors && doctors.length > 0) {
+    const candidates = doctors.filter((doc) => slugify(doc.doctor_name) === baseSlug);
+    if (candidates.length > suffixIndex) {
+      return (candidates[suffixIndex] as DbDoctor) || null;
+    }
+  }
 
-  const candidates = doctors.filter((doc) => slugify(doc.doctor_name) === baseSlug);
-  if (candidates.length > suffixIndex) {
-    return (candidates[suffixIndex] as DbDoctor) || null;
+  // 3. Fallback: query all doctors to match against baseSlug or legacy fused slug
+  const { data: allDoctors } = await supabase
+    .from("doctors")
+    .select("*, partners!hospital_id(hospital_name, city, country, address)")
+    .order("created_at", { ascending: true });
+
+  if (allDoctors && allDoctors.length > 0) {
+    const matched = allDoctors.find((doc) => {
+      const currentSlug = slugify(doc.doctor_name);
+      const legacySlug = doc.doctor_name
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "")
+        .replace(/--+/g, "-");
+      return (
+        currentSlug === idOrSlug ||
+        currentSlug === baseSlug ||
+        legacySlug === idOrSlug ||
+        legacySlug === baseSlug
+      );
+    });
+    if (matched) return (matched as DbDoctor) || null;
   }
 
   return null;

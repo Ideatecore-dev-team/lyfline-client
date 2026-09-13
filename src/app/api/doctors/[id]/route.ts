@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap, type DbDoctor } from "../route";
+import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap } from "../route";
 import { getPartnerSlugMap } from "../../partners/route";
 import { slugify } from "@/lib/utils";
 

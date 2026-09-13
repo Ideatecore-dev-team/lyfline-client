@@ -90,7 +90,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                         Simply reach out to LYFLINE and share your medical history with us. Our team will help you explore the most suitable recommended doctors, hospitals or clinics, preferred destinations, treatment options, travel arrangements, and more — all tailored to your needs and wants.
                       </p>
                       <p>
-                        With LYFLINE, there are <span className="font-medium text-primary">no hidden fees, no admin fees and no service fees.</span>
+                        With LYFLINE, <span className="font-medium text-accent">there are no hidden fees, no admin fees and no service fees.</span>
                       </p>
                     </>
                   ) : (
@@ -102,7 +102,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                         Cukup hubungi LYFLINE dan bagikan riwayat kesehatan Anda. Tim kami akan membantu Anda menjelajahi pilihan dokter yang direkomendasikan, rumah sakit atau klinik, tujuan pilihan, opsi perawatan, pengaturan perjalanan, dan banyak lagi — semuanya disesuaikan dengan kebutuhan dan keinginan Anda.
                       </p>
                       <p>
-                        Dengan LYFLINE, tidak ada biaya tersembunyi, tidak ada biaya administrasi, dan tidak ada biaya layanan.
+                        Dengan LYFLINE, <span className="font-medium text-accent">tidak ada biaya tersembunyi, tidak ada biaya administrasi, dan tidak ada biaya layanan.</span>
                       </p>
                     </>
                   )}
@@ -112,7 +112,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                   <Link href="/about">
                     <Button
                       variant="primary"
-                      text={lang === "en" ? "Learn more!" : "Pelajari lebih lanjut!"}
+                      text={lang === "en" ? "Learn more" : "Pelajari lebih lanjut"}
                       className="text-white font-medium shadow-md transition-all duration-300 cursor-pointer"
                     />
                   </Link>
@@ -157,9 +157,9 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                     </div>
                     <div className="self-stretch text-center justify-center text-white text-sm font-normal font-poppins mt-2">
                       {lang === "en" ? (
-                        <>Hospitals & Clinic<br />Clinic Partner</>
+                        <>Hospitals & Clinics<br />Partner</>
                       ) : (
-                        <>Rumah Sakit & Klinik<br />Mitra Klinik</>
+                        <>Mitra Rumah Sakit<br />& Klinik</>
                       )}
                     </div>
                   </div>

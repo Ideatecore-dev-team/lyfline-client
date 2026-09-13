@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DOMPurify from "dompurify";
@@ -9,6 +9,7 @@ import { Badge } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
 import { isVideoUrl } from "@/lib/media";
 import { useLanguage } from "@/context/LanguageContext";
+import { slugify } from "@/lib/utils";
 
 interface DoctorClientProps {
   doctor: Doctor;
@@ -42,8 +43,6 @@ const getFlagUrl = (country: string) => {
       return null;
   }
 };
-
-import { slugify } from "@/lib/utils";
 
 const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
   if (hospitalId) {
@@ -119,8 +118,8 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
           <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-16">
 
             {/* Left Column: Profile Picture Container */}
-            <div className="w-full max-w-67.5 lg:w-67.5 flex flex-col justify-start items-center gap-6 shrink-0">
-              <div className="w-full h-54 relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
+            <div className="w-full max-w-72 lg:w-72 flex flex-col justify-start items-center gap-6 shrink-0">
+              <div className="w-full h-88 relative bg-[#EBEFFA] rounded-3xl border-2 border-primary overflow-hidden shadow-sm">
 
                 {/* Background Decorative Shapes */}
                 <span
@@ -156,7 +155,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                       alt={doctor.name}
                       fill
                       className="object-cover z-10"
-                      sizes="(max-width: 768px) 100vw, 270px"
+                      sizes="(max-width: 768px) 100vw, 288px"
                       priority
                     />
                   )
@@ -194,7 +193,7 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {specialties.map((s, idx) => (
-                        <Badge key={idx} text={s} variant="green" showDot={true} />
+                        <Badge key={idx} text={s} variant="red" showDot={true} />
                       ))}
                     </div>
                   </div>
@@ -213,9 +212,9 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                           {qualifications.map((q: string, idx: number) => (
                             <div
                               key={idx}
-                              className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                              className="px-3 py-1.5 bg-red-50 border border-red-100 rounded-[64px] inline-flex justify-center items-center gap-2"
                             >
-                              <span className="justify-start text-primary text-sm font-normal font-poppins">
+                              <span className="justify-start text-red-600 text-sm font-normal font-poppins">
                                 {q}
                               </span>
                             </div>
@@ -234,9 +233,9 @@ export default function DoctorClient({ doctor }: DoctorClientProps) {
                           {languages.map((l: string, idx: number) => (
                             <div
                               key={idx}
-                              className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                              className="px-3 py-1.5 bg-red-50 border border-red-100 rounded-[64px] inline-flex justify-center items-center gap-2"
                             >
-                              <span className="justify-start text-primary text-sm font-normal font-poppins">
+                              <span className="justify-start text-red-600 text-sm font-normal font-poppins">
                                 {l}
                               </span>
                             </div>

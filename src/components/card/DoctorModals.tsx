@@ -8,6 +8,7 @@ import { Button } from "@/components/Button";
 import { Badge } from "@/components/Badge";
 import { type Doctor } from "@/data/doctorsData";
 import { useLanguage } from "@/context/LanguageContext";
+import { slugify } from "@/lib/utils";
 
 interface DoctorModalsProps {
     isOpen: boolean;
@@ -43,8 +44,6 @@ const getFlagUrl = (country: string) => {
             return null;
     }
 };
-
-import { slugify } from "@/lib/utils";
 
 const getHospitalSlug = (hospitalName: string, hospitalId?: string) => {
     if (hospitalId) {
@@ -125,7 +124,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                             {/* Left Column: Image and Name info */}
                             <div className="w-64 shrink-0 flex flex-col justify-start items-start gap-6">
                                 {/* Doctor Image Container */}
-                                <div className="w-64 h-48 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden">
+                                <div className="w-64 h-64 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden">
                                     {/* Background Decorative Shapes */}
                                     <span
                                         style={{
@@ -181,7 +180,7 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                         </span>
                                         <div className="flex flex-wrap gap-1.5">
                                             {specialties.map((s, idx) => (
-                                                <Badge key={idx} text={s} variant="green" showDot={true} />
+                                                <Badge key={idx} text={s} variant="red" showDot={true} />
                                             ))}
                                         </div>
                                     </div>
@@ -201,9 +200,9 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                                     {qualifications.map((q: string, idx: number) => (
                                                         <div
                                                             key={idx}
-                                                            className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                                                            className="px-3 py-1.5 bg-red-50 border border-red-100 rounded-[64px] inline-flex justify-center items-center gap-2"
                                                         >
-                                                            <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                                            <span className="justify-start text-red-600 text-sm font-normal font-poppins">
                                                                 {q}
                                                             </span>
                                                         </div>
@@ -222,9 +221,9 @@ export const DoctorModals: React.FC<DoctorModalsProps> = ({
                                                     {languages.map((l: string, idx: number) => (
                                                         <div
                                                             key={idx}
-                                                            className="px-3 py-1.5 bg-primary/10 rounded-[64px] inline-flex justify-center items-center gap-2"
+                                                            className="px-3 py-1.5 bg-red-50 border border-red-100 rounded-[64px] inline-flex justify-center items-center gap-2"
                                                         >
-                                                            <span className="justify-start text-primary text-sm font-normal font-poppins">
+                                                            <span className="justify-start text-red-600 text-sm font-normal font-poppins">
                                                                 {l}
                                                             </span>
                                                         </div>

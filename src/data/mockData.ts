@@ -44,8 +44,8 @@ export const SERVICES: MedicalService[] = [
     id: "2",
     title: "Medical Tourism",
     title_id: "Wisata Medis",
-    description: "Access to international standard healthcare facilities, with over 120+ trusted hospitals and clinics across 9 countries, including Indonesia, Malaysia, Singapore, Thailand, China, Japan, India, Taiwan, and South Korea.",
-    description_id: "Akses ke fasilitas kesehatan berstandar internasional, dengan lebih dari 120+ rumah sakit dan klinik terpercaya di 9 negara, termasuk Indonesia, Malaysia, Singapura, Thailand, China, Jepang, India, Taiwan, dan Korea Selatan.",
+    description: "Access to international standard healthcare facilities, with over 120+ trusted hospitals and clinics across 9 countries, including Indonesia, Singapore, Malaysia, Thailand, China, Japan, South Korea, India, and Taiwan.",
+    description_id: "Akses ke fasilitas kesehatan berstandar internasional, dengan lebih dari 120+ rumah sakit dan klinik terpercaya di 9 negara, termasuk Indonesia, Singapura, Malaysia, Thailand, China, Jepang, Korea Selatan, India, dan Taiwan.",
     iconName: "LocationMed",
     bullets: [
       "Planning of medical travel routes and comfortable accommodations",
@@ -89,13 +89,15 @@ export const SERVICES: MedicalService[] = [
       "Routine and scheduled visits by licensed doctors, nurses, physiotherapists and other medical staff",
       "Post-operative intensive care and chronic disease management at home",
       "Provision and arrangements of medical equipments and medicines",
-      "Periodic and remote monitoring of the patient's health progress"
+      "Periodic and remote monitoring of the patient's health progress",
+      "IV Drips, Infus, Lab and Blood Test, Doctor Visit, Stay-in Nurse, Physiotherapy, Telemedicine, and Medicine Delivery"
     ],
     bullets_id: [
       "Kunjungan rutin dan terjadwal oleh dokter, perawat, fisioterapis, dan staf medis berlisensi lainnya",
       "Perawatan intensif pasca-operasi dan manajemen penyakit kronis di rumah",
       "Penyediaan dan pengaturan peralatan medis serta obat-obatan",
-      "Pemantauan berkala dan jarak jauh terhadap perkembangan kesehatan pasien"
+      "Pemantauan berkala dan jarak jauh terhadap perkembangan kesehatan pasien",
+      "IV Drips, Infus, Tes Lab dan Darah, Kunjungan Dokter, Perawat Tinggal (Stay-in Nurse), Fisioterapi, Telemedisin, dan Pengantaran Obat"
     ]
   },
   {

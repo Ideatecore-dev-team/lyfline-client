@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
-import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap, type DbPartner } from "../route";
+import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap } from "../route";
 import { slugify } from "@/lib/utils";
 
 interface RouteContext {

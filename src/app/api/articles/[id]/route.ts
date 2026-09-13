@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { mapDbArticleToArticle, resolveArticleByIdOrSlug, getArticleSlugMap, type DbArticle } from "../route";
+import { mapDbArticleToArticle, resolveArticleByIdOrSlug, getArticleSlugMap } from "../route";
 import { slugify } from "@/lib/utils";
 
 interface RouteContext {
