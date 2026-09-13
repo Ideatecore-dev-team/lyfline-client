@@ -76,7 +76,7 @@ export async function generateMetadata(
 
 export default async function ArticleDetailPage({ params }: PageProps) {
   const { id } = await params;
-  
+
   const article = await getArticleData(id);
   if (!article) {
     notFound();

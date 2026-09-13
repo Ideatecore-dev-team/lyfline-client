@@ -26,6 +26,30 @@ const cardVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
+const PREFERRED_COUNTRY_ORDER = [
+  "Indonesia",
+  "Singapore",
+  "Malaysia",
+  "Thailand",
+  "China",
+  "Japan",
+  "South Korea",
+  "Korea",
+  "India",
+  "Taiwan",
+];
+
+const getCountryRank = (country: string) => {
+  const normalized = country.trim().toLowerCase();
+  if (normalized === "south korea" || normalized === "korea") {
+    return 6;
+  }
+  const idx = PREFERRED_COUNTRY_ORDER.findIndex(
+    (c) => c.toLowerCase() === normalized
+  );
+  return idx !== -1 ? idx : 999;
+};
+
 export default function PartnersPage() {
   const { lang } = useLanguage();
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -73,15 +97,25 @@ export default function PartnersPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Compute dynamic countries list from fetched partners
+  // Compute dynamic countries list from fetched partners sorted by preferred country order
   const countriesList = useMemo(() => {
-    const list = ["All Countries"];
+    const uniqueCountries = new Set<string>();
     partners.forEach((p) => {
-      if (p.country && !list.includes(p.country)) {
-        list.push(p.country);
+      if (p.country && p.country.trim()) {
+        uniqueCountries.add(p.country.trim());
       }
     });
-    return list;
+
+    const sortedCountries = Array.from(uniqueCountries).sort((a, b) => {
+      const rankA = getCountryRank(a);
+      const rankB = getCountryRank(b);
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+      return a.localeCompare(b);
+    });
+
+    return ["All Countries", ...sortedCountries];
   }, [partners]);
 
   // Filter partners based on country

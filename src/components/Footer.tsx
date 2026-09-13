@@ -147,7 +147,7 @@ export const Footer: React.FC = () => {
 
                 {/* Instagram (using public/icons) */}
                 <a
-                  href="https://www.instagram.com/lyfline.id?igsh=MnNraDVycnYwamU4"
+                  href="https://www.instagram.com/lyfline.id/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -155,24 +155,34 @@ export const Footer: React.FC = () => {
                   <IconButton variant="primary-outline" icon="Instagram" />
                 </a>
 
-                {/* Facebook (using public/icons) */}
+                {/* Threads (using public/icons) */}
                 <a
-                  href="https://www.facebook.com/lyfline.id/"
+                  href="https://www.threads.com/@lyfline.id"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Facebook"
+                  aria-label="Threads"
                 >
-                  <IconButton variant="primary-outline" icon="facebook" />
+                  <IconButton variant="primary-outline" icon="Threats" />
                 </a>
 
                 {/* Tiktok (using public/icons) */}
                 <a
-                  href="https://www.tiktok.com/@lyfline.id?is_from_webapp=1&sender_device=pc"
+                  href="https://www.tiktok.com/@lyfline.id"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Tiktok"
                 >
                   <IconButton variant="primary-outline" icon="tiktok" />
+                </a>
+
+                {/* YouTube (using public/icons) */}
+                <a
+                  href="https://youtube.com/@lyflineid"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                >
+                  <IconButton variant="primary-outline" icon="youtube" />
                 </a>
 
               </div>

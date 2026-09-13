@@ -37,9 +37,9 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-67.5 h-98 bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden">
+      <div className="w-full max-w-67.5 min-h-[440px] bg-white rounded-4xl shadow-[0px_2px_2px_0px_rgba(0,0,0,0.10)] outline-2 -outline-offset-2 outline-stone-50 flex flex-col justify-start items-start overflow-hidden">
         {/* Skeleton Image Area */}
-        <div className="self-stretch h-48 skeleton-shimmer rounded-3xl shrink-0" />
+        <div className="self-stretch h-64 skeleton-shimmer rounded-3xl shrink-0" />
 
         {/* Skeleton Content */}
         <div className="self-stretch p-6 rounded-bl-4xl rounded-br-4xl flex flex-col grow justify-between gap-6 overflow-hidden">
@@ -70,7 +70,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
             e.preventDefault();
             onViewDetails();
           }}
-          className="self-stretch h-48 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden shrink-0 cursor-pointer z-20"
+          className="self-stretch h-64 relative bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden shrink-0 cursor-pointer z-20"
         >
           {/* Background Decorative Shapes */}
           <span
@@ -117,7 +117,7 @@ export const DoctorCard: React.FC<DoctorCardProps> = ({
       ) : (
         <Link
           href={href}
-          className="self-stretch h-48 relative block bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden shrink-0 z-20"
+          className="self-stretch h-64 relative block bg-[#EBEFFA] rounded-3xl outline-2 outline-gray-200 overflow-hidden shrink-0 z-20"
         >
           {/* Background Decorative Shapes */}
           <span

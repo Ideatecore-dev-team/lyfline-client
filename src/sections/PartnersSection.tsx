@@ -40,7 +40,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
       flagSrc: "/Flags/JP - Japan.svg"
     },
     {
-      name: lang === "en" ? "Korea" : "Korea",
+      name: lang === "en" ? "South Korea" : "Korea Selatan",
       flagSrc: "/Flags/KR - Korea (South).svg"
     },
     {
@@ -147,10 +147,10 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ isHomePage = f
           <div className="flex justify-center mt-4">
             <Link href="/partners">
               <Button
-                variant="outline-primary"
+                variant="accent"
                 text={lang === "en" ? "View All Partners" : "Lihat Semua Mitra"}
                 rightIcon="Right 1"
-                className="h-12 px-6 outline-2  transition-all duration-300"
+                className="h-12 px-6 shadow-sm hover:shadow-md transition-all duration-300"
               />
             </Link>
           </div>

@@ -84,7 +84,20 @@ export async function resolvePartnerByIdOrSlug(idOrSlug: string): Promise<DbPart
     return (partner as DbPartner) || null;
   }
 
-  // Otherwise, resolve as slug
+  // 1. Fast match using cached slug map
+  const slugMap = await getPartnerSlugMap();
+  for (const [partId, partSlug] of slugMap.entries()) {
+    if (partSlug === idOrSlug) {
+      const { data: partner } = await supabase
+        .from("partners")
+        .select("*")
+        .eq("id", partId)
+        .maybeSingle();
+      if (partner) return (partner as DbPartner) || null;
+    }
+  }
+
+  // 2. Otherwise, resolve via suffix and word query
   let baseSlug = idOrSlug;
   let suffixIndex = 0;
 
@@ -124,11 +137,25 @@ export async function resolvePartnerByIdOrSlug(idOrSlug: string): Promise<DbPart
   }
 
   const { data: partners } = await dbQuery;
-  if (!partners || partners.length === 0) return null;
+  if (partners && partners.length > 0) {
+    const candidates = partners.filter((p) => slugify(p.hospital_name) === baseSlug);
+    if (candidates.length > suffixIndex) {
+      return (candidates[suffixIndex] as DbPartner) || null;
+    }
+  }
 
-  const candidates = partners.filter((p) => slugify(p.hospital_name) === baseSlug);
-  if (candidates.length > suffixIndex) {
-    return (candidates[suffixIndex] as DbPartner) || null;
+  // 3. Fallback: match against all partners
+  const { data: allPartners } = await supabase
+    .from("partners")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (allPartners && allPartners.length > 0) {
+    const matched = allPartners.find((p) => {
+      const currentSlug = slugify(p.hospital_name);
+      return currentSlug === idOrSlug || currentSlug === baseSlug;
+    });
+    if (matched) return (matched as DbPartner) || null;
   }
 
   return null;

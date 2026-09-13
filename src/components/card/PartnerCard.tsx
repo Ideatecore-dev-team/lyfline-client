@@ -8,8 +8,8 @@ import { isVideoUrl } from "@/lib/media";
 interface PartnerCardProps {
     name: string;
     location: string;
-    phone: string;
-    email: string;
+    phone?: string;
+    email?: string;
     logoUrl?: string;
     href?: string;
 }
