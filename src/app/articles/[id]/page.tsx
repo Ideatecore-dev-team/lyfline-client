@@ -44,7 +44,7 @@ const getOtherArticles = cache(async (excludeId: string) => {
   const fileList = await getBannerFileList();
   const slugMap = await getArticleSlugMap();
 
-  return (articles || []).map((art: unknown) => {
+  return (articles || []).map((art: DbArticle) => {
     const mapped = mapDbArticleToArticle(art as DbArticle, fileList);
     mapped.slug = slugMap.get(mapped.id) || slugify(mapped.title);
     return mapped;
@@ -76,7 +76,7 @@ export async function generateMetadata(
 
 export default async function ArticleDetailPage({ params }: PageProps) {
   const { id } = await params;
-  
+
   const article = await getArticleData(id);
   if (!article) {
     notFound();
