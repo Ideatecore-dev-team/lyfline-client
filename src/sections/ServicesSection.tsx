@@ -53,11 +53,11 @@ const getLocalizedService = (id: string, defaultTitle: string, defaultDesc: stri
     "3": {
       en: {
         title: "Customized Medical Check-Up (MCU)",
-        desc: "Comprehensive medical check-up packages specifically designed to adapt to your profile, age, and physical condition."
+        desc: "Fast and secure emergency medical transport to preferred healthcare facilities equipped with adequate life-support."
       },
       id: {
         title: "Customized Medical Check-Up (MCU)",
-        desc: "Paket pemeriksaan medis menyeluruh yang dirancang secara khusus untuk menyesuaikan dengan profil, usia, dan kondisi fisik Anda."
+        desc: "Layanan transportasi medis darurat yang cepat dan aman ke fasilitas kesehatan pilihan yang dilengkapi dengan peralatan penunjang hidup yang memadai."
       }
     },
     "4": {

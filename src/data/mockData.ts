@@ -62,8 +62,8 @@ export const SERVICES: MedicalService[] = [
     id: "3",
     title: "Customized Medical Check-Up (MCU) for Individuals & Corporates",
     title_id: "Customized Medical Check-Up (MCU) untuk Individu & Korporat",
-    description: "Comprehensive medical check-up packages specifically designed to adapt to your profile, age, and physical condition.",
-    description_id: "Paket pemeriksaan medis menyeluruh yang dirancang secara khusus untuk menyesuaikan dengan profil, usia, dan kondisi fisik Anda.",
+    description: "Fast and secure emergency medical transport to preferred healthcare facilities equipped with adequate life-support.",
+    description_id: "Layanan transportasi medis darurat yang cepat dan aman ke fasilitas kesehatan pilihan yang dilengkapi dengan peralatan penunjang hidup yang memadai.",
     iconName: "Checkup",
     bullets: [
       "Initial health risk assessment through pre-MCU consultation sessions",

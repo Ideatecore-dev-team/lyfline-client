@@ -66,7 +66,7 @@ export const ServiceDetailCard: React.FC<ServiceDetailCardProps> = ({
                         <h3 className="self-stretch justify-start text-red-600 text-xl font-semibold font-poppins leading-tight">
                             {title}
                         </h3>
-                        <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed">
+                        <p className="self-stretch justify-start text-black text-base font-normal font-poppins leading-relaxed text-justify">
                             {description}
                         </p>
                     </div>

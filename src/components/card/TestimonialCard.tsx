@@ -34,7 +34,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name })
 
             {/* Quote Text */}
             <div className="self-stretch flex flex-col justify-start items-start gap-6 relative z-10 flex-1 my-4 overflow-y-auto no-scrollbar" style={{ transform: "translateZ(10px)" }}>
-                <p className="self-stretch text-primary text-sm font-normal font-poppins leading-relaxed whitespace-pre-line">
+                <p className="self-stretch text-primary text-sm font-normal font-poppins leading-relaxed whitespace-pre-line text-justify">
                     {quote}
                 </p>
             </div>

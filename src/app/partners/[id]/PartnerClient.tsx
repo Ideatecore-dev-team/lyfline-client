@@ -49,6 +49,9 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [doctorsLoading, setDoctorsLoading] = useState(true);
+  const [showAllDoctors, setShowAllDoctors] = useState(false);
+
+  const displayedDoctors = showAllDoctors ? doctors : doctors.slice(0, 8);
 
   const isIndonesian = lang === "id";
   const displayDesc = isIndonesian && partner.descriptionIndonesia
@@ -368,8 +371,8 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
                 Array.from({ length: 4 }).map((_, i) => (
                   <DoctorCard key={`skeleton-${i}`} isLoading={true} />
                 ))
-              ) : doctors.length > 0 ? (
-                doctors.map((doc) => (
+              ) : displayedDoctors.length > 0 ? (
+                displayedDoctors.map((doc) => (
                   <DoctorCard
                     key={doc.id}
                     name={doc.name}
@@ -388,14 +391,20 @@ export default function PartnerClient({ partner }: PartnerClientProps) {
 
           </div>
 
-          {/* View All Doctor CTA Button */}
-          <Button
-            variant="outline-primary"
-            text={lang === "en" ? "View All Doctors" : "Lihat Semua Dokter"}
-            rightIcon="Stethoscope"
-            disabled
-            className="font-poppins text-base font-medium cursor-not-allowed"
-          />
+          {/* View All Doctor CTA Button (Only show if hospital has more than 8 doctors) */}
+          {doctors.length > 8 && (
+            <Button
+              variant="outline-primary"
+              text={
+                showAllDoctors
+                  ? (lang === "en" ? "Show Fewer Doctors" : "Tampilkan Lebih Sedikit")
+                  : (lang === "en" ? "View All Doctors" : "Lihat Semua Dokter")
+              }
+              rightIcon={showAllDoctors ? "Up 1" : "Stethoscope"}
+              onClick={() => setShowAllDoctors(!showAllDoctors)}
+              className="font-poppins text-base font-medium cursor-pointer transition-all duration-300"
+            />
+          )}
 
         </div>
 

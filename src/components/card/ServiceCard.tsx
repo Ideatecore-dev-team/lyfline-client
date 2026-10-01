@@ -61,7 +61,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
             {title}
           </h3>
           <p
-            className={`self-stretch justify-start text-base font-normal font-poppins leading-relaxed line-clamp-3 ${isBlue ? "text-white/85" : "text-black"
+            className={`self-stretch justify-start text-base font-normal font-poppins leading-relaxed line-clamp-3 text-justify ${isBlue ? "text-white/85" : "text-black"
               }`}
           >
             {description}

@@ -116,7 +116,7 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed transition-colors duration-300">
+              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
                 {lang === "en" ? (
                   "To deliver personalised, client-centred healthcare solutions tailored to individual needs."
                 ) : (
@@ -161,7 +161,7 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed transition-colors duration-300">
+              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
                 {lang === "en" ? (
                   "To provide accurate, reliable, and up-to-date medical information clients can trust."
                 ) : (
@@ -206,7 +206,7 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed transition-colors duration-300">
+              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
                 {lang === "en" ? (
                   "To ensure a seamless medical journey by managing every aspect of the medical travel experience holistically."
                 ) : (
@@ -251,7 +251,7 @@ export const VisionMissionSection: React.FC = () => {
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed transition-colors duration-300">
+              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
                 {lang === "en" ? (
                   "To position Indonesia as a favorable destination on the global medical travel map."
                 ) : (
