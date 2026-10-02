@@ -104,7 +104,7 @@ export const SERVICES: MedicalService[] = [
     id: "5",
     title: "Emergency Medical Evacuation",
     title_id: "Evakuasi Medis Darurat",
-    description: "A fast, reliable and secure emergency medical transport service to preferred healthcare facilities equipped with adequate life-support.",
+    description: "A fast, reliable and secure emergency transport to preferred healthcare facilities equipped with adequate life-support.",
     description_id: "Layanan transportasi medis darurat yang cepat, andal, dan aman ke fasilitas kesehatan pilihan yang dilengkapi dengan peralatan penunjang hidup yang memadai.",
     iconName: "Ambulance - Fast",
     bullets: [

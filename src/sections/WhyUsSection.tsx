@@ -9,14 +9,19 @@ const headerDropDown: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const colLeft: Variants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } },
+const gridContainerVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
 };
 
-const colRight: Variants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut", delay: 0.1 } },
+const cardItemVariant: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
 interface Benefit {
@@ -34,7 +39,7 @@ export const WhyUsSection: React.FC = () => {
       id: "1",
       title: lang === "en" ? "Fast Response" : "Tanggapan Cepat",
       description: lang === "en"
-        ? "We are available 24/7 to provide instant medical aid in every critical moment.s"
+        ? "We are available 24/7 to provide instant medical aid in every critical moment."
         : "Kami tersedia 24/7 untuk memberikan bantuan medis instan di setiap momen kritis.",
       iconName: "Message 18",
     },
@@ -63,6 +68,33 @@ export const WhyUsSection: React.FC = () => {
       iconName: "Shield Tick",
     },
   ];
+
+  const renderBenefitCard = (benefit: Benefit) => (
+    <div
+      key={benefit.id}
+      className="why-us-card self-stretch w-full h-full inline-flex justify-start items-start gap-3 shadow-sm"
+    >
+      {/* Icon container */}
+      <div className="card-icon-box p-4 rounded-2xl flex justify-center items-center shrink-0">
+        <span
+          style={{
+            maskImage: `url("/icons/${benefit.iconName}.svg")`,
+            WebkitMaskImage: `url("/icons/${benefit.iconName}.svg")`,
+          }}
+          className="card-icon size-6 mask-contain mask-no-repeat mask-center shrink-0"
+          aria-hidden="true"
+        />
+      </div>
+      <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
+        <h3 className="card-title self-stretch justify-start text-base font-medium font-poppins leading-snug">
+          {benefit.title}
+        </h3>
+        <p className="card-desc self-stretch justify-start text-sm font-normal font-poppins leading-relaxed text-justify">
+          {benefit.description}
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <section id="why-us" className="bg-white w-full pb-16 relative overflow-hidden flex flex-col justify-start items-center">
@@ -95,132 +127,30 @@ export const WhyUsSection: React.FC = () => {
           </h2>
         </motion.div>
 
-        {/* 2-Column Benefits Layout */}
-        <div className="self-stretch flex flex-col md:flex-row justify-start items-start gap-4">
-
-          {/* Column 1 (No Hidden Fees, End-to-End Guided Care) */}
-          <motion.div
-            className="flex-1 flex flex-col justify-start items-start gap-4 w-full"
-            variants={colLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-          >
-
-            {/* Card 1: No Hidden Fees (Hover/Highlighted State) */}
-            <div
-              className="self-stretch p-6 bg-primary rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              {/* White Icon container */}
-              <div className="p-4 bg-slate-100 rounded-2xl border border-primary flex justify-center items-center shrink-0">
-                <span
-                  style={{
-                    maskImage: `url("/icons/${benefits[0].iconName}.svg")`,
-                    WebkitMaskImage: `url("/icons/${benefits[0].iconName}.svg")`,
-                  }}
-                  className="size-6 bg-primary mask-contain mask-no-repeat mask-center shrink-0"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                <h3 className="self-stretch justify-start text-white text-base font-medium font-poppins leading-snug">
-                  {benefits[0].title}
-                </h3>
-                <p className="self-stretch justify-start text-white text-sm font-normal font-poppins opacity-90 leading-relaxed">
-                  {benefits[0].description}
-                </p>
-              </div>
-            </div>
-
-            {/* Card 2: End-to-End Guided Care (Default State) */}
-            <div
-              className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
-            >
-              {/* Default Slate Icon container */}
-              <div className="p-4 bg-primary rounded-2xl border border-primary flex justify-center items-center shrink-0">
-                <span
-                  style={{
-                    maskImage: `url("/icons/${benefits[1].iconName}.svg")`,
-                    WebkitMaskImage: `url("/icons/${benefits[1].iconName}.svg")`,
-                  }}
-                  className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                <h3 className="self-stretch justify-start text-primary text-base font-medium font-poppins leading-snug">
-                  {benefits[1].title}
-                </h3>
-                <p className="self-stretch justify-start text-black text-sm font-normal font-poppins opacity-80 leading-relaxed">
-                  {benefits[1].description}
-                </p>
-              </div>
-            </div>
-
+        {/* 2-Column Responsive Grid Layout where row cards match height */}
+        <motion.div
+          className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch"
+          variants={gridContainerVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
+          {/* Row 1: Fast Response & Cost Transparency */}
+          <motion.div variants={cardItemVariant} className="h-full flex">
+            {renderBenefitCard(benefits[0])}
+          </motion.div>
+          <motion.div variants={cardItemVariant} className="h-full flex">
+            {renderBenefitCard(benefits[2])}
           </motion.div>
 
-          {/* Column 2 (Flexible Treatment Packages, Transparent Procedures & Info) */}
-          <motion.div
-            className="flex-1 flex flex-col justify-start items-start gap-4 w-full"
-            variants={colRight}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-          >
-
-            {/* Card 3: Flexible Treatment Packages (Default State) */}
-            <div
-              className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
-            >
-              {/* Default Slate Icon container */}
-              <div className="p-4 bg-primary rounded-2xl border border-primary flex justify-center items-center shrink-0">
-                <span
-                  style={{
-                    maskImage: `url("/icons/${benefits[2].iconName}.svg")`,
-                    WebkitMaskImage: `url("/icons/${benefits[2].iconName}.svg")`,
-                  }}
-                  className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                <h3 className="self-stretch justify-start text-primary text-base font-medium font-poppins leading-snug">
-                  {benefits[2].title}
-                </h3>
-                <p className="self-stretch justify-start text-black text-sm font-normal font-poppins opacity-80 leading-relaxed">
-                  {benefits[2].description}
-                </p>
-              </div>
-            </div>
-
-            {/* Card 4: Transparent Procedures & Info (Default State) */}
-            <div
-              className="self-stretch p-6 bg-primary/10 rounded-[32px] inline-flex justify-start items-start gap-3 border border-transparent hover:border-primary/20 hover:bg-primary/15 transition-all duration-300"
-            >
-              {/* Default Slate Icon container */}
-              <div className="p-4 bg-primary rounded-2xl border border-primary flex justify-center items-center shrink-0">
-                <span
-                  style={{
-                    maskImage: `url("/icons/${benefits[3].iconName}.svg")`,
-                    WebkitMaskImage: `url("/icons/${benefits[3].iconName}.svg")`,
-                  }}
-                  className="size-6 bg-white mask-contain mask-no-repeat mask-center shrink-0"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="flex-1 inline-flex flex-col justify-start items-start gap-1">
-                <h3 className="self-stretch justify-start text-primary text-base font-medium font-poppins leading-snug">
-                  {benefits[3].title}
-                </h3>
-                <p className="self-stretch justify-start text-black text-sm font-normal font-poppins opacity-80 leading-relaxed">
-                  {benefits[3].description}
-                </p>
-              </div>
-            </div>
-
+          {/* Row 2: Seamless Experience & Personalized Service */}
+          <motion.div variants={cardItemVariant} className="h-full flex">
+            {renderBenefitCard(benefits[1])}
           </motion.div>
-
-        </div>
+          <motion.div variants={cardItemVariant} className="h-full flex">
+            {renderBenefitCard(benefits[3])}
+          </motion.div>
+        </motion.div>
 
       </div>
 

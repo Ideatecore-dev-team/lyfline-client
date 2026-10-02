@@ -96,6 +96,18 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
           />
         </div>
       </div>
+
+      {/* Background Decorative Quarter Circle */}
+      <span
+        style={{
+          maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+          WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
+        }}
+        className={`absolute top-0 right-0 size-[80px] pointer-events-none select-none mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 transition-colors duration-300 ${
+          isBlue ? "bg-[#4D7CBC]/40 group-hover:bg-[#4D7CBC]/60" : "bg-[#F1F7FF] group-hover:bg-[#E2EDFB]"
+        }`}
+        aria-hidden="true"
+      />
     </div>
   );
 };

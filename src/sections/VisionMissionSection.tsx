@@ -93,30 +93,22 @@ export const VisionMissionSection: React.FC = () => {
 
           {/* Card 1: Client-Centred Solutions */}
           <motion.div
-            className="w-full p-6 relative bg-white hover:bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 hover:border-primary group lg:min-h-[180px] cursor-pointer transition-colors duration-300"
+            className="mission-card w-full relative flex flex-col justify-start items-start gap-4 overflow-hidden lg:min-h-[180px] shadow-sm"
             variants={missionCardItem}
-            whileHover={{
-              y: -10,
-              rotateX: 8,
-              rotateY: -8,
-              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
-            <div className="p-4 bg-accent group-hover:bg-white rounded-2xl inline-flex justify-start items-center gap-2.5 z-10 transition-colors duration-300">
+            <div className="mission-icon-box p-4 rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
                   maskImage: 'url("/icons/Location Add.svg")',
                   WebkitMaskImage: 'url("/icons/Location Add.svg")',
                 }}
-                className="size-6 bg-white group-hover:bg-primary mask-contain mask-no-repeat mask-center shrink-0 transition-colors duration-300"
+                className="mission-icon size-6 mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
               />
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
+              <p className="mission-text text-sm font-normal font-poppins leading-relaxed text-justify">
                 {lang === "en" ? (
                   "To deliver personalised, client-centred healthcare solutions tailored to individual needs."
                 ) : (
@@ -131,37 +123,29 @@ export const VisionMissionSection: React.FC = () => {
                 maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                 WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
               }}
-              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] group-hover:bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-all duration-500"
+              className="mission-quarter-circle absolute top-0 right-0 size-[80px] pointer-events-none select-none mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90"
               aria-hidden="true"
             />
           </motion.div>
 
           {/* Card 2: Trusted Medical Info */}
           <motion.div
-            className="w-full p-6 relative bg-white hover:bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 hover:border-primary group lg:min-h-[180px] cursor-pointer transition-colors duration-300"
+            className="mission-card w-full relative flex flex-col justify-start items-start gap-4 overflow-hidden lg:min-h-[180px] shadow-sm"
             variants={missionCardItem}
-            whileHover={{
-              y: -10,
-              rotateX: 8,
-              rotateY: -8,
-              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
-            <div className="p-4 bg-accent group-hover:bg-white rounded-2xl inline-flex justify-start items-center gap-2.5 z-10 transition-colors duration-300">
+            <div className="mission-icon-box p-4 rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
                   maskImage: 'url("/icons/Star 1.svg")',
                   WebkitMaskImage: 'url("/icons/Star 1.svg")',
                 }}
-                className="size-6 bg-white group-hover:bg-primary mask-contain mask-no-repeat mask-center shrink-0 transition-colors duration-300"
+                className="mission-icon size-6 mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
               />
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
+              <p className="mission-text text-sm font-normal font-poppins leading-relaxed text-justify">
                 {lang === "en" ? (
                   "To provide accurate, reliable, and up-to-date medical information clients can trust."
                 ) : (
@@ -176,37 +160,29 @@ export const VisionMissionSection: React.FC = () => {
                 maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                 WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
               }}
-              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] group-hover:bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-all duration-500"
+              className="mission-quarter-circle absolute top-0 right-0 size-[80px] pointer-events-none select-none mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90"
               aria-hidden="true"
             />
           </motion.div>
 
           {/* Card 3: Seamless Journey */}
           <motion.div
-            className="w-full p-6 relative bg-white hover:bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 hover:border-primary group lg:min-h-[180px] cursor-pointer transition-colors duration-300"
+            className="mission-card w-full relative flex flex-col justify-start items-start gap-4 overflow-hidden lg:min-h-[180px] shadow-sm"
             variants={missionCardItem}
-            whileHover={{
-              y: -10,
-              rotateX: 8,
-              rotateY: -8,
-              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
-            <div className="p-4 bg-accent group-hover:bg-white rounded-2xl inline-flex justify-start items-center gap-2.5 z-10 transition-colors duration-300">
+            <div className="mission-icon-box p-4 rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
                   maskImage: 'url("/icons/Activity 1.svg")',
                   WebkitMaskImage: 'url("/icons/Activity 1.svg")',
                 }}
-                className="size-6 bg-white group-hover:bg-primary mask-contain mask-no-repeat mask-center shrink-0 transition-colors duration-300"
+                className="mission-icon size-6 mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
               />
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
+              <p className="mission-text text-sm font-normal font-poppins leading-relaxed text-justify">
                 {lang === "en" ? (
                   "To ensure a seamless medical journey by managing every aspect of the medical travel experience holistically."
                 ) : (
@@ -221,37 +197,29 @@ export const VisionMissionSection: React.FC = () => {
                 maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                 WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
               }}
-              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] group-hover:bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-all duration-500"
+              className="mission-quarter-circle absolute top-0 right-0 size-[80px] pointer-events-none select-none mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90"
               aria-hidden="true"
             />
           </motion.div>
 
           {/* Card 4: Global Medical Tourism */}
           <motion.div
-            className="w-full p-6 relative bg-white hover:bg-primary rounded-3xl flex flex-col justify-start items-start gap-4 overflow-hidden border border-gray-100 hover:border-primary group lg:min-h-[180px] cursor-pointer transition-colors duration-300"
+            className="mission-card w-full relative flex flex-col justify-start items-start gap-4 overflow-hidden lg:min-h-[180px] shadow-sm"
             variants={missionCardItem}
-            whileHover={{
-              y: -10,
-              rotateX: 8,
-              rotateY: -8,
-              boxShadow: "0px 20px 30px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            style={{ transformStyle: "preserve-3d", perspective: 1000 }}
           >
-            <div className="p-4 bg-accent group-hover:bg-white rounded-2xl inline-flex justify-start items-center gap-2.5 z-10 transition-colors duration-300">
+            <div className="mission-icon-box p-4 rounded-2xl inline-flex justify-start items-center gap-2.5 z-10">
               <span
                 style={{
                   maskImage: 'url("/icons/Like 1.svg")',
                   WebkitMaskImage: 'url("/icons/Like 1.svg")',
                 }}
-                className="size-6 bg-white group-hover:bg-primary mask-contain mask-no-repeat mask-center shrink-0 transition-colors duration-300"
+                className="mission-icon size-6 mask-contain mask-no-repeat mask-center shrink-0"
                 aria-hidden="true"
               />
             </div>
 
             <div className="flex flex-col justify-start items-start gap-2 z-10">
-              <p className="text-black group-hover:text-white text-sm font-normal font-poppins leading-relaxed text-justify transition-colors duration-300">
+              <p className="mission-text text-sm font-normal font-poppins leading-relaxed text-justify">
                 {lang === "en" ? (
                   "To position Indonesia as a favorable destination on the global medical travel map."
                 ) : (
@@ -266,7 +234,7 @@ export const VisionMissionSection: React.FC = () => {
                 maskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
                 WebkitMaskImage: 'url("/icons/assets/lyflineQuarterCircle.svg")',
               }}
-              className="absolute top-0 right-0 size-[80px] pointer-events-none select-none bg-[#F1F7FF] group-hover:bg-[#4D7CBC] mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90 group-hover:scale-110 transition-all duration-500"
+              className="mission-quarter-circle absolute top-0 right-0 size-[80px] pointer-events-none select-none mask-contain mask-no-repeat mask-center shrink-0 z-0 rotate-90"
               aria-hidden="true"
             />
           </motion.div>

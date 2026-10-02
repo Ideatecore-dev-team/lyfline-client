@@ -73,11 +73,11 @@ const getLocalizedService = (id: string, defaultTitle: string, defaultDesc: stri
     "5": {
       en: {
         title: "Emergency Medical Evacuation",
-        desc: "A fast, reliable and secure emergency medical transport service to preferred healthcare facilities equipped with life-support."
+        desc: "A fast, reliable and secure emergency transport to preferred healthcare facilities equipped with adequate life-support."
       },
       id: {
         title: "Evakuasi Medis Darurat",
-        desc: "Layanan transportasi medis darurat yang cepat, andal, dan aman ke fasilitas kesehatan pilihan dengan peralatan penunjang hidup."
+        desc: "Layanan transportasi medis darurat yang cepat, andal, dan aman ke fasilitas kesehatan pilihan yang dilengkapi dengan peralatan penunjang hidup yang memadai."
       }
     }
   };
