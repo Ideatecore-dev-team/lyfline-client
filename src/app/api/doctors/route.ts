@@ -243,6 +243,62 @@ export async function resolveDoctorByIdOrSlug(idOrSlug: string): Promise<DbDocto
 
 import { getPartnerSlugMap } from "../partners/route";
 
+interface PriorityRule {
+  nameKeywords: string[];
+  hospitalKeywords?: string[];
+}
+
+const DEFAULT_PRIORITY_DOCTORS: PriorityRule[] = [
+  // 1. Dr. Damian Wong - Island
+  { nameKeywords: ["damian", "wong"], hospitalKeywords: ["island"] },
+  // 2. Dr. Lee Woo Guan - KPJ Kuching
+  { nameKeywords: ["lee", "woo", "guan"], hospitalKeywords: ["kpj", "kuching"] },
+  // 3. Dr. Hoe Chee Hoong - Gleneagles Penang
+  { nameKeywords: ["hoe", "chee", "hoong"], hospitalKeywords: ["gleneagles", "penang"] },
+  // 4. Dr. Lim Seh Guan - Loh Guan Lye
+  { nameKeywords: ["lim", "seh", "guan"], hospitalKeywords: ["loh", "guan", "lye"] },
+  // 5. Dato Dr. M. Amir Shah - Island
+  { nameKeywords: ["amir", "shah"], hospitalKeywords: ["island"] },
+  // 6. Dr. Tan Eng Soon - Sunway
+  { nameKeywords: ["tan", "eng", "soon"], hospitalKeywords: ["sunway"] },
+  // 7. Dr. Shanthi Palaniappan
+  { nameKeywords: ["shanthi", "palaniappan"] },
+  // 8. Dr. Ibtisam Mokhtar - GKL
+  { nameKeywords: ["ibtisam", "mokhtar"], hospitalKeywords: ["gleneagles", "gkl", "kuala lumpur"] },
+  // 9. Dr. Paul Yap - GKL
+  { nameKeywords: ["paul", "yap"], hospitalKeywords: ["gleneagles", "gkl", "kuala lumpur"] },
+  // 10. Dr. Tham Yik Seng - GKL
+  { nameKeywords: ["tham", "yik", "seng"], hospitalKeywords: ["gleneagles", "gkl", "kuala lumpur"] },
+  // 11. dr. Hendro Adi Kuncoro - Royal
+  { nameKeywords: ["hendro", "adi", "kuncoro"], hospitalKeywords: ["royal"] },
+  // 12. dr. Charles Hoo - mypda lebak
+  { nameKeywords: ["charles", "hoo"], hospitalKeywords: ["mayapada", "mypda", "lebak"] },
+  // 13. dr. Novita Tjiang, M.Biomed, Sp.A
+  { nameKeywords: ["novita", "tjiang"] },
+  // 14. Prof. Dr. dr. Nicolaas C. Budhiparama, PhD, Sp.OT(K), FICS
+  { nameKeywords: ["nicolaas", "budhiparama"] },
+  // 15. dr. Yoga Yuniadi - Siloam
+  { nameKeywords: ["yoga", "yuniadi"], hospitalKeywords: ["siloam"] },
+  // 16. dr. Nana Agustina, Sp.OG
+  { nameKeywords: ["nana", "agustina"] },
+  // 17. dr. Hardianto Setiawan Ong, Sp.PD-KGEH, FINASIM
+  { nameKeywords: ["hardianto", "setiawan"] },
+  // 18. Prof. Dr. dr. Eka Julianta Wahjoepramono, Sp.BS
+  { nameKeywords: ["eka", "julianta", "wahjoepramono"] },
+  // 19. Dr. Hsieh Wen-Son
+  { nameKeywords: ["hsieh", "wen"] },
+  // 20. Dr. Tony Setiobudi
+  { nameKeywords: ["tony", "setiobudi"] },
+  // 21. Dr. Chou Ning
+  { nameKeywords: ["chou", "ning"] },
+  // 22. Dr. Lye Wai Choong
+  { nameKeywords: ["lye", "wai", "choong"] },
+  // 23. dr. Lee Keat Hong - Alvernia
+  { nameKeywords: ["lee", "keat", "hong"], hospitalKeywords: ["alvernia"] },
+  // 24. Dr. Jerry Chen
+  { nameKeywords: ["jerry", "chen"] },
+];
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -257,6 +313,100 @@ export async function GET(request: Request) {
     const pageVal = page ? parseInt(page, 10) : undefined;
     const limitVal = limit ? parseInt(limit, 10) : undefined;
 
+    const hasSearch = !!(search && search.trim());
+    const hasSpecialty = !!(specialty && specialty.trim());
+    const hasHospital = !!(hospital && hospital.trim());
+    const hasRegion = !!(region && region.trim());
+    const hasHospitalId = !!hospitalId;
+
+    const isDefaultUnfiltered = !hasSearch && !hasSpecialty && !hasHospital && !hasRegion && !hasHospitalId;
+
+    // Fast path: Default unfiltered list with priority doctors on top
+    if (isDefaultUnfiltered) {
+      const { data: allDoctors, error } = await supabase
+        .from("doctors")
+        .select("*, partners!hospital_id(hospital_name, city, country, address)")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Supabase error fetching doctors:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      const { data: fileList } = await supabase.storage
+        .from("Lyfline Files")
+        .list("Doctors");
+
+      const slugMap = await getDoctorSlugMap();
+      const partnerSlugMap = await getPartnerSlugMap();
+      const formattedDoctors = (allDoctors || []).map((doc: unknown) => {
+        const dbDoc = doc as DbDoctor;
+        const mapped = mapDbDoctorToDoctor(dbDoc, fileList || []);
+        mapped.slug = slugMap.get(dbDoc.id) || slugify(dbDoc.doctor_name);
+        mapped.hospitalSlug = dbDoc.hospital_id ? partnerSlugMap.get(dbDoc.hospital_id) : undefined;
+        return mapped;
+      });
+
+      // 1-to-1 exact priority assignment
+      const assignedDocIds = new Set<string>();
+      const docRanks = new Map<string, number>();
+
+      for (let ruleIndex = 0; ruleIndex < DEFAULT_PRIORITY_DOCTORS.length; ruleIndex++) {
+        const rule = DEFAULT_PRIORITY_DOCTORS[ruleIndex];
+        const match = formattedDoctors.find((doc) => {
+          if (assignedDocIds.has(doc.id)) return false;
+
+          const normName = (doc.name || "").toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
+          const normHospital = (doc.hospital || "").toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, " ");
+
+          const nameMatches = rule.nameKeywords.every((kw) => normName.includes(kw.toLowerCase()));
+          if (!nameMatches) return false;
+
+          if (rule.hospitalKeywords && rule.hospitalKeywords.length > 0) {
+            return rule.hospitalKeywords.some((hkw) => normHospital.includes(hkw.toLowerCase()));
+          }
+
+          return true;
+        });
+
+        if (match) {
+          assignedDocIds.add(match.id);
+          docRanks.set(match.id, ruleIndex);
+        }
+      }
+
+      // Sort with priority doctors first in exact order
+      formattedDoctors.sort((a, b) => {
+        const rankA = docRanks.has(a.id) ? docRanks.get(a.id)! : 9999;
+        const rankB = docRanks.has(b.id) ? docRanks.get(b.id)! : 9999;
+        if (rankA !== rankB) {
+          return rankA - rankB;
+        }
+        return 0;
+      });
+
+      if (pageVal !== undefined) {
+        const effectiveLimit = limitVal || 12;
+        const total = formattedDoctors.length;
+        const totalPages = Math.ceil(total / effectiveLimit) || 1;
+        const startIndex = (pageVal - 1) * effectiveLimit;
+        const paginatedData = formattedDoctors.slice(startIndex, startIndex + effectiveLimit);
+
+        return NextResponse.json({
+          data: paginatedData,
+          meta: {
+            total,
+            page: pageVal,
+            limit: effectiveLimit,
+            totalPages,
+          },
+        });
+      }
+
+      return NextResponse.json(formattedDoctors);
+    }
+
+    // Filtered / Searched query path
     const hasPartnerFilter = !!(hospital || region);
     const selectClause = hasPartnerFilter
       ? "*, partners!hospital_id!inner(hospital_name, city, country, address)"
@@ -321,7 +471,7 @@ export async function GET(request: Request) {
     });
 
     if (pageVal !== undefined) {
-      const effectiveLimit = limitVal || 10;
+      const effectiveLimit = limitVal || 12;
       const total = count || 0;
       const totalPages = Math.ceil(total / effectiveLimit) || 1;
 

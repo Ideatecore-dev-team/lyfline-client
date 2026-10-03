@@ -1,2 +1,6 @@
 NEXT_PUBLIC_SUPABASE_URL=https://placeholder-please-set-env-vars.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_placeholder
+# URL kanonikal produksi (gunakan https://lyfline.id di production)
+NEXT_PUBLIC_SITE_URL=https://lyfline.id
+# Isi ini HANYA untuk lokal dev jika ingin test redirect dari domain lama
+# REDIRECT_FROM_HOST=dev.lyfline.id

@@ -45,11 +45,11 @@ export const HeroSection: React.FC = () => {
       <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-white/5 blur-3xl z-0" />
 
       {/* Content wrapper */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto min-h-[580px] px-6 md:px-16 lg:px-24 xl:px-36 py-16 md:py-24 flex flex-col-reverse min-[1100px]:flex-row justify-between items-start min-[1100px]:items-center gap-12 min-[1100px]:gap-0">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto min-h-[580px] px-6 md:px-16 lg:px-24 xl:px-36 py-12 md:py-20 flex flex-col min-[1100px]:flex-row justify-between items-start min-[1100px]:items-center gap-10 min-[1100px]:gap-12">
 
         {/* Left Column (Text & Action Buttons) */}
         <motion.div
-          className="w-full max-w-[460px] flex flex-col justify-start items-start gap-6"
+          className="w-full max-w-xl min-[1100px]:max-w-[480px] lg:max-w-[520px] xl:max-w-[560px] flex flex-col justify-start items-start gap-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -68,7 +68,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
               {/* Main Headline */}
-              <h1 className="w-full max-w-md justify-start text-white text-3xl sm:text-4xl lg:text-4xl font-medium font-poppins leading-tight tracking-tight">
+              <h1 className="w-full max-w-lg justify-start text-white text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-medium font-poppins leading-tight tracking-tight">
                 {lang === "en" ? "Medical Tourism & Concierge Service Provider" : "Penyedia Layanan Turisme Medis & Concierge"}
               </h1>
 
@@ -103,13 +103,13 @@ export const HeroSection: React.FC = () => {
 
         {/* Right Column (Special Promo Card) */}
         <motion.div
-          className="w-full max-w-96"
+          className="w-full max-w-sm sm:max-w-md md:max-w-lg min-[1100px]:max-w-[440px] xl:max-w-[460px] self-start"
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
           {/* Glassmorphic outer container */}
-          <div className="w-full h-80 p-4 bg-white/10 backdrop-blur-md rounded-3xl flex flex-col justify-start items-start gap-3 overflow-hidden border border-white/15 shadow-2xl">
+          <div className="w-full p-4 sm:p-5 bg-white/10 backdrop-blur-md rounded-3xl flex flex-col justify-start items-start gap-3 overflow-hidden border border-white/15 shadow-2xl transition-all duration-300">
             <div className="text-white">
               <span
                 style={{
@@ -125,8 +125,8 @@ export const HeroSection: React.FC = () => {
               {lang === "en" ? "Special Announcement" : "Pengumuman Spesial"}
             </div>
 
-            {/* Glassmorphic inner promo box container */}
-            <div className="self-stretch flex-1 relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 overflow-hidden">
+            {/* Glassmorphic inner promo box container with locked 16:10 landscape aspect ratio */}
+            <div className="w-full aspect-[16/10] relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 overflow-hidden flex items-center justify-center">
               {promoLoading ? (
                 /* Skeleton shimmer */
                 <div className="w-full h-full animate-pulse bg-white/10" />
@@ -143,7 +143,7 @@ export const HeroSection: React.FC = () => {
                       alt="Special Promo"
                       fill
                       className="object-cover transition-transform duration-300 hover:scale-105"
-                      sizes="384px"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 460px"
                     />
                   </Link>
                 ) : (
@@ -152,7 +152,7 @@ export const HeroSection: React.FC = () => {
                     alt="Special Promo"
                     fill
                     className="object-cover"
-                    sizes="384px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 460px"
                   />
                 )
               ) : (

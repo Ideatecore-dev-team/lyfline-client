@@ -80,7 +80,7 @@ export const AboutUsSection: React.FC<AboutUsSectionProps> = ({ showButton = tru
                   </h2>
                 </div>
 
-                <div className="text-black text-base font-normal font-poppins leading-relaxed space-y-4">
+                <div className="text-black text-base font-normal font-poppins leading-relaxed space-y-4 text-justify">
                   {lang === "en" ? (
                     <>
                       <p>
