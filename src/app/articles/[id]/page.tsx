@@ -84,8 +84,33 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
   const otherArticles = await getOtherArticles(article.id);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    image: article.imageUrl ? [article.imageUrl] : [],
+    datePublished: article.date,
+    author: {
+      "@type": "Organization",
+      name: "LYFLINE",
+      url: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "LYFLINE",
+      logo: {
+        "@type": "ImageObject",
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"}/logoIcon.webp`,
+      },
+    },
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <NavBar />
       <ArticleClient article={article} otherArticles={otherArticles} />
       <Footer />

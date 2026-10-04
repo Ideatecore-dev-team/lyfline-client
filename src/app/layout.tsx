@@ -19,7 +19,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"),
-  title: "LYFLINE | Build on Trust, Driven with Care - International Healthcare Facilitator",
+  title: {
+    template: "%s | LYFLINE",
+    default: "LYFLINE | Build on Trust, Driven with Care - International Healthcare Facilitator",
+  },
   description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey. From consultations, doctor matching, travel arrangements to recovery support across 7 countries with zero hidden fees.",
   icons: {
     icon: "/logoIcon.webp",
@@ -64,7 +67,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
+    canonical: "/",
   },
 };
 
@@ -73,12 +76,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MedicalOrganization",
+    name: "LYFLINE",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
+    logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"}/logoIcon.webp`,
+    description: "International Healthcare Facilitator",
+  };
+
   return (
     <html
       lang="en"
       className={`${plusJakartaSans.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#FAFCFF] text-slate-800">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <LanguageProvider>
           {children}
         </LanguageProvider>
