@@ -63,6 +63,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
+  },
 };
 
 export default function RootLayout({
