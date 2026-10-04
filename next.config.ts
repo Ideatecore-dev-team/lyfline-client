@@ -22,10 +22,23 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
+    const staticRedirects = [
+      {
+        source: "/id",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/id/:path*",
+        destination: "/:path*",
+        permanent: true,
+      },
+    ];
+
     const redirectFromHost = process.env.REDIRECT_FROM_HOST;
     const canonicalUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-    if (!redirectFromHost || !canonicalUrl) return [];
+    if (!redirectFromHost || !canonicalUrl) return staticRedirects;
 
     // Parse host for circular redirect checks
     let canonicalHost = canonicalUrl;
@@ -35,9 +48,10 @@ const nextConfig: NextConfig = {
       // Fallback
     }
 
-    if (redirectFromHost === canonicalHost) return [];
+    if (redirectFromHost === canonicalHost) return staticRedirects;
 
     return [
+      ...staticRedirects,
       {
         source: "/:path*",
         has: [

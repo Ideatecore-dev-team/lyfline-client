@@ -14,5 +14,17 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/id"
+  to = "/"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/id/*"
+  to = "/:splat"
+  status = 301
+  force = false
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"

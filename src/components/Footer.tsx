@@ -129,12 +129,12 @@ export const Footer: React.FC = () => {
                 >
                   {t("nav.articles")}
                 </Link>
-                <Link
+                {/* <Link
                   href="#footer"
                   className="w-28 h-8 py-1 inline-flex justify-start items-center text-white text-base font-medium font-poppins hover:opacity-80 hover:pl-2 transition-all duration-300"
                 >
                   {t("footer.btn.contact")}
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
