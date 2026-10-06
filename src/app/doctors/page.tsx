@@ -84,6 +84,30 @@ const paginationVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
+const PREFERRED_COUNTRY_ORDER = [
+  "Indonesia",
+  "Singapore",
+  "Malaysia",
+  "Thailand",
+  "China",
+  "Japan",
+  "South Korea",
+  "Korea",
+  "India",
+  "Taiwan",
+];
+
+const getCountryRank = (country: string) => {
+  const normalized = country.trim().toLowerCase();
+  if (normalized === "south korea" || normalized === "korea") {
+    return 6;
+  }
+  const idx = PREFERRED_COUNTRY_ORDER.findIndex(
+    (c) => c.toLowerCase() === normalized
+  );
+  return idx !== -1 ? idx : 999;
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function DoctorsPage() {
@@ -165,22 +189,51 @@ export default function DoctorsPage() {
   const countryOptions = useMemo(() => {
     const fromPartners = allPartnersForOptions.map((p) => p.country).filter((c): c is string => Boolean(c));
     const fromDoctors = allDoctorsForOptions.map((d) => d.region).filter((r): r is string => Boolean(r));
-    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort((a, b) => {
+      const rankA = getCountryRank(a);
+      const rankB = getCountryRank(b);
+      if (rankA !== rankB) return rankA - rankB;
+      return a.localeCompare(b);
+    });
     return [
       { value: "", label: lang === "en" ? "All Country" : "Semua Negara" },
       ...unique.map((r) => ({ value: r, label: r })),
     ];
   }, [allPartnersForOptions, allDoctorsForOptions, lang]);
 
+  // Hospital options filtered strictly by selected country hierarchy
   const hospitalOptions = useMemo(() => {
-    const fromPartners = allPartnersForOptions.map((p) => p.name).filter((h): h is string => Boolean(h));
-    const fromDoctors = allDoctorsForOptions.map((d) => d.hospital).filter((h): h is string => Boolean(h));
-    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort();
+    const selectedCountry = filters.region?.trim().toLowerCase();
+
+    const filteredPartners = selectedCountry
+      ? allPartnersForOptions.filter(
+          (p) => (p.country || "").trim().toLowerCase() === selectedCountry
+        )
+      : allPartnersForOptions;
+
+    const filteredDoctors = selectedCountry
+      ? allDoctorsForOptions.filter(
+          (d) => (d.region || "").trim().toLowerCase() === selectedCountry
+        )
+      : allDoctorsForOptions;
+
+    const fromPartners = filteredPartners
+      .map((p) => p.name)
+      .filter((h): h is string => Boolean(h && h.trim()));
+
+    const fromDoctors = filteredDoctors
+      .map((d) => d.hospital)
+      .filter((h): h is string => Boolean(h && h.trim()));
+
+    const unique = Array.from(new Set([...fromPartners, ...fromDoctors])).sort((a, b) =>
+      a.localeCompare(b)
+    );
+
     return [
       { value: "", label: lang === "en" ? "All Hospital" : "Semua Rumah Sakit" },
       ...unique.map((h) => ({ value: h, label: h })),
     ];
-  }, [allPartnersForOptions, allDoctorsForOptions, lang]);
+  }, [allPartnersForOptions, allDoctorsForOptions, filters.region, lang]);
 
   const specialtyOptions = useMemo(() => {
     const all = allDoctorsForOptions.flatMap((d) => d.specialty || []).filter((s): s is string => Boolean(s));
@@ -205,7 +258,27 @@ export default function DoctorsPage() {
 
   const handleFilterChange = (key: "region" | "hospital" | "specialty", val: string) => {
     setLoading(true);
-    setFilters((prev) => ({ ...prev, [key]: val }));
+    setFilters((prev) => {
+      const updated = { ...prev, [key]: val };
+      if (key === "region") {
+        if (val) {
+          const selectedCountry = val.trim().toLowerCase();
+          const validHospitals = new Set([
+            ...allPartnersForOptions
+              .filter((p) => (p.country || "").trim().toLowerCase() === selectedCountry)
+              .map((p) => p.name),
+            ...allDoctorsForOptions
+              .filter((d) => (d.region || "").trim().toLowerCase() === selectedCountry)
+              .map((d) => d.hospital)
+              .filter((h): h is string => Boolean(h)),
+          ]);
+          if (prev.hospital && !validHospitals.has(prev.hospital)) {
+            updated.hospital = "";
+          }
+        }
+      }
+      return updated;
+    });
     setCurrentPage(1);
   };
 
