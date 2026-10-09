@@ -33,6 +33,16 @@ const nextConfig: NextConfig = {
         destination: "/:path*",
         permanent: true,
       },
+      {
+        source: "/about-us",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/layanan-kami",
+        destination: "/services",
+        permanent: true,
+      },
     ];
 
     const redirectFromHost = process.env.REDIRECT_FROM_HOST;
