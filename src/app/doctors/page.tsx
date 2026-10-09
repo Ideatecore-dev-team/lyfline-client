@@ -441,7 +441,7 @@ export default function DoctorsPage() {
             <AnimatePresence mode="wait">
               {loading ? (
                 <div className="w-full flex flex-wrap justify-center xl:grid xl:grid-cols-4 gap-6 justify-items-center">
-                  {Array.from({ length: 8 }).map((_, i) => (
+                  {Array.from({ length: 12 }).map((_, i) => (
                     <DoctorCard key={`skeleton-${i}`} isLoading={true} />
                   ))}
                 </div>
