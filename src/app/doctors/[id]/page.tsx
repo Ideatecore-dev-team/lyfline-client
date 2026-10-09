@@ -9,6 +9,8 @@ import { mapDbDoctorToDoctor, resolveDoctorByIdOrSlug, getDoctorSlugMap } from "
 import { getPartnerSlugMap } from "@/app/api/partners/route";
 import { slugify } from "@/lib/utils";
 
+export const revalidate = 3600;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }

@@ -21,6 +21,10 @@ export async function GET() {
     return NextResponse.json({
       imageUrl: settingsMap["promo_image_url"] || null,
       destinationLink: settingsMap["promo_destination_link"] || null,
+    }, {
+      headers: {
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=59"
+      }
     });
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);

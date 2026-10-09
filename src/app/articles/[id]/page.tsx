@@ -8,6 +8,8 @@ import { supabase } from "@/lib/supabase";
 import { mapDbArticleToArticle, resolveArticleByIdOrSlug, getArticleSlugMap, type DbArticle } from "@/app/api/articles/route";
 import { slugify } from "@/lib/utils";
 
+export const revalidate = 3600;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
