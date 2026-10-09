@@ -400,18 +400,10 @@ export async function GET(request: Request) {
             limit: effectiveLimit,
             totalPages,
           },
-        }, {
-          headers: {
-            "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=59"
-          }
         });
       }
 
-      return NextResponse.json(formattedDoctors, {
-        headers: {
-          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=59"
-        }
-      });
+      return NextResponse.json(formattedDoctors);
     }
 
     // Filtered / Searched query path
@@ -491,18 +483,10 @@ export async function GET(request: Request) {
           limit: effectiveLimit,
           totalPages,
         },
-      }, {
-        headers: {
-          "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=59"
-        }
       });
     }
 
-    return NextResponse.json(formattedDoctors, {
-      headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=59"
-      }
-    });
+    return NextResponse.json(formattedDoctors);
   } catch (error: unknown) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.error("API error fetching doctors:", error);
