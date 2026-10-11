@@ -7,6 +7,8 @@ import PartnerClient from "./PartnerClient";
 import { mapDbPartnerToPartner, resolvePartnerByIdOrSlug, getPartnerSlugMap } from "@/app/api/partners/route";
 import { slugify } from "@/lib/utils";
 
+export const revalidate = 86400;
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
