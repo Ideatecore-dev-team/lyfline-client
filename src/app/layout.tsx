@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"),
   title: {
     template: "%s | LYFLINE",
-    default: "LYFLINE | Build on Trust, Driven with Care - International Healthcare Facilitator",
+    default: "LYFLINE | Medical Concierge & Tourism",
   },
-  description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey. From consultations, doctor matching, travel arrangements to recovery support across 7 countries with zero hidden fees.",
+  description: "LYFLINE simplifies your healthcare journey by providing seamless access to world-class hospitals locally & globally.",
   icons: {
     icon: "/logoIcon.webp",
     shortcut: "/logoIcon.webp",
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "LYFLINE" }],
   openGraph: {
-    title: "LYFLINE | Build on Trust, Driven with Care",
-    description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey.",
+    title: "LYFLINE | Medical Concierge & Tourism",
+    description: "LYFLINE simplifies your healthcare journey by providing seamless access to world-class hospitals locally & globally.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
     siteName: "LYFLINE",
     locale: "en_US",
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "LYFLINE | Build on Trust, Driven with Care",
-    description: "LYFLINE is your trusted medical care facilitator, taking care of every step of your healthcare journey.",
+    title: "LYFLINE | Medical Concierge & Tourism",
+    description: "LYFLINE simplifies your healthcare journey by providing seamless access to world-class hospitals locally & globally.",
     images: ["/logoBlack.webp"],
   },
   robots: {
@@ -82,7 +82,7 @@ export default function RootLayout({
     name: "LYFLINE",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id",
     logo: `${process.env.NEXT_PUBLIC_SITE_URL || "https://lyfline.id"}/logoIcon.webp`,
-    description: "International Healthcare Facilitator",
+    description: "LYFLINE simplifies your healthcare journey by providing seamless access to world-class hospitals locally & globally.",
   };
 
   return (
